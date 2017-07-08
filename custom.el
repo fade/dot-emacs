@@ -7,6 +7,9 @@
  '(custom-safe-themes
    (quote
     ("f0a99f53cbf7b004ba0c1760aa14fd70f2eabafe4e62a2b3cf5cabae8203113b" default)))
+ '(package-selected-packages
+   (quote
+    (slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    (quote

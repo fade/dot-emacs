@@ -1,37 +1,11 @@
 #+TITLE: Emacs Configuration
-#+AUTHOR: Daniel Mai
-
-I've been using Emacs extensively since the summer of 2013, and along
-the way I've become accustomed to many different tweaks for it.
-
-This configuration uses the [[https://github.com/jwiegley/use-package][use-package]] package from John Wiegley, which is
-a fantastic way to manage package configurations.
-
-If you see any keybindings that seem weird to you, it's probably
-because I type with the Dvorak keyboard layout, so things'll probably
-seem strange on other keyboard layouts. I may assign a keybinding just
-because it's more on convenient on Dvorak. Though for the most part, I
-try to follow Emacs and assign bindings by mnemonics, would should
-make sense for any layout.
-
-* Installing Emacs
-
-On macOS, [[http://brew.sh/][homebrew]] is an easy way to install emacs.
-
-Here's what the parameter means.
-- ~--with-cocoa~ :: installs emacs with the macOS GUI version
-- ~--with-imagemagick~ :: installs emacs with imagemagick support for image processing
-- ~--with-gnutls~ :: installs emacs with GnuTLS to utilize encrypted SSL and TLS connections
-
-#+begin_src sh
-brew install emacs --with-cocoa --with-imagemagick --with-gnutls
-#+end_src
+#+AUTHOR: Brian O'Reilly <fade@deepsky.com>
 
 * Personal Information
 
 #+begin_src emacs-lisp
-(setq user-full-name "Daniel Mai"
-      user-mail-address "daniel@danielmai.net")
+(setq user-full-name "Brian O'Reilly"
+      user-mail-address "fade@deepsky.com")
 #+end_src
 
 * Customize settings
@@ -145,7 +119,7 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
-             '(font . "Source Code Pro-14"))
+             '(font . "Source Code Pro-12"))
 #+end_src
 
 Display emojis. Source of system-specific fonts is in [[https://github.com/syohex/emacs-ac-emoji][the README for
@@ -166,54 +140,54 @@ Let's start with some sane defaults, shall we?
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+begin_src emacs-lisp
-;; These functions are useful. Activate them.
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
+  ;; These functions are useful. Activate them.
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'narrow-to-region 'disabled nil)
+  (put 'dired-find-alternate-file 'disabled nil)
 
-;; Answering just 'y' or 'n' will do
-(defalias 'yes-or-no-p 'y-or-n-p)
+  ;; Answering just 'y' or 'n' will do
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Keep all backup and auto-save files in one directory
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+  ;; Keep all backup and auto-save files in one directory
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-;; UTF-8 please
-(setq locale-coding-system 'utf-8) ; pretty
-(set-terminal-coding-system 'utf-8) ; pretty
-(set-keyboard-coding-system 'utf-8) ; pretty
-(set-selection-coding-system 'utf-8) ; please
-(prefer-coding-system 'utf-8) ; with sugar on top
-(setq-default indent-tabs-mode nil)
+  ;; UTF-8 please
+  (setq locale-coding-system 'utf-8) ; pretty
+  (set-terminal-coding-system 'utf-8) ; pretty
+  (set-keyboard-coding-system 'utf-8) ; pretty
+  (set-selection-coding-system 'utf-8) ; please
+  (prefer-coding-system 'utf-8) ; with sugar on top
+  (setq-default indent-tabs-mode nil)
 
-;; Turn off the blinking cursor
-(blink-cursor-mode -1)
+  ;; Turn off the blinking cursor
+  (blink-cursor-mode -1)
 
-(setq-default indent-tabs-mode nil)
-(setq-default indicate-empty-lines t)
+  (setq-default indent-tabs-mode nil)
+  (setq-default indicate-empty-lines t)
 
-;; Don't count two spaces after a period as the end of a sentence.
-;; Just one space is needed.
-(setq sentence-end-double-space nil)
+  ;; Don't count two spaces after a period as the end of a sentence.
+  ;; Just one space is needed.
+  (setq sentence-end-double-space nil)
 
-;; delete the region when typing, just like as we expect nowadays.
-(delete-selection-mode t)
+  ;; delete the region when typing, just like as we expect nowadays.
+  (delete-selection-mode t)
 
-(show-paren-mode t)
+  (show-paren-mode t)
 
-(column-number-mode t)
+  (column-number-mode t)
 
-(global-visual-line-mode)
-(diminish 'visual-line-mode)
+  (global-visual-line-mode)
+  (diminish 'visual-line-mode)
 
-(setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-buffer-name-style 'forward)
 
-;; -i gets alias definitions from .bash_profile
-(setq shell-command-switch "-ic")
+  ;; -i gets alias definitions from .bash_profile
+  (setq shell-command-switch "-ic")
 
-;; Don't beep at me
-(setq visible-bell t)
+  ;; Don't beep at me
+  (setq visible-bell t)
 #+end_src
 
 The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
@@ -322,21 +296,30 @@ match the same one on macOS.
 
 ** El Capitan fixes
 
-http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/
+[[http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/][El Capitan Fixes]]
 
 #+BEGIN_SRC emacs-lisp
-(let* ((cmd "sw_vers -productVersion")
-       (macos-version (string-to-int
-                     (cadr (split-string
-                            (shell-command-to-string cmd)
-                            "\\."))))
-       (elcapitan-version 11))
-  (when (>= macos-version elcapitan-version)
-    (setq visible-bell nil)
-    (setq ring-bell-function 'ignore)
+  (cond
+   ((string-equal system-type "darwin")
+    (let* ((cmd "sw_vers -productVersion")
+           (macos-version (string-to-int
+                           (cadr (split-string
+                                  (shell-command-to-string cmd)
+                                  "\\."))))
+           (elcapitan-version 11))
+      (when (>= macos-version elcapitan-version)
+        (setq visible-bell nil)
+        (setq ring-bell-function 'ignore)
 
-    ;; El Capitan full screen animation is quick and delightful (enough to start using it).
-    (setq ns-use-native-fullscreen t)))
+        ;; El Capitan full screen animation is quick and delightful (enough to start using it).
+        (setq ns-use-native-fullscreen t))))
+   ;; other system specific things in separate test subclauses
+   ((string-equal system-type "gnu/linux")
+    (progn
+      (message "Gnu Linux System!")))
+   ((string-equal system-type "windows-nt")
+    (progn
+      (message "Oh dear... you're using Windows. :("))))
 #+END_SRC
 
 * List buffers
@@ -523,19 +506,8 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 * Tramp
 
 #+begin_src emacs-lisp :tangle no
-(use-package tramp)
-#+end_src
-
-* Locate
-
-Using macOS Spotlight within Emacs by modifying the ~locate~ function.
-
-I usually use [[*Helm][~helm-locate~]], which does live updates the spotlight
-search list as you type a query.
-
-#+begin_src emacs-lisp
-;; mdfind is the command line interface to Spotlight
-(setq locate-command "mdfind")
+  (use-package tramp
+    :ensure t)
 #+end_src
 
 * Window
@@ -662,7 +634,7 @@ what I have them set to (with respect to Dvorak, of course).
   :ensure t
   :defer t)
 #+end_src
-
+   
 ** C-Eldoc
    :PROPERTIES:
    :GitHub:   https://github.com/mooz/c-eldoc
@@ -685,6 +657,20 @@ This package displays function signatures in the mode line.
   :ensure t)
 #+end_src
 
+** Company
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    ;:bind (:map company-mode-map
+    ;            (("C-n" . company-select-next)
+    ;             ("C-p" . company-select-previous)
+    ;             ("C-d" . company-show-doc-buffer)
+    ;             ("M-." . company-show-location)))
+    :config
+    (progn
+      ;; company completion everywhere.
+      (add-hook 'after-init-hook 'global-company-mode)))
+#+end_src   
 ** Dash
 
 Integration with [[http://kapeli.com/dash][Dash, the API documentation browser on macOS]]. The
@@ -693,10 +679,10 @@ uses in Android Studio (trying to keep things consistent with the
 tools I use).
 
 #+begin_src emacs-lisp
-(use-package dash-at-point
-  :ensure t
-  :bind (("s-D"     . dash-at-point)
-         ("C-c e"   . dash-at-point-with-docset)))
+;; (use-package dash-at-point
+;;   :ensure t
+;;   :bind (("s-D"     . dash-at-point)
+;;          ("C-c e"   . dash-at-point-with-docset)))
 #+end_src
 
 ** Helm
@@ -765,34 +751,6 @@ No more juggling windows after commiting. It's magit bliss.
   (jump-to-register :magit-fullscreen))
 #+end_src
 
-** Edit With Emacs
-
-Editing input boxes from Chrome with Emacs. Pretty useful to keep all
-significant text-writing on the web within emacs. I typically use this
-with posts on Discourse, which has a post editor that overrides normal
-Emacs key bindings with other functions. As such, ~markdown-mode~ is
-used.
-
-#+begin_src emacs-lisp
-(use-package edit-server
-  :ensure t
-  :config
-  (edit-server-start)
-  (setq edit-server-default-major-mode 'markdown-mode)
-  (setq edit-server-new-frame nil))
-#+end_src
-
-** Elfeed
-
-#+begin_src emacs-lisp :tangle no
-(use-package elfeed
-  :ensure t
-  :defer t
-  :config (setq elfeed-feeds
-                '("http://feeds.feedburner.com/gonintendo/news"
-                  "http://usesthis.com/feed/")))
-#+end_src
-
 ** Emacs IPython Notebook
 #+begin_src emacs-lisp
 (use-package ein
@@ -806,16 +764,6 @@ used.
 (use-package expand-region
   :ensure t
   :bind ("C-@" . er/expand-region))
-#+end_src
-
-** Floobits
-
-Using [[https://floobits.com/][Floobits]] for code collaboration.
-
-#+begin_src emacs-lisp :tangle no
-(use-package floobits
-  :ensure t
-  :defer t)
 #+end_src
 
 ** Flycheck
@@ -1140,24 +1088,54 @@ creating a buffer to do some scratch work or reusing the initial
   :bind ("M-<f12>" . shell-pop))
 #+END_SRC
 
-** SLIME
-
-The Superior Lisp Interaction Mode for Emacs. First, Install SBCL with
-brew.
-
-#+BEGIN_SRC sh
-brew install sbcl
-#+END_SRC
-
+** Slime-company
 #+BEGIN_SRC emacs-lisp
-(use-package slime
-  :ensure t
-  :defer 10
-  :init
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
-  (add-to-list 'slime-contribs 'slime-fancy))
+  (use-package slime-company
+    :ensure t)
+#+END_SRC
+** SLIME
+#+BEGIN_SRC emacs-lisp
+  (use-package slime
+    :load-path "~/SourceCode/lisp/emacsmodes/slime"
+    :ensure t
+
+    :init
+    (progn
+      ;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
+      ;; (require 'slime-repl-ansi-color)
+      (setq slime-lisp-implementations
+        '((sbcl ("/usr/local/bin/sbcl"))
+          (ccl ("/usr/local/bin/ccl"))
+          (ccl64 ("/usr/local/bin/ccl64"))
+          (abcl ("/usr/local/src/abcl/abcl"))
+          (clisp ("/usr/bin/clisp"))
+          (ecl ("/usr/local/bin/ecl"))
+          (decl ("/usr/bin/ecl"))
+          (clojure ("/usr/bin/Clojure")))))
+
+    :config
+    (progn
+      (slime-setup '(slime-fancy
+                     slime-company
+                     slime-indentation
+                     slime-xref-browser
+                     slime-tramp
+                     slime-asdf
+                     slime-autodoc
+                     slime-repl-ansi-color))))
+
 #+END_SRC
 
+** slime-repl-ansi-color
+   If slime isn't loaded before this contrib, the contrib fails to
+   load. This dependency ordering should be managed in use-package
+   syntax, but I can't find the mechanism  and I don't have the time
+   to read the code atm.
+#+BEGIN_SRC emacs-lisp
+  (use-package slime-repl-ansi-color
+    :load-path "site-lisp/slime-repl-ansi-color")
+
+#+END_SRC   
 ** Quickrun
 
 #+BEGIN_SRC emacs-lisp
@@ -1301,13 +1279,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (add-hook 'java-mode-hook 'my-c-mode-hook)
 #+end_src
 
-** Jasmin
-Mode for editing Jasmin Java bytecode assembler files.
-
-#+BEGIN_SRC emacs-lisp
-(use-package jasmin)
-#+END_SRC
-
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
@@ -1361,5 +1332,3 @@ Convenience bindings to use doc-view with the arrow keys.
   (server-start))
 #+end_src
 
-#+begin_src emacs-lisp
-#+end_src

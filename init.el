@@ -7,10 +7,40 @@
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  (tooltip-mode -1))
+  (tooltip-mode -1)
+  (display-time-mode 1))
 
+(set-frame-parameter nil 'fullscreen 'maximized)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
+
+;; Set path to local dependencies
+(setq site-lisp-dir
+      (expand-file-name "site-lisp" user-emacs-directory))
+(setq settings-dir
+      (expand-file-name "settings" user-emacs-directory))
+
+;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.zshrc\\'" . sh-mode))
+
+;; Keep emacs Custom-settings in separate file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
+;; Add external projects to load path
+(dolist (project (directory-files site-lisp-dir t "\\w+"))
+  (when (file-directory-p project)
+    (add-to-list 'load-path project)))
+
+
+;; Write backup files to their own directory
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+
+;; Make backups of files, even when they're in version control
+(setq vc-make-backup-files t)
 
 ;;; Set up package
 (require 'package)
