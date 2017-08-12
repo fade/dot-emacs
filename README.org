@@ -1,6 +1,11 @@
-#+TITLE: Mai Emacs Configuration
-#+AUTHOR: Daniel Mai
+#+TITLE: DeepSky Emacs Configuration
+#+AUTHOR: Brian O'Reilly
 
-Here's my Emacs setup that I use on the daily.
+The emacs configuration used by most of the DeepSky crew. Repository
+and code layout was originally taken from Daniel Mai's emacs
+configuration published on github, into which a legacy emacs
+configuration was merged. This is the result.
 
-The configuration depends on Org mode. [[file:init.el][init.el]] sets up a few initial GUI settings, bootstraps [[https://github.com/jwiegley/use-package][use-package]], and loads [[file:config.org][config.org]], which is where the majority of the configuration magic happens.
+The configuration depends on Org mode. [[file:init.el][init.el]] sets up a few initial
+GUI settings, bootstraps [[https://github.com/jwiegley/use-package][use-package]], and loads [[file:config.org][config.org]], which is
+where the majority of the configuration magic happens.
