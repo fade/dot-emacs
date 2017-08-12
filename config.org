@@ -11,73 +11,63 @@
 * Customize settings
 
 Set up the customize file to its own separate file, instead of saving
-customize settings in [[file:init.el][init.el]].
+customize settings in [[file:init.el][init.el]]. Custom.el is loaded before config.el (generated from config.org), so the clause to configure it, is included in [[init.el][init.el]].
 
 #+begin_src emacs-lisp
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (load custom-file)
 #+end_src
 
 * Theme
-** Cyberpunk theme
-
-The [[https://github.com/n3mo/cyberpunk-theme.el][cyberpunk theme]] is dark and colorful. However, I don't like the
-boxes around the mode line.
-
+** Cursor tomfoolery
 #+begin_src emacs-lisp
-(use-package cyberpunk-theme
-  :if (window-system)
-  :ensure t
-  :init
-  (progn
-    (load-theme 'cyberpunk t)
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
+(progn
+  (defvar blink-cursor-colors (list
+                               "dark slate blue"
+                               "medium slate blue"
+                               "light slate blue"
+                               "steel blue"
+                               "royal blue"
+                               "light blue"
+                               "cyan"
+                               "cyan1"
+                               "cyan2"
+                               "cyan3"
+                               "cyan4"
+                               "spring green"
+                               "yellow"
+                               "orange"
+                               "red"
+                               "hot pink")
+    "On each blink the cursor will cycle to the next color in this list.")
+  
+  (setq blink-cursor-count 0)
+  (setq blink-cursor-interval 0.4)
+  (defun blink-cursor-timer-function ()
+    "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
+     Warning: overwrites original version in `frame.el'.
+
+     This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+    (when (not (internal-show-cursor-p))
+      (when (>= blink-cursor-count (length blink-cursor-colors))
+        (setq blink-cursor-count 0))
+      (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+      (setq blink-cursor-count (+ 1 blink-cursor-count))
+      )
+    (internal-show-cursor nil (not (internal-show-cursor-p)))
+    ))
 #+end_src
-
-I tend to switch themes more often than normal. For example, switching
-to a lighter theme (such as the default) or to a different theme
-depending on the time of day or my mood. Normally, switching themes is
-a multi-step process with ~disable-theme~ and ~load-theme~. The
-~switch-theme~ function will do that in one swoop. I just choose which
-theme I want to go to.
-
-** Solarized theme
-
-Here's some configuration for [[https://github.com/bbatsov/solarized-emacs/][bbatsov's solarized themes]].
-
+** DeepSky Theme
 #+begin_src emacs-lisp
-(use-package solarized-theme
-  :defer 10
-  :init
-  (setq solarized-use-variable-pitch nil)
-  :ensure t)
-#+end_src
-
-** Monokai theme
-
-#+begin_src emacs-lisp :tangle no
-(use-package monokai-theme
-  :if (window-system)
-  :ensure t
-  :init
-  (setq monokai-use-variable-pitch nil))
-#+end_src
-
-** Waher theme
-
-#+begin_src emacs-lisp :tangle no
-(use-package waher-theme
-  if (window-system)
-  :ensure t
-  :init
-  (load-theme 'waher))
-#+end_src
-
-** Convenient theme functions
-
+(progn
+  (load-theme 'deepsky t)
+  (message "Loading theme deepsky")
+  (set-face-attribute `mode-line nil
+                      :box nil)
+  (set-face-attribute `mode-line nil
+                      :box nil))
+#+end_src   
+   
 #+begin_src emacs-lisp
 (defun switch-theme (theme)
   "Disables any currently active themes and loads THEME."
@@ -119,7 +109,8 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
-             '(font . "Source Code Pro-12"))
+             '(font . "Envy Code R"))
+
 #+end_src
 
 Display emojis. Source of system-specific fonts is in [[https://github.com/syohex/emacs-ac-emoji][the README for
@@ -134,8 +125,6 @@ the emacs-ac-emoji package.]]
 #+END_SRC
 
 * Sane defaults
-
-Let's start with some sane defaults, shall we?
 
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
@@ -159,11 +148,8 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
   (set-keyboard-coding-system 'utf-8) ; pretty
   (set-selection-coding-system 'utf-8) ; please
   (prefer-coding-system 'utf-8) ; with sugar on top
-  (setq-default indent-tabs-mode nil)
 
-  ;; Turn off the blinking cursor
-  (blink-cursor-mode -1)
-
+  ;; tabs never in code. 
   (setq-default indent-tabs-mode nil)
   (setq-default indicate-empty-lines t)
 
@@ -214,8 +200,8 @@ as =^L= in Emacs. [[http://ericjmritz.name/2015/08/29/using-page-breaks-in-gnu-e
 Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 
 #+begin_src emacs-lisp
-(use-package page-break-lines
-  :ensure t)
+;; (use-package page-break-lines
+;;   :ensure t)
 #+end_src
 
 * Mac customizations
@@ -671,20 +657,6 @@ This package displays function signatures in the mode line.
       ;; company completion everywhere.
       (add-hook 'after-init-hook 'global-company-mode)))
 #+end_src   
-** Dash
-
-Integration with [[http://kapeli.com/dash][Dash, the API documentation browser on macOS]]. The
-binding ~s-D~ is the same as Cmd-Shift-D, the same binding that dash
-uses in Android Studio (trying to keep things consistent with the
-tools I use).
-
-#+begin_src emacs-lisp
-;; (use-package dash-at-point
-;;   :ensure t
-;;   :bind (("s-D"     . dash-at-point)
-;;          ("C-c e"   . dash-at-point-with-docset)))
-#+end_src
-
 ** Helm
 
 #+begin_src emacs-lisp
@@ -777,7 +749,9 @@ it.
 (use-package flycheck
   :ensure t
   :defer 10
-  :config (setq flycheck-html-tidy-executable "tidy5"))
+  :config (setq flycheck-html-tidy-executable "tidy")
+  :init (progn
+          global-flycheck-mode))
 #+end_src
 
 *** Linter setups
@@ -877,9 +851,33 @@ http://batsov.com/projectile/
 Integrates with IPython.
 
 #+begin_src emacs-lisp
-(use-package python-mode
+;; (use-package ein
+;;   :defer t
+;;   :ensure t)
+
+(use-package elpy
   :defer t
-  :ensure t)
+  :ensure t
+  :config (progn
+            (elpy-enable)
+            (elpy-use-ipython)
+            (elpy-clean-modeline)))
+
+
+;; (use-package anaconda-mode
+;;   :defer t
+;;   :ensure t
+;;   :init (progn
+;;           (add-hook 'python-mode-hook 'anaconda-mode)))
+
+;; (use-package company-anaconda
+;;   :defer t
+;;   :ensure t
+;;   :config (progn
+;;             (add-to-list 'company-backends 'company-anaconda)
+;;             (eval-after-load "company"
+;;               '(add-to-list 'company-backends 'company-anaconda))))
+
 #+end_src
 
 ** Racket
@@ -916,25 +914,6 @@ string to keep things portable.
   :mode ("\\.restclient\\'" . restclient-mode))
 #+end_src
 
-** Smartparens mode
-
-#+begin_src emacs-lisp
-(use-package smartparens
-  :ensure t
-  :defer t
-  :diminish smartparens-mode
-  :config
-  (add-to-list 'sp--lisp-modes 'racket-mode)
-  (add-to-list 'sp--lisp-modes 'geiser-mode)
-  (require 'smartparens-config)
-
-  ;; Set up some pairings for org mode markup. These pairings won't
-  ;; activate by default; they'll only apply for wrapping regions.
-  (sp-local-pair 'org-mode "~" "~" :actions '(wrap))
-  (sp-local-pair 'org-mode "/" "/" :actions '(wrap))
-  (sp-local-pair 'org-mode "*" "*" :actions '(wrap)))
-#+end_src
-
 ** Smartscan
 
 #+BEGIN_QUOTE
@@ -949,18 +928,6 @@ http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
   :config (global-smartscan-mode 1)
   :bind (("s-n" . smartscan-symbol-go-forward)
          ("s-p" . smartscan-symbol-go-backward)))
-#+end_src
-
-** Smex
-
-Smex integrates ido with ~M-x~. I used to use this before moving on to
-[[*Helm][helm]].
-
-#+begin_src emacs-lisp
-(use-package smex
-  :if (not (featurep 'helm-mode))
-  :ensure t
-  :bind ("M-x" . smex))
 #+end_src
 
 ** Skewer mode
@@ -1081,61 +1048,12 @@ creating a buffer to do some scratch work or reusing the initial
 #+end_src
 
 ** Shell pop
-
 #+BEGIN_SRC emacs-lisp
 (use-package shell-pop
   :ensure t
   :bind ("M-<f12>" . shell-pop))
 #+END_SRC
 
-** Slime-company
-#+BEGIN_SRC emacs-lisp
-  (use-package slime-company
-    :ensure t)
-#+END_SRC
-** SLIME
-#+BEGIN_SRC emacs-lisp
-  (use-package slime
-    :load-path "~/SourceCode/lisp/emacsmodes/slime"
-    :ensure t
-
-    :init
-    (progn
-      ;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
-      ;; (require 'slime-repl-ansi-color)
-      (setq slime-lisp-implementations
-        '((sbcl ("/usr/local/bin/sbcl"))
-          (ccl ("/usr/local/bin/ccl"))
-          (ccl64 ("/usr/local/bin/ccl64"))
-          (abcl ("/usr/local/src/abcl/abcl"))
-          (clisp ("/usr/bin/clisp"))
-          (ecl ("/usr/local/bin/ecl"))
-          (decl ("/usr/bin/ecl"))
-          (clojure ("/usr/bin/Clojure")))))
-
-    :config
-    (progn
-      (slime-setup '(slime-fancy
-                     slime-company
-                     slime-indentation
-                     slime-xref-browser
-                     slime-tramp
-                     slime-asdf
-                     slime-autodoc
-                     slime-repl-ansi-color))))
-
-#+END_SRC
-
-** slime-repl-ansi-color
-   If slime isn't loaded before this contrib, the contrib fails to
-   load. This dependency ordering should be managed in use-package
-   syntax, but I can't find the mechanism  and I don't have the time
-   to read the code atm.
-#+BEGIN_SRC emacs-lisp
-  (use-package slime-repl-ansi-color
-    :load-path "site-lisp/slime-repl-ansi-color")
-
-#+END_SRC   
 ** Quickrun
 
 #+BEGIN_SRC emacs-lisp
@@ -1280,12 +1198,80 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 #+end_src
 
 ** Rust
-
 #+BEGIN_SRC emacs-lisp
 (use-package rust-mode
   :ensure t
   :defer t)
 #+END_SRC
+
+** Common Lisp
+   
+*** Slime-Company
+#+BEGIN_SRC emacs-lisp
+  (use-package slime-company
+    :ensure t)
+#+END_SRC
+
+*** Slime
+#+BEGIN_SRC emacs-lisp
+(progn
+    (use-package slime
+    :load-path "~/SourceCode/lisp/emacsmodes/slime"
+    :ensure t
+    :init
+    (progn
+      (setq slime-lisp-implementations
+        '((sbcl ("/usr/local/bin/sbcl"))
+          (ccl ("/usr/local/bin/ccl"))
+          (ccl64 ("/usr/local/bin/ccl64"))
+          (abcl ("/usr/local/src/abcl/abcl"))
+          (clisp ("/usr/bin/clisp"))
+          (ecl ("/usr/local/bin/ecl"))
+          (decl ("/usr/bin/ecl"))
+          (clojure ("/usr/bin/Clojure")))))
+    :config
+    (progn
+      (slime-setup '(slime-fancy
+                     slime-company
+                     slime-indentation
+                     slime-xref-browser
+                     slime-tramp
+                     slime-asdf
+                     slime-autodoc
+                     ))))) ;; slime-repl-ansi-color
+
+#+END_SRC
+*** slime-repl-ansi-color
+    If slime isn't loaded before this contrib, the contrib fails to
+    load. This dependency ordering should be managed in use-package
+    syntax, but I can't find the mechanism  and I don't have the time
+    to read the code atm.
+    #+BEGIN_SRC emacs-lisp
+(use-package slime-repl-ansi-color
+  :load-path "site-lisp/slime-repl-ansi-color")
+
+    #+END_SRC   
+*** Paredit
+#+BEGIN_SRC emacs-lisp
+
+(use-package paredit
+  :ensure t
+  :config
+  (progn
+    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+    (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+    (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+    (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+    (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+    (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
+    (add-hook 'slime-mode-hook            #'enable-paredit-mode)
+    (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
+    (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
+    ))
+#+END_SRC
+
 
 * Misc
 ** Display Time
