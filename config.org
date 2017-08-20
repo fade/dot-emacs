@@ -8,16 +8,6 @@
       user-mail-address "fade@deepsky.com")
 #+end_src
 
-* Customize settings
-
-Set up the customize file to its own separate file, instead of saving
-customize settings in [[file:init.el][init.el]]. Custom.el is loaded before config.el (generated from config.org), so the clause to configure it, is included in [[init.el][init.el]].
-
-#+begin_src emacs-lisp
-;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (load custom-file)
-#+end_src
-
 * Theme
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
@@ -1139,20 +1129,20 @@ the ".local" suffix.
 
 #+begin_src emacs-lisp
 (require 'subr-x) ;; #'string-trim
-(defvar mai/user-settings-dir nil
+(defvar fade/user-settings-dir nil
   "The directory with user-specific Emacs settings for this
   user.")
 
 ;; Settings for currently logged in user
-(setq mai/user-settings-dir
+(setq fade/user-settings-dir
       (concat user-emacs-directory
               "users/"
               (string-trim (shell-command-to-string "hostname -s"))))
-(add-to-list 'load-path mai/user-settings-dir)
+(add-to-list 'load-path fade/user-settings-dir)
 
 ;; Load settings specific for the current user
-(when (file-exists-p mai/user-settings-dir)
-  (mapc 'load (directory-files mai/user-settings-dir nil "^[^#].*el$")))
+(when (file-exists-p fade/user-settings-dir)
+  (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
 #+end_src
 
 * Languages
