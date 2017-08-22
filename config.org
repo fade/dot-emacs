@@ -712,13 +712,6 @@ No more juggling windows after commiting. It's magit bliss.
   (jump-to-register :magit-fullscreen))
 #+end_src
 
-** Emacs IPython Notebook
-#+begin_src emacs-lisp
-(use-package ein
-  :ensure t
-  :defer t)
-#+end_src
-
 ** Expand region
 
 #+begin_src emacs-lisp
