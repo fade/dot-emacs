@@ -1068,6 +1068,7 @@ while still being in org mode.
   :config
   (setq venv-location "~/.virtualenvs"))
 #+END_SRC
+
 ** XQuery mode
 
 #+BEGIN_SRC emacs-lisp
