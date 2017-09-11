@@ -842,8 +842,8 @@ Integrates with IPython.
   :ensure t
   :config (progn
             (elpy-enable)
-            (elpy-use-ipython)
-            (elpy-clean-modeline)))
+            (elpy-use-ipython)))
+            ;;(elpy-clean-modeline)
 
 
 ;; (use-package anaconda-mode
