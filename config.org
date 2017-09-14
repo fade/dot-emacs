@@ -840,11 +840,9 @@ Integrates with IPython.
 (use-package elpy
   :defer t
   :ensure t
-  :config (progn
-            (elpy-enable)
-            (elpy-use-ipython)))
-            ;;(elpy-clean-modeline)
-
+  :config
+  (elpy-enable)
+  (elpy-use-ipython)) 
 
 ;; (use-package anaconda-mode
 ;;   :defer t
@@ -1108,6 +1106,7 @@ Collection of Ridiculously Useful eXtensions
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
 #+END_SRC
+
 * Computer-specific settings
 
 Load some computer-specific settings, such as the name and and email

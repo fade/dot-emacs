@@ -48,7 +48,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
+    (loccur hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values (quote ((eval sh-set-shell "zsh"))))
