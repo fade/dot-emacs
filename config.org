@@ -194,6 +194,21 @@ Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 ;;   :ensure t)
 #+end_src
 
+in dired mode, it is useful to mark a bunch of files and then open
+them all in separate buffers. Function implementation taken from Stack
+Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map "F" 'my-dired-find-file)
+     (defun my-dired-find-file (&optional arg)
+       "Open each of the marked files, or the file under the
+point, or when prefix arg, the next N files. "
+       (interactive "P")
+       (let* ((fn-list (dired-get-marked-files nil arg)))
+         (mapc 'find-file fn-list)))))
+#+END_SRC
+
 * Mac customizations
 
 There are configurations to make when running Emacs on macOS (hence the

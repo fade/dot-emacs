@@ -65,6 +65,7 @@
 (package-initialize)
 
 ;;; Bootstrap use-package
+
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
 (unless (package-installed-p 'use-package)
