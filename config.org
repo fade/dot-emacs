@@ -825,11 +825,11 @@ Workspaces in Emacs.
 #+end_src
 
 ** Projectile
+[[http://batsov.com/projectile/][Projectile Home]]
 
 #+BEGIN_QUOTE
 Project navigation and management library for Emacs.
 #+END_QUOTE
-http://batsov.com/projectile/
 
 #+begin_src emacs-lisp
 (use-package projectile
@@ -848,16 +848,17 @@ http://batsov.com/projectile/
 Integrates with IPython.
 
 #+begin_src emacs-lisp
-;; (use-package ein
-;;   :defer t
-;;   :ensure t)
+(use-package ein
+  :defer t
+  :ensure t)
 
 (use-package elpy
   :defer t
   :ensure t
   :config
   (elpy-enable)
-  (elpy-use-ipython)) 
+  (elpy-use-ipython)
+  ) 
 
 ;; (use-package anaconda-mode
 ;;   :defer t
@@ -1075,11 +1076,11 @@ while still being in org mode.
 ** Virtualenvwrapper
 
 #+BEGIN_SRC emacs-lisp
-(use-package virtualenvwrapper
-  :ensure t
-  :defer t
-  :config
-  (setq venv-location "~/.virtualenvs"))
+;; (use-package virtualenvwrapper
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (setq venv-location "~/.virtualenvs"))
 #+END_SRC
 
 ** XQuery mode
