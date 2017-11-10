@@ -848,17 +848,18 @@ Project navigation and management library for Emacs.
 Integrates with IPython.
 
 #+begin_src emacs-lisp
-(use-package ein
-  :defer t
-  :ensure t)
+
+;; (use-package ein
+;;   :defer t
+;;   :ensure t)
 
 (use-package elpy
   :defer t
   :ensure t
   :config
-  (elpy-enable)
-  (elpy-use-ipython)
-  ) 
+  (setq elpy-rpc-backend "rope")
+  (elpy-use-ipython)  
+  (elpy-enable)) 
 
 ;; (use-package anaconda-mode
 ;;   :defer t
