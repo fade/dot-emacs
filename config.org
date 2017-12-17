@@ -9,6 +9,14 @@
 #+end_src
 
 * Theme
+
+** human names for colours
+   colours are abtract enough by nature, especially for me.
+#+begin_src emacs-lisp
+(use-package rainbow-mode
+  :ensure t)
+#+end_src
+
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
 (progn
@@ -496,7 +504,7 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 
 * Tramp
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package tramp
     :ensure t)
 #+end_src
@@ -857,7 +865,7 @@ Integrates with IPython.
   :defer t
   :ensure t
   :config
-  (setq elpy-rpc-backend "rope")
+  (setq elpy-rpc-backend "jedi")
   (elpy-use-ipython)  
   (elpy-enable)) 
 
