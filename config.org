@@ -1004,6 +1004,14 @@ idle time.
   (yas-global-mode))
 #+end_src
 
+** YAML mode
+
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :ensure t
+  :defer t)
+#+end_src
+
 ** Emmet
 
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
