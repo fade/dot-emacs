@@ -324,12 +324,12 @@ match the same one on macOS.
 * List buffers
 
 ibuffer is the improved version of list-buffers.
+... using helm for this now.
 
 #+begin_src emacs-lisp
 ;; make ibuffer the default buffer lister.
-(defalias 'list-buffers 'ibuffer)
+;; (defalias 'list-buffers 'ibuffer)
 #+end_src
-
 
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
@@ -564,16 +564,16 @@ and allows you.
 * Ido
 
 #+begin_src emacs-lisp
-(use-package ido
-  :init
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode t)
-  (use-package ido-vertical-mode
-    :ensure t
-    :defer t
-    :init (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
+;; (use-package ido
+;;   :init
+;;   (setq ido-enable-flex-matching t)
+;;   (setq ido-everywhere t)
+;;   (ido-mode t)
+;;   (use-package ido-vertical-mode
+;;     :ensure t
+;;     :defer t
+;;     :init (ido-vertical-mode 1)
+;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
 #+end_src
 
 * Whitespace mode
@@ -623,7 +623,6 @@ buffer navigation, but applies it to windows. The default keys are
   (ace-window-display-mode)
   :bind ("s-o" . ace-window))
 #+end_src
-
 
 ** Android mode
 
@@ -965,19 +964,6 @@ around so much.
 #+END_SRC
 
 ** Visual-regexp
-
-#+begin_src emacs-lisp
-(use-package visual-regexp
-  :ensure t
-  :init
-  (use-package visual-regexp-steroids :ensure t)
-  :bind (("C-c r" . vr/replace)
-         ("C-c q" . vr/query-replace)
-         ("C-c m" . vr/mc-mark) ; Need multiple cursors
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward)))
-#+end_src
-
 ** Webmode
 
 #+begin_src emacs-lisp :tangle no
@@ -985,6 +971,25 @@ around so much.
   :ensure t)
 #+end_src
 
+** w3m for webby reading
+#+BEGIN_SRC emacs-lisp
+(use-package w3m
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (setq browse-url-browser-function 'w3m-browse-url)
+    (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+    (global-set-key "\C-xm" 'browse-url-at-point)
+    ((setq w3m-use-cookies t))))
+#+END_SRC
+** helm-w3m because that's the way we work now.
+#+BEGIN_SRC emacs-lisp
+(use-package :helm-w3m
+  :ensure t
+  :defer t
+  :config nil)
+#+END_SRC   
 ** Yasnippet
 
 Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
