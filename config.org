@@ -981,7 +981,7 @@ around so much.
     (setq browse-url-browser-function 'w3m-browse-url)
     (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
     (global-set-key "\C-xm" 'browse-url-at-point)
-    ((setq w3m-use-cookies t))))
+    (setq w3m-use-cookies t)))
 #+END_SRC
 ** helm-w3m because that's the way we work now.
 #+BEGIN_SRC emacs-lisp
@@ -1225,7 +1225,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 #+END_SRC
 
 ** Common Lisp
-   
 *** Slime-Company
 #+BEGIN_SRC emacs-lisp
   (use-package slime-company
@@ -1268,12 +1267,10 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 #+BEGIN_SRC emacs-lisp
 (use-package slime-repl-ansi-color
   :load-path "site-lisp/slime-repl-ansi-color")
-
 #+END_SRC
 
 *** Paredit
 #+BEGIN_SRC emacs-lisp
-
 (use-package paredit
   :ensure t
   :config
