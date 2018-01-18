@@ -48,10 +48,14 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (:helm-w3m w3m yaml-mode paredit shell-pop scratch zoom-frm emmet-mode visual-regexp-steroids visual-regexp typescript-mode smooth-scrolling skewer-mode smartscan restclient geiser racket-mode olivetti multiple-cursors markdown-mode macrostep gist flycheck expand-region magit helm-swoop helm-ag helm-projectile helm company clojure-mode c-eldoc android-mode ace-window ace-jump-mode ag ido-vertical-mode transpose-frame ox-pandoc org-plus-contrib company-jedi js-auto-beautify js-comint js-doc js-format js-import js2-refactor loccur hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
+    (helm-w3m :helm-w3m w3m yaml-mode paredit shell-pop scratch zoom-frm emmet-mode visual-regexp-steroids visual-regexp typescript-mode smooth-scrolling skewer-mode smartscan restclient geiser racket-mode olivetti multiple-cursors markdown-mode macrostep gist flycheck expand-region magit helm-swoop helm-ag helm-projectile helm company clojure-mode c-eldoc android-mode ace-window ace-jump-mode ag ido-vertical-mode transpose-frame ox-pandoc org-plus-contrib company-jedi js-auto-beautify js-comint js-doc js-format js-import js2-refactor loccur hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
- '(safe-local-variable-values (quote ((eval sh-set-shell "zsh"))))
+ '(safe-local-variable-values
+   (quote
+    ((Base . 10)
+     (Syntax . ANSI-Common-Lisp)
+     (eval sh-set-shell "zsh"))))
  '(show-paren-mode t)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(term-default-bg-color "#002b36")

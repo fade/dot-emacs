@@ -983,13 +983,6 @@ around so much.
     (global-set-key "\C-xm" 'browse-url-at-point)
     (setq w3m-use-cookies t)))
 #+END_SRC
-** helm-w3m because that's the way we work now.
-#+BEGIN_SRC emacs-lisp
-(use-package :helm-w3m
-  :ensure t
-  :defer t
-  :config nil)
-#+END_SRC   
 ** Yasnippet
 
 Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
@@ -1234,7 +1227,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 *** Slime
 #+BEGIN_SRC emacs-lisp
 (use-package slime
-    :load-path "~/SourceCode/lisp/emacsmodes/slime"
+    ;; :load-path "~/SourceCode/lisp/emacsmodes/slime"
     :ensure t
     :init
     (progn
