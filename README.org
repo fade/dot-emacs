@@ -2,7 +2,7 @@
 #+AUTHOR: Brian O'Reilly
 
 The emacs configuration used by most of the DeepSky crew. Repository
-and code layout was originally taken from Daniel Mai's emacs
+and code layout was originally taken from [[https://github.com/danielmai][Daniel Mai's]] excellent emacs
 configuration published on github, into which a legacy emacs
 configuration was merged. This is the result.
 

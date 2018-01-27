@@ -32,7 +32,6 @@
 (setq settings-dir
       (expand-file-name "settings" user-emacs-directory))
 
-;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.zshrc\\'" . sh-mode))
 
@@ -58,13 +57,15 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
 (when (boundp 'package-pinned-packages)
   (setq package-pinned-packages
         '((org-plus-contrib . "org"))))
 (package-initialize)
 
 ;;; Bootstrap use-package
+
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
 (unless (package-installed-p 'use-package)

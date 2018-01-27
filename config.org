@@ -9,6 +9,14 @@
 #+end_src
 
 * Theme
+
+** human names for colours
+   colours are abtract enough by nature, especially for me.
+#+begin_src emacs-lisp
+(use-package rainbow-mode
+  :ensure t)
+#+end_src
+
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
 (progn
@@ -194,6 +202,21 @@ Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 ;;   :ensure t)
 #+end_src
 
+in dired mode, it is useful to mark a bunch of files and then open
+them all in separate buffers. Function implementation taken from Stack
+Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map "F" 'my-dired-find-file)
+     (defun my-dired-find-file (&optional arg)
+       "Open each of the marked files, or the file under the
+point, or when prefix arg, the next N files. "
+       (interactive "P")
+       (let* ((fn-list (dired-get-marked-files nil arg)))
+         (mapc 'find-file fn-list)))))
+#+END_SRC
+
 * Mac customizations
 
 There are configurations to make when running Emacs on macOS (hence the
@@ -301,12 +324,12 @@ match the same one on macOS.
 * List buffers
 
 ibuffer is the improved version of list-buffers.
+... using helm for this now.
 
 #+begin_src emacs-lisp
 ;; make ibuffer the default buffer lister.
-(defalias 'list-buffers 'ibuffer)
+;; (defalias 'list-buffers 'ibuffer)
 #+end_src
-
 
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
@@ -481,7 +504,7 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 
 * Tramp
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package tramp
     :ensure t)
 #+end_src
@@ -541,16 +564,16 @@ and allows you.
 * Ido
 
 #+begin_src emacs-lisp
-(use-package ido
-  :init
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode t)
-  (use-package ido-vertical-mode
-    :ensure t
-    :defer t
-    :init (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
+;; (use-package ido
+;;   :init
+;;   (setq ido-enable-flex-matching t)
+;;   (setq ido-everywhere t)
+;;   (ido-mode t)
+;;   (use-package ido-vertical-mode
+;;     :ensure t
+;;     :defer t
+;;     :init (ido-vertical-mode 1)
+;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
 #+end_src
 
 * Whitespace mode
@@ -590,17 +613,15 @@ A quick way to jump around text in buffers.
 
 [[https://github.com/abo-abo/ace-window][ace-window]] is a package that uses the same idea from ace-jump-mode for
 buffer navigation, but applies it to windows. The default keys are
-1-9, but it's faster to access the keys on the home row, so that's
-what I have them set to (with respect to Dvorak, of course).
+1-9.
 
 #+begin_src emacs-lisp
 (use-package ace-window
   :ensure t
   :config
-  (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  ;; (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (ace-window-display-mode)
   :bind ("s-o" . ace-window))
-#+end_src
 #+end_src
 
 ** Android mode
@@ -713,13 +734,6 @@ No more juggling windows after commiting. It's magit bliss.
   (jump-to-register :magit-fullscreen))
 #+end_src
 
-** Emacs IPython Notebook
-#+begin_src emacs-lisp
-(use-package ein
-  :ensure t
-  :defer t)
-#+end_src
-
 ** Expand region
 
 #+begin_src emacs-lisp
@@ -818,11 +832,11 @@ Workspaces in Emacs.
 #+end_src
 
 ** Projectile
+[[http://batsov.com/projectile/][Projectile Home]]
 
 #+BEGIN_QUOTE
 Project navigation and management library for Emacs.
 #+END_QUOTE
-http://batsov.com/projectile/
 
 #+begin_src emacs-lisp
 (use-package projectile
@@ -841,6 +855,7 @@ http://batsov.com/projectile/
 Integrates with IPython.
 
 #+begin_src emacs-lisp
+
 ;; (use-package ein
 ;;   :defer t
 ;;   :ensure t)
@@ -848,11 +863,10 @@ Integrates with IPython.
 (use-package elpy
   :defer t
   :ensure t
-  :config (progn
-            (elpy-enable)
-            (elpy-use-ipython)
-            (elpy-clean-modeline)))
-
+  :config
+  (setq elpy-rpc-backend "jedi")
+  (elpy-use-ipython)  
+  (elpy-enable)) 
 
 ;; (use-package anaconda-mode
 ;;   :defer t
@@ -950,19 +964,6 @@ around so much.
 #+END_SRC
 
 ** Visual-regexp
-
-#+begin_src emacs-lisp
-(use-package visual-regexp
-  :ensure t
-  :init
-  (use-package visual-regexp-steroids :ensure t)
-  :bind (("C-c r" . vr/replace)
-         ("C-c q" . vr/query-replace)
-         ("C-c m" . vr/mc-mark) ; Need multiple cursors
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward)))
-#+end_src
-
 ** Webmode
 
 #+begin_src emacs-lisp :tangle no
@@ -970,6 +971,18 @@ around so much.
   :ensure t)
 #+end_src
 
+** w3m for webby reading
+#+BEGIN_SRC emacs-lisp
+(use-package w3m
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (setq browse-url-browser-function 'w3m-browse-url)
+    (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+    (global-set-key "\C-xm" 'browse-url-at-point)
+    (setq w3m-use-cookies t)))
+#+END_SRC
 ** Yasnippet
 
 Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
@@ -987,6 +1000,14 @@ idle time.
   :config
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
+#+end_src
+
+** YAML mode
+
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :ensure t
+  :defer t)
 #+end_src
 
 ** Emmet
@@ -1070,12 +1091,13 @@ while still being in org mode.
 ** Virtualenvwrapper
 
 #+BEGIN_SRC emacs-lisp
-(use-package virtualenvwrapper
-  :ensure t
-  :defer t
-  :config
-  (setq venv-location "~/.virtualenvs"))
+;; (use-package virtualenvwrapper
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (setq venv-location "~/.virtualenvs"))
 #+END_SRC
+
 ** XQuery mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1115,6 +1137,7 @@ Collection of Ridiculously Useful eXtensions
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
 #+END_SRC
+
 * Computer-specific settings
 
 Load some computer-specific settings, such as the name and and email
@@ -1195,7 +1218,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 #+END_SRC
 
 ** Common Lisp
-   
 *** Slime-Company
 #+BEGIN_SRC emacs-lisp
   (use-package slime-company
@@ -1204,9 +1226,8 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 
 *** Slime
 #+BEGIN_SRC emacs-lisp
-(progn
-    (use-package slime
-    :load-path "~/SourceCode/lisp/emacsmodes/slime"
+(use-package slime
+    ;; :load-path "~/SourceCode/lisp/emacsmodes/slime"
     :ensure t
     :init
     (progn
@@ -1227,23 +1248,22 @@ Luckily, I can modify the way Emacs formats code with this configuration.
                      slime-xref-browser
                      slime-tramp
                      slime-asdf
-                     slime-autodoc
-                     ))))) ;; slime-repl-ansi-color
-
+                     slime-autodoc))))
 #+END_SRC
+
 *** slime-repl-ansi-color
     If slime isn't loaded before this contrib, the contrib fails to
     load. This dependency ordering should be managed in use-package
     syntax, but I can't find the mechanism  and I don't have the time
     to read the code atm.
-    #+BEGIN_SRC emacs-lisp
+    
+#+BEGIN_SRC emacs-lisp
 (use-package slime-repl-ansi-color
   :load-path "site-lisp/slime-repl-ansi-color")
+#+END_SRC
 
-    #+END_SRC   
 *** Paredit
 #+BEGIN_SRC emacs-lisp
-
 (use-package paredit
   :ensure t
   :config
@@ -1261,7 +1281,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
     ))
 #+END_SRC
-
 
 * Misc
 ** Display Time
