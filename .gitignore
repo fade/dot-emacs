@@ -11,7 +11,7 @@
 /tramp
 /elfeeddb/index
 /history
-eshell/*
-eshell/.*
-eshell/*
 projectile.cache
+/eshell
+/eshell/*
+
