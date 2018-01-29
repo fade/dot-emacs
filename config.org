@@ -10,8 +10,7 @@
 
 * Theme
 
-** human names for colours
-   colours are abtract enough by nature, especially for me.
+** human names for colours, colours are abtract enough by nature, especially for me.
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :ensure t)
@@ -89,8 +88,8 @@
 #+end_src
 
 * Font
-
-[[http://adobe-fonts.github.io/source-code-pro/][Source Code Pro]] is a nice monospaced font.
+[[http://adobe-fonts.github.io/source-code-pro/][
+Source Code Pro]] is a nice monospaced font.
 
 To install it on macOS, you can use Homebrew with [[http://caskroom.io/][Homebrew Cask]].
 
@@ -1282,6 +1281,11 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     ))
 #+END_SRC
 
+** Hashicorp Configuration Language
+#+BEGIN_SRC emacs-lisp
+(use-package hcl-mode
+  :ensure t)
+#+END_SRC
 * Misc
 ** Display Time
 

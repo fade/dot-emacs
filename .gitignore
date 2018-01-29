@@ -13,3 +13,5 @@
 /history
 eshell/*
 eshell/.*
+eshell/*
+projectile.cache
