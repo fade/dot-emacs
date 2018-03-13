@@ -1,6 +1,14 @@
 #+TITLE: Emacs Configuration
-#+AUTHOR: Brian O'Reilly <fade@deepsky.com>
+#+AUTHOR: Brian O'Reilly
+#+EMAIL: <fade@deepsky.com>
 
+* Introduction
+  This is my emacs configuration entry point. It is written in the
+  [[http://www.orgmode.org][literate programming style]] in this org-mode file. The embedded code
+  blocks are extracted when the init.el file is loaded, and then the
+  extracted files are loaded to complete the environmental
+  configuration.
+  
 * Personal Information
 
 #+begin_src emacs-lisp
@@ -64,7 +72,7 @@
   (set-face-attribute `mode-line nil
                       :box nil))
 #+end_src   
-   
+
 #+begin_src emacs-lisp
 (defun switch-theme (theme)
   "Disables any currently active themes and loads THEME."
