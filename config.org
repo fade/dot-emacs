@@ -28,17 +28,17 @@
 #+begin_src emacs-lisp
 (progn
   (defvar blink-cursor-colors (list
-                               "dark slate blue"
-                               "medium slate blue"
-                               "light slate blue"
-                               "steel blue"
-                               "royal blue"
-                               "light blue"
-                               "cyan"
-                               "cyan1"
-                               "cyan2"
-                               "cyan3"
-                               "cyan4"
+                               ;; "dark slate blue"
+                               ;; "medium slate blue"
+                               ;; "light slate blue"
+                               ;; "steel blue"
+                               ;; "royal blue"
+                               ;; "light blue"
+                               ;; "cyan"
+                               ;; "cyan1"
+                               ;; "cyan2"
+                               ;; "cyan3"
+                               ;; "cyan4"
                                "spring green"
                                "yellow"
                                "orange"
@@ -47,7 +47,7 @@
     "On each blink the cursor will cycle to the next color in this list.")
   
   (setq blink-cursor-count 0)
-  (setq blink-cursor-interval 0.4)
+  (setq blink-cursor-interval 0.3)
   (defun blink-cursor-timer-function ()
     "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
      Warning: overwrites original version in `frame.el'.
@@ -101,9 +101,10 @@ Source Code Pro]] is a nice monospaced font.
 
 To install it on macOS, you can use Homebrew with [[http://caskroom.io/][Homebrew Cask]].
 
+You may need to run the following lines if you haven't set up Homebrew
+Cask and its fonts formula.
+
 #+begin_src sh :tangle no
-# You may need to run these two lines if you haven't set up Homebrew
-# Cask and its fonts formula.
 brew install caskroom/cask/brew-cask
 brew tap caskroom/fonts
 
@@ -342,6 +343,9 @@ source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
 #+begin_src emacs-lisp
 (add-hook 'dired-mode-hook 'auto-revert-mode)
+;; I just want the buffers to reflect what is on the disk,
+;; particularly in the presence of git.
+(global-auto-revert-mode t)
 
 ;; Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers t)
@@ -682,7 +686,7 @@ This package displays function signatures in the mode line.
   :ensure t
   :diminish helm-mode
   :init (progn
-          (require 'helm-config)
+          (use-package helm-config)
           (use-package helm-projectile
             :ensure t
             :commands helm-projectile
@@ -695,11 +699,12 @@ This package displays function signatures in the mode line.
           (use-package helm-swoop
             :ensure t
             :bind ("H-w" . helm-swoop)))
+  
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)
          ("C-`" . helm-resume)
          ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)))
+         ("C-x C-f" . helm-find-files))) 
 #+end_src
 
 ** Magit
