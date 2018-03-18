@@ -460,7 +460,8 @@ good column number to do that.
    (scheme . t)
    (shell . t)
    (sqlite . t)
-   (js . t)))
+   (js . t)
+   (R . t)))
 
 (defun my-org-confirm-babel-evaluate (lang body)
   "Do not confirm evaluation for these languages."
@@ -511,6 +512,12 @@ I've had issues with getting BiBTeX to work correctly with the LaTeX exporter fo
 
 #+BEGIN_SRC emacs-lisp
 (setq org-latex-pdf-process (list "latexmk -pdf %f"))
+#+END_SRC
+
+exporting to html sometimes (always?) requires htmlize
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+  :ensure t)
 #+END_SRC
 
 * Tramp
@@ -1299,6 +1306,12 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (use-package hcl-mode
   :ensure t)
 #+END_SRC
+
+** JavaScript
+#+BEGIN_SRC emacs-lisp
+(org-babel-load-file (concat user-emacs-directory "emacs-javascript.org"))
+#+END_SRC
+
 * Misc
 ** Display Time
 

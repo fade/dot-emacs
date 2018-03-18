@@ -4,39 +4,39 @@
 ;;; utilities to untangle many org files at load time. With thanks to
 ;;; [[https://github.com/howardabrams/dot-files.git][Howard Abrams]]
 
-(require 'org)
-(require 'ob)
-(require 'ob-tangle)
+;; (require 'org)
+;; (require 'ob)
+;; (require 'ob-tangle)
 
-(defun fa/build-dot-files ()
-  "Compile and place all init files in this directory into their
-  respective places"
-  )
+;; (defun fa/build-dot-files ()
+;;   "Compile and place all init files in this directory into their
+;;   respective places"
+;;   )
 
-(defun ha/tangle-file (file)
-  "Given an 'org-mode' FILE, tangle the source code."
-  (interactive "fOrg File: ")
-  (find-file file)   ;;  (expand-file-name file \"$DIR\")
-  (org-babel-tangle)
-  (kill-buffer))
-
-
-(defun ha/tangle-files (path)
-  "Given a directory, PATH, of 'org-mode' files, tangle source code out of all literate programming files."
-  (interactive "D")
-  (mapc 'ha/tangle-file (ha/get-files path)))
+;; (defun ha/tangle-file (file)
+;;   "Given an 'org-mode' FILE, tangle the source code."
+;;   (interactive "fOrg File: ")
+;;   (find-file file)   ;;  (expand-file-name file \"$DIR\")
+;;   (org-babel-tangle)
+;;   (kill-buffer))
 
 
-(defun ha/get-dot-files ()
-  "Pull and build latest from the Github repository.  Load the resulting Lisp code."
-  (interactive)
-  (let ((git-results
-         (shell-command (concat "cd " dot-files-src "; git pull"))))
-    (if (not (= git-results 0))
-        (message "Can't pull the goodness. Pull from git by hand.")
-      (load-file (concat dot-files-src "/emacs.d/shell-script-funcs.el"))
-      (load-file (concat dot-files-src "/build.el"))
-      (require 'init-main))))
+;; (defun ha/tangle-files (path)
+;;   "Given a directory, PATH, of 'org-mode' files, tangle source code out of all literate programming files."
+;;   (interactive "D")
+;;   (mapc 'ha/tangle-file (ha/get-files path)))
+
+
+;; (defun ha/get-dot-files ()
+;;   "Pull and build latest from the Github repository.  Load the resulting Lisp code."
+;;   (interactive)
+;;   (let ((git-results
+;;          (shell-command (concat "cd " dot-files-src "; git pull"))))
+;;     (if (not (= git-results 0))
+;;         (message "Can't pull the goodness. Pull from git by hand.")
+;;       (load-file (concat dot-files-src "/emacs.d/shell-script-funcs.el"))
+;;       (load-file (concat dot-files-src "/build.el"))
+;;       (require 'init-main))))
 
 ;;; themes need finding.
 (add-to-list 'custom-theme-load-path
