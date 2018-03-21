@@ -1022,13 +1022,18 @@ idle time.
 #+end_src
 
 ** YAML mode
-
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t
   :defer t)
 #+end_src
 
+** Ansible
+#+BEGIN_SRC emacs-lisp
+(use-package ansible
+  :ensure t
+  :defer t)
+#+END_SRC
 ** Emmet
 
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
@@ -1309,7 +1314,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 
 ** JavaScript
 #+BEGIN_SRC emacs-lisp
-(org-babel-load-file (concat user-emacs-directory "emacs-javascript.org"))
+;; (org-babel-load-file (concat user-emacs-directory "emacs-javascript.org"))
 #+END_SRC
 
 * Misc

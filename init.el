@@ -13,7 +13,7 @@
 ;;   respective places"
 ;;   )
 
-;; (defun ha/tangle-file (file)
+;; (defun fa/tangle-file (file)
 ;;   "Given an 'org-mode' FILE, tangle the source code."
 ;;   (interactive "fOrg File: ")
 ;;   (find-file file)   ;;  (expand-file-name file \"$DIR\")
@@ -21,13 +21,13 @@
 ;;   (kill-buffer))
 
 
-;; (defun ha/tangle-files (path)
+;; (defun fa/tangle-files (path)
 ;;   "Given a directory, PATH, of 'org-mode' files, tangle source code out of all literate programming files."
 ;;   (interactive "D")
-;;   (mapc 'ha/tangle-file (ha/get-files path)))
+;;   (mapc 'fa/tangle-file (fa/get-files path)))
 
 
-;; (defun ha/get-dot-files ()
+;; (defun fa/get-dot-files ()
 ;;   "Pull and build latest from the Github repository.  Load the resulting Lisp code."
 ;;   (interactive)
 ;;   (let ((git-results
@@ -44,11 +44,11 @@
 
 ;;; some of my own utility functions
 
-(defun what-face (pos)
-  (interactive "d")
-  (let ((face (or (get-char-property (pos) 'read-face-name)
-                  (get-char-property (pos) 'face))))
-    (if face (message "Face: %s:" face) (message "No face at %d" pos))))
+;; (defun what-face (pos)
+;;   (interactive "d")
+;;   (let ((face (or (get-char-property (pos) 'read-face-name)
+;;                   (get-char-property (pos) 'face))))
+;;     (if face (message "Face: %s:" face) (message "No face at %d" pos))))
 
 ;;; Begin initialization
 ;; Turn off mouse interface early in startup to avoid momentary display
@@ -121,4 +121,4 @@
 ;;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 
-(setq gc-cons-threshold 8000000)
+
