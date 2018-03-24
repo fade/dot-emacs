@@ -1,4 +1,5 @@
 /config.el
+/*.elc
 /elpa/
 /ido.last
 /bookmarks
