@@ -460,8 +460,8 @@ good column number to do that.
    (scheme . t)
    (shell . t)
    (sqlite . t)
-   (js . t)
-   (R . t)))
+   (js . t)))
+   
 
 (defun my-org-confirm-babel-evaluate (lang body)
   "Do not confirm evaluation for these languages."
@@ -1161,6 +1161,7 @@ Collection of Ridiculously Useful eXtensions
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
 #+END_SRC
+
 
 * Computer-specific settings
 
