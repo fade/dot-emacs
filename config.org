@@ -62,6 +62,7 @@
     (internal-show-cursor nil (not (internal-show-cursor-p)))
     ))
 #+end_src
+
 ** DeepSky Theme
 #+begin_src emacs-lisp
 (progn
@@ -94,6 +95,7 @@
 (bind-key "s-<f12>" 'switch-theme)
 (bind-key "s-<f11>" 'disable-active-themes)
 #+end_src
+
 
 * Font
 [[http://adobe-fonts.github.io/source-code-pro/][
@@ -132,6 +134,12 @@ the emacs-ac-emoji package.]]
 
 * Sane defaults
 
+#+BEGIN_SRC emacs-lisp
+(use-package :diminish
+  :ensure t)
+
+#+END_SRC
+  
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+begin_src emacs-lisp
