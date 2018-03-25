@@ -135,7 +135,7 @@ the emacs-ac-emoji package.]]
 * Sane defaults
 
 #+BEGIN_SRC emacs-lisp
-(use-package :diminish
+(use-package diminish
   :ensure t)
 
 #+END_SRC
