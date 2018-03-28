@@ -1,4 +1,4 @@
-#+TITLE: Emacs Configuration
+4#+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
 
@@ -95,7 +95,6 @@
 (bind-key "s-<f12>" 'switch-theme)
 (bind-key "s-<f11>" 'disable-active-themes)
 #+end_src
-
 
 * Font
 [[http://adobe-fonts.github.io/source-code-pro/][
@@ -339,20 +338,14 @@ match the same one on macOS.
 
 * List buffers
 
-ibuffer is the improved version of list-buffers.
-... using helm for this now.
-
-#+begin_src emacs-lisp
-;; make ibuffer the default buffer lister.
-;; (defalias 'list-buffers 'ibuffer)
-#+end_src
-
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
+Auto-revert-mode updates buffers so that they reflect what's on the
+disk. This is particularly useful in the presence of git or other
+version control software which can change the files from beneath the
+buffers in emacs.
 #+begin_src emacs-lisp
 (add-hook 'dired-mode-hook 'auto-revert-mode)
-;; I just want the buffers to reflect what is on the disk,
-;; particularly in the presence of git.
 (global-auto-revert-mode t)
 
 ;; Also auto refresh dired, but be quiet about it
@@ -566,42 +559,7 @@ do just that to reduce the repetition.
 (bind-key "C-x 3" 'hsplit-other-window)
 #+end_src
 
-** Winner mode
-
-Winner mode allows you to undo/redo changes to window changes in Emacs
-and allows you.
-
-#+begin_src emacs-lisp
-(use-package winner
-  :config
-  (winner-mode t)
-  :bind (("M-s-<left>" . winner-undo)
-         ("M-s-<right>" . winner-redo)))
-#+end_src
-
-** Transpose frame
-
-#+begin_src emacs-lisp
-(use-package transpose-frame
-  :ensure t
-  :bind ("H-t" . transpose-frame))
-#+end_src
-
-* Ido
-
-#+begin_src emacs-lisp
-;; (use-package ido
-;;   :init
-;;   (setq ido-enable-flex-matching t)
-;;   (setq ido-everywhere t)
-;;   (ido-mode t)
-;;   (use-package ido-vertical-mode
-;;     :ensure t
-;;     :defer t
-;;     :init (ido-vertical-mode 1)
-;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
-#+end_src
-
+  Nothing to see here for now.
 * Whitespace mode
 
 #+begin_src emacs-lisp
