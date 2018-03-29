@@ -406,7 +406,8 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/Agenda"))))
+                    '("~/Dropbox/Agenda/neuranet-agenda.org"
+                      "~/Dropbox/Agenda/personal-agenda.org"))))
 #+end_src
 
 *** Org capture
@@ -559,7 +560,6 @@ do just that to reduce the repetition.
 (bind-key "C-x 3" 'hsplit-other-window)
 #+end_src
 
-  Nothing to see here for now.
 * Whitespace mode
 
 #+begin_src emacs-lisp
