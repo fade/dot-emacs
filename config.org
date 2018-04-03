@@ -1,4 +1,4 @@
-#+TITLE: Emacs Configuration
++TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
 
@@ -901,6 +901,10 @@ Integrates with IPython.
 ;;             (eval-after-load "company"
 ;;               '(add-to-list 'company-backends 'company-anaconda))))
 
+(use-package 'jinja2
+  :defer t
+  :ensure t)
+
 #+end_src
 
 ** Racket
@@ -1025,14 +1029,28 @@ idle time.
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t
-  :defer t)
+  :defer t
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 #+end_src
 
 ** Ansible
 #+BEGIN_SRC emacs-lisp
 (use-package ansible
   :ensure t
+  :defer t
+  :config
+  (use-package ansible-doc
+  :ensure t
   :defer t)
+  (use-package ansible-vault
+    :ensure t
+    :defer t)
+  (use-package company-ansible
+    :ensure t
+    :defer t))
+
+
 #+END_SRC
 ** Emmet
 
@@ -1059,14 +1077,14 @@ called.
 Changing the =frame-zoom-font-difference= essentially enables a
 "presentation mode" when calling =toggle-zoom-frame=.
 
-#+begin_src emacs-lisp
-(use-package zoom-frm
-  :ensure t
-  :bind (("C-M-=" . zoom-in/out)
-         ("H-z"   . toggle-zoom-frame)
-         ("s-<f1>" . toggle-zoom-frame))
-  :config
-  (setq frame-zoom-font-difference 10))
+#+begin_src emacs-lisp :tangle no
+;; (use-package zoom-frm 
+;;   :ensure t
+;;   :bind (("C-M-=" . zoom-in/out)
+;;          ("H-z"   . toggle-zoom-frame)
+;;          ("s-<f1>" . toggle-zoom-frame))
+;;   :config
+;;   (setq frame-zoom-font-difference 10))
 #+end_src
 
 ** Scratch
@@ -1282,7 +1300,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     syntax, but I can't find the mechanism  and I don't have the time
     to read the code atm.
     
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package slime-repl-ansi-color
   :load-path "site-lisp/slime-repl-ansi-color")
 #+END_SRC
