@@ -1,6 +1,8 @@
-+TITLE: Emacs Configuration
+#+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
+#+OPTIONS: toc4 h:4
+#+STARTUP: showeverything
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
@@ -62,6 +64,7 @@
     (internal-show-cursor nil (not (internal-show-cursor-p)))
     ))
 #+end_src
+
 ** DeepSky Theme
 #+begin_src emacs-lisp
 (progn
@@ -132,6 +135,12 @@ the emacs-ac-emoji package.]]
 
 * Sane defaults
 
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :ensure t)
+
+#+END_SRC
+  
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+begin_src emacs-lisp
@@ -331,20 +340,14 @@ match the same one on macOS.
 
 * List buffers
 
-ibuffer is the improved version of list-buffers.
-... using helm for this now.
-
-#+begin_src emacs-lisp
-;; make ibuffer the default buffer lister.
-;; (defalias 'list-buffers 'ibuffer)
-#+end_src
-
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
+Auto-revert-mode updates buffers so that they reflect what's on the
+disk. This is particularly useful in the presence of git or other
+version control software which can change the files from beneath the
+buffers in emacs.
 #+begin_src emacs-lisp
 (add-hook 'dired-mode-hook 'auto-revert-mode)
-;; I just want the buffers to reflect what is on the disk,
-;; particularly in the presence of git.
 (global-auto-revert-mode t)
 
 ;; Also auto refresh dired, but be quiet about it
@@ -405,7 +408,8 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/Agenda"))))
+                    '("~/Dropbox/Agenda/neuranet-agenda.org"
+                      "~/Dropbox/Agenda/personal-agenda.org"))))
 #+end_src
 
 *** Org capture
@@ -556,42 +560,6 @@ do just that to reduce the repetition.
 
 (bind-key "C-x 2" 'vsplit-other-window)
 (bind-key "C-x 3" 'hsplit-other-window)
-#+end_src
-
-** Winner mode
-
-Winner mode allows you to undo/redo changes to window changes in Emacs
-and allows you.
-
-#+begin_src emacs-lisp
-(use-package winner
-  :config
-  (winner-mode t)
-  :bind (("M-s-<left>" . winner-undo)
-         ("M-s-<right>" . winner-redo)))
-#+end_src
-
-** Transpose frame
-
-#+begin_src emacs-lisp
-(use-package transpose-frame
-  :ensure t
-  :bind ("H-t" . transpose-frame))
-#+end_src
-
-* Ido
-
-#+begin_src emacs-lisp
-;; (use-package ido
-;;   :init
-;;   (setq ido-enable-flex-matching t)
-;;   (setq ido-everywhere t)
-;;   (ido-mode t)
-;;   (use-package ido-vertical-mode
-;;     :ensure t
-;;     :defer t
-;;     :init (ido-vertical-mode 1)
-;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
 #+end_src
 
 * Whitespace mode
