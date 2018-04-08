@@ -381,7 +381,10 @@ Although Org mode ships with Emacs, the latest version can be installed external
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure org-plus-contrib)
+  :defer t
+  :ensure org-plus-contrib
+  :config (eval-after-load "org"
+            '(require 'ox-md nil t)))
 #+END_SRC
 
 On Org mode version 9 I wasn't able to execute source blocks out of the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to remove the .elc files from the package directory:
@@ -843,35 +846,35 @@ Integrates with IPython.
 
 #+begin_src emacs-lisp
 
-;; (use-package ein
-;;   :defer t
-;;   :ensure t)
+  ;; (use-package ein
+  ;;   :defer t
+  ;;   :ensure t)
 
-(use-package elpy
-  :defer t
-  :ensure t
-  :config
-  (setq elpy-rpc-backend "jedi")
-  (elpy-use-ipython)  
-  (elpy-enable)) 
+  (use-package elpy
+    :defer t
+    :ensure t
+    :config
+    (setq elpy-rpc-backend "jedi")
+    (elpy-use-ipython)  
+    (elpy-enable)) 
 
-;; (use-package anaconda-mode
-;;   :defer t
-;;   :ensure t
-;;   :init (progn
-;;           (add-hook 'python-mode-hook 'anaconda-mode)))
+  ;; (use-package anaconda-mode
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :init (progn
+  ;;           (add-hook 'python-mode-hook 'anaconda-mode)))
 
-;; (use-package company-anaconda
-;;   :defer t
-;;   :ensure t
-;;   :config (progn
-;;             (add-to-list 'company-backends 'company-anaconda)
-;;             (eval-after-load "company"
-;;               '(add-to-list 'company-backends 'company-anaconda))))
+  ;; (use-package company-anaconda
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :config (progn
+  ;;             (add-to-list 'company-backends 'company-anaconda)
+  ;;             (eval-after-load "company"
+  ;;               '(add-to-list 'company-backends 'company-anaconda))))
 
-(use-package 'jinja2
-  :defer t
-  :ensure t)
+  (use-package jinja2-mode
+    :defer t
+    :ensure t)
 
 #+end_src
 
