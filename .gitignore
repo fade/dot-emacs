@@ -18,3 +18,5 @@
 /eshell/lastdir
 /projectile.cache
 /*.cache
+assets/
+/*.html
