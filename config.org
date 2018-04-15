@@ -1,6 +1,9 @@
 4#+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
+#+OPTIONS: toc:4 h:4
+#+STARTUP: showeverything
+
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
