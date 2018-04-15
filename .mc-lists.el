@@ -45,4 +45,6 @@
       '(
         dired-unmark-backward
         markdown-exdent-or-delete
+        mouse-drag-vertical-line
+        mouse-select-window
         ))

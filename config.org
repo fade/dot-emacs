@@ -1,9 +1,12 @@
-4#+TITLE: Emacs Configuration
+#+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
 #+OPTIONS: toc:4 h:4
 #+STARTUP: showeverything
+<<<<<<< variant A
 
+>>>>>>> variant B
+======= end
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
@@ -382,7 +385,10 @@ Although Org mode ships with Emacs, the latest version can be installed external
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure org-plus-contrib)
+  :defer t
+  :ensure org-plus-contrib
+  :config (eval-after-load "org"
+            '(require 'ox-md nil t)))
 #+END_SRC
 
 On Org mode version 9 I wasn't able to execute source blocks out of the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to remove the .elc files from the package directory:
@@ -844,31 +850,35 @@ Integrates with IPython.
 
 #+begin_src emacs-lisp
 
-;; (use-package ein
-;;   :defer t
-;;   :ensure t)
+  ;; (use-package ein
+  ;;   :defer t
+  ;;   :ensure t)
 
-(use-package elpy
-  :defer t
-  :ensure t
-  :config
-  (setq elpy-rpc-backend "jedi")
-  (elpy-use-ipython)  
-  (elpy-enable)) 
+  (use-package elpy
+    :defer t
+    :ensure t
+    :config
+    (setq elpy-rpc-backend "jedi")
+    (elpy-use-ipython)  
+    (elpy-enable)) 
 
-;; (use-package anaconda-mode
-;;   :defer t
-;;   :ensure t
-;;   :init (progn
-;;           (add-hook 'python-mode-hook 'anaconda-mode)))
+  ;; (use-package anaconda-mode
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :init (progn
+  ;;           (add-hook 'python-mode-hook 'anaconda-mode)))
 
-;; (use-package company-anaconda
-;;   :defer t
-;;   :ensure t
-;;   :config (progn
-;;             (add-to-list 'company-backends 'company-anaconda)
-;;             (eval-after-load "company"
-;;               '(add-to-list 'company-backends 'company-anaconda))))
+  ;; (use-package company-anaconda
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :config (progn
+  ;;             (add-to-list 'company-backends 'company-anaconda)
+  ;;             (eval-after-load "company"
+  ;;               '(add-to-list 'company-backends 'company-anaconda))))
+
+  (use-package jinja2-mode
+    :defer t
+    :ensure t)
 
 #+end_src
 
@@ -994,14 +1004,28 @@ idle time.
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t
-  :defer t)
+  :defer t
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 #+end_src
 
 ** Ansible
 #+BEGIN_SRC emacs-lisp
 (use-package ansible
   :ensure t
+  :defer t
+  :config
+  (use-package ansible-doc
+  :ensure t
   :defer t)
+  (use-package ansible-vault
+    :ensure t
+    :defer t)
+  (use-package company-ansible
+    :ensure t
+    :defer t))
+
+
 #+END_SRC
 ** Emmet
 
@@ -1029,13 +1053,13 @@ Changing the =frame-zoom-font-difference= essentially enables a
 "presentation mode" when calling =toggle-zoom-frame=.
 
 #+begin_src emacs-lisp :tangle no
-(use-package zoom-frm
-  :ensure t
-  :bind (("C-M-=" . zoom-in/out)
-         ("H-z"   . toggle-zoom-frame)
-         ("s-<f1>" . toggle-zoom-frame))
-  :config
-  (setq frame-zoom-font-difference 10))
+;; (use-package zoom-frm 
+;;   :ensure t
+;;   :bind (("C-M-=" . zoom-in/out)
+;;          ("H-z"   . toggle-zoom-frame)
+;;          ("s-<f1>" . toggle-zoom-frame))
+;;   :config
+;;   (setq frame-zoom-font-difference 10))
 #+end_src
 
 ** Scratch
@@ -1251,7 +1275,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     syntax, but I can't find the mechanism  and I don't have the time
     to read the code atm.
     
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package slime-repl-ansi-color
   :load-path "site-lisp/slime-repl-ansi-color")
 #+END_SRC
