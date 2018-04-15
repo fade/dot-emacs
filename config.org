@@ -3,10 +3,6 @@
 #+EMAIL: <fade@deepsky.com>
 #+OPTIONS: toc:4 h:4
 #+STARTUP: showeverything
-<<<<<<< variant A
-
->>>>>>> variant B
-======= end
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
