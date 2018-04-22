@@ -19,12 +19,18 @@
 #+end_src
 
 * Theme
-
-** human names for colours, colours are abtract enough by nature, especially for me.
-#+begin_src emacs-lisp
-(use-package rainbow-mode
-  :ensure t)
-#+end_src
+** Rainbow
+   
+Mostly useful if you are into web development or game development.
+Every time emacs encounters a hexadecimal code that resembles a color, it will automatically highlight
+it in the appropriate color. This is a lot cooler than you may think.
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    ;; apply this mode to all programming modes.
+    :init
+      (add-hook 'prog-mode-hook 'rainbow-mode))
+#+END_SRC
 
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
@@ -99,21 +105,6 @@
 #+end_src
 
 * Font
-[[http://adobe-fonts.github.io/source-code-pro/][
-Source Code Pro]] is a nice monospaced font.
-
-To install it on macOS, you can use Homebrew with [[http://caskroom.io/][Homebrew Cask]].
-
-You may need to run the following lines if you haven't set up Homebrew
-Cask and its fonts formula.
-
-#+begin_src sh :tangle no
-brew install caskroom/cask/brew-cask
-brew tap caskroom/fonts
-
-brew cask install font-source-code-pro
-#+end_src
-
 And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
