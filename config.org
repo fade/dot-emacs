@@ -110,19 +110,7 @@ And here's how we tell Emacs to use the font we want to use.
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
              '(font . "Envy Code R"))
-
 #+end_src
-
-Display emojis. Source of system-specific fonts is in [[https://github.com/syohex/emacs-ac-emoji][the README for
-the emacs-ac-emoji package.]]
-
-#+BEGIN_SRC emacs-lisp
-(let ((font (if (= emacs-major-version 25)
-                "Symbola"
-              (cond ((string-equal system-type "darwin")    "Apple Color Emoji")
-                    ((string-equal system-type "gnu/linux") "Symbola")))))
-  (set-fontset-font t 'unicode font nil 'prepend))
-#+END_SRC
 
 * Sane defaults
 
@@ -192,6 +180,8 @@ at point as the default value for occur.
   (interactive)
   (push (if (region-active-p)
             (buffer-substring-no-properties
+             
+             
              (region-beginning)
              (region-end))
           (thing-at-point 'symbol))
@@ -557,11 +547,74 @@ do just that to reduce the repetition.
 #+end_src
 
 * Whitespace mode
-
 #+begin_src emacs-lisp
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
 #+end_src
+
+* Minor conveniences
+Emacs is at it's best when it just does things for you, shows you the way, guides you so to speak.
+This can be best achieved using a number of small extensions. While on their own they might not be particularly
+impressive. Together they create a nice environment for you to work in.
+
+** Visiting the configuration
+Quickly edit =~/.emacs.d/config.org=
+#+BEGIN_SRC emacs-lisp
+  (defun config-visit ()
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+  (global-set-key (kbd "C-c e") 'config-visit)
+#+END_SRC
+
+** Reloading the configuration
+   
+Simply pressing =Control-c r= will reload this file, very handy.
+You can also manually invoke =config-reload=.
+#+BEGIN_SRC emacs-lisp
+  (defun config-reload ()
+    "Reloads ~/.emacs.d/config.org at runtime"
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+  (global-set-key (kbd "C-c r") 'config-reload)
+#+END_SRC
+
+** Subwords
+Emacs treats camelCase strings as a single word by default, this changes said behaviour.
+#+BEGIN_SRC emacs-lisp
+  (global-subword-mode 1)
+#+END_SRC
+
+** Electric
+If you write any code, you may enjoy this.
+Typing the first character in a set of 2, completes the second one after your cursor.
+Opening a bracket? It's closed for you already. Quoting something? It's closed for you already.
+
+You can easily add and remove pairs yourself, have a look.
+#+BEGIN_SRC emacs-lisp
+(setq electric-pair-pairs '(
+                           (?\{ . ?\})
+                           (?\( . ?\))
+                           (?\[ . ?\])
+                           (?\" . ?\")
+                           ))
+#+END_SRC
+
+And now to enable it
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode t)
+#+END_SRC
+
+** Beacon
+While changing buffers or workspaces, the first thing you do is look for your cursor.
+Unless you know its position, you can not move it efficiently. Every time you change
+buffers, the current position of your cursor will be briefly highlighted now.
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config
+      (beacon-mode 1))
+#+END_SRC
+
 
 * ELPA packages
 
@@ -611,7 +664,6 @@ buffer navigation, but applies it to windows. The default keys are
   :ensure t
   :defer t)
 #+end_src
-   
 ** C-Eldoc
    :PROPERTIES:
    :GitHub:   https://github.com/mooz/c-eldoc
@@ -948,7 +1000,6 @@ around so much.
   :defer t)
 #+END_SRC
 
-** Visual-regexp
 ** Webmode
 
 #+begin_src emacs-lisp :tangle no
@@ -983,6 +1034,8 @@ idle time.
   :defer t
   :diminish yas-minor-mode
   :config
+  (use-package yasnippet-snippets
+    :ensure t)
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
 #+end_src
@@ -1427,4 +1480,5 @@ Convenience bindings to use doc-view with the arrow keys.
   :config
   (server-start))
 #+end_src
+
 
