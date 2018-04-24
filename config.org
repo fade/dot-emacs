@@ -36,17 +36,17 @@ it in the appropriate color. This is a lot cooler than you may think.
 #+begin_src emacs-lisp
 (progn
   (defvar blink-cursor-colors (list
-                               ;; "dark slate blue"
-                               ;; "medium slate blue"
-                               ;; "light slate blue"
-                               ;; "steel blue"
-                               ;; "royal blue"
-                               ;; "light blue"
-                               ;; "cyan"
-                               ;; "cyan1"
-                               ;; "cyan2"
-                               ;; "cyan3"
-                               ;; "cyan4"
+                               "dark slate blue"
+                               "medium slate blue"
+                               "light slate blue"
+                               "steel blue"
+                               "royal blue"
+                               "light blue"
+                               "cyan"
+                               "cyan1"
+                               "cyan2"
+                               "cyan3"
+                               "cyan4"
                                "spring green"
                                "yellow"
                                "orange"
@@ -65,10 +65,8 @@ it in the appropriate color. This is a lot cooler than you may think.
       (when (>= blink-cursor-count (length blink-cursor-colors))
         (setq blink-cursor-count 0))
       (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-      (setq blink-cursor-count (+ 1 blink-cursor-count))
-      )
-    (internal-show-cursor nil (not (internal-show-cursor-p)))
-    ))
+      (setq blink-cursor-count (+ 1 blink-cursor-count)))
+    (internal-show-cursor nil (not (internal-show-cursor-p)))))
 #+end_src
 
 ** DeepSky Theme
