@@ -554,7 +554,6 @@ do just that to reduce the repetition.
 Emacs is at it's best when it just does things for you, shows you the way, guides you so to speak.
 This can be best achieved using a number of small extensions. While on their own they might not be particularly
 impressive. Together they create a nice environment for you to work in.
-
 ** Visiting the configuration
 Quickly edit =~/.emacs.d/config.org=
 #+BEGIN_SRC emacs-lisp
@@ -580,26 +579,6 @@ You can also manually invoke =config-reload=.
 Emacs treats camelCase strings as a single word by default, this changes said behaviour.
 #+BEGIN_SRC emacs-lisp
   (global-subword-mode 1)
-#+END_SRC
-
-** Electric
-If you write any code, you may enjoy this.
-Typing the first character in a set of 2, completes the second one after your cursor.
-Opening a bracket? It's closed for you already. Quoting something? It's closed for you already.
-
-You can easily add and remove pairs yourself, have a look.
-#+BEGIN_SRC emacs-lisp
-(setq electric-pair-pairs '(
-                           (?\{ . ?\})
-                           (?\( . ?\))
-                           (?\[ . ?\])
-                           (?\" . ?\")
-                           ))
-#+END_SRC
-
-And now to enable it
-#+BEGIN_SRC emacs-lisp
-(electric-pair-mode t)
 #+END_SRC
 
 ** Beacon
@@ -1206,22 +1185,23 @@ username, I use the hostname. The shell command ~hostname -s~ gets the
 hostname for the computer without any "domain information," such as
 the ".local" suffix.
 
+Not using this right now.
 #+begin_src emacs-lisp
-(require 'subr-x) ;; #'string-trim
-(defvar fade/user-settings-dir nil
-  "The directory with user-specific Emacs settings for this
-  user.")
+;; (require 'subr-x) ;; #'string-trim
+;; (defvar fade/user-settings-dir nil
+;;   "The directory with user-specific Emacs settings for this
+;;   user.")
 
-;; Settings for currently logged in user
-(setq fade/user-settings-dir
-      (concat user-emacs-directory
-              "users/"
-              (string-trim (shell-command-to-string "hostname -s"))))
-(add-to-list 'load-path fade/user-settings-dir)
+;; ;; Settings for currently logged in user
+;; (setq fade/user-settings-dir
+;;       (concat user-emacs-directory
+;;               "users/"
+;;               (string-trim (shell-command-to-string "hostname -s"))))
+;; (add-to-list 'load-path fade/user-settings-dir)
 
-;; Load settings specific for the current user
-(when (file-exists-p fade/user-settings-dir)
-  (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
+;; ;; Load settings specific for the current user
+;; (when (file-exists-p fade/user-settings-dir)
+;;   (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
 #+end_src
 
 * Languages
