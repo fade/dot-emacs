@@ -19,6 +19,16 @@
 #+end_src
 
 * Theme
+** colours on terminal
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme-approximate
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+    (autoload 'color-theme-approximate-on "color-theme-approximate")
+    (color-theme-approximate-on)))
+
+#+END_SRC   
 ** Rainbow
    
 Mostly useful if you are into web development or game development.
@@ -419,6 +429,15 @@ speed keys in Org mode]].
 
 #+BEGIN_SRC emacs-lisp
 (setq org-highlight-latex-and-related '(latex script entities))
+#+END_SRC
+
+** Org Bullets
+Makes it all look a bit nicer, I hate looking at asterisks.
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
 
 ** Org tags
@@ -1010,10 +1029,11 @@ idle time.
   :ensure t
   :defer t
   :diminish yas-minor-mode
+  :init
+  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   :config
   (use-package yasnippet-snippets
     :ensure t)
-  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
 #+end_src
 
