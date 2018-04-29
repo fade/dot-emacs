@@ -11,6 +11,10 @@
   blocks are extracted when the init.el file is loaded, and then the
   extracted files are loaded to complete the environmental
   configuration.
+
+  Pieces of this configuration have been taken from Magnar Sveen,
+  Sascha Chua, Uncle Dave, and a host of others referenced in various
+  places on the internet, but primarily [[http://www.emacswiki.org][Emacs Wiki]].
   
 * Personal Information
 
@@ -353,6 +357,24 @@ match the same one on macOS.
    ((string-equal system-type "windows-nt")
     (progn
       (message "Oh dear... you're using Windows. :("))))
+#+END_SRC
+
+* Projectile
+Projectile is an awesome project manager, mostly because it recognizes directories
+with a =.git= directory as projects and helps you manage them accordingly.
+
+** Enable projectile globally
+This makes sure that everything can be a project.
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+      (projectile-mode 1))
+#+END_SRC
+
+** Let projectile call make
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f5>") 'projectile-compile-project)
 #+END_SRC
 
 * Dashboard
