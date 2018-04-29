@@ -1,9 +1,9 @@
-
+#+STARTUP: overview
 #+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
 #+OPTIONS: toc:4 h:4
-
+#+ATTR_HTML: :style margin-left: auto; margin-right: auto;
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
@@ -415,9 +415,9 @@ This enables spaceline, it looks better and works very well with my theme of cho
     :config
     (require 'spaceline-config)
       (setq spaceline-buffer-encoding-abbrev-p nil)
-      (setq spaceline-line-column-p nil)
-      (setq spaceline-line-p nil)
-      (setq powerline-default-separator (quote arrow))
+      (setq spaceline-line-column-p t)
+      (setq spaceline-line-p t)
+      ;; (setq powerline-default-separator (quote arrow))
       (spaceline-spacemacs-theme))
 #+END_SRC
 
@@ -464,6 +464,20 @@ Fancy battery has very odd colors if used in the tty, hence us disabling it.
 #+END_SRC
 
 ** System monitor
+* The terminal
+I have used urxvt for years, and I miss it sometimes, but ansi-term is enough for most of my tasks.
+
+** Default shell should be bash
+I don't know why this is a thing, but asking me what shell to launch every single
+time I open a terminal makes me want to slap babies, this gets rid of it.
+This goes without saying but you can replace bash with your shell of choice.
+#+BEGIN_SRC emacs-lisp
+  (defvar my-term-shell "/bin/bash")
+  (defadvice ansi-term (before force-bash)
+    (interactive (list my-term-shell)))
+  (ad-activate 'ansi-term)
+#+END_SRC
+
 * List buffers
 
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
@@ -831,7 +845,13 @@ This package displays function signatures in the mode line.
     :config
     (progn
       ;; company completion everywhere.
-      (add-hook 'after-init-hook 'global-company-mode)))
+      (add-hook 'after-init-hook 'global-company-mode)
+      (with-eval-after-load 'company
+        (define-key company-active-map (kbd "M-n") nil)
+        (define-key company-active-map (kbd "M-p") nil)
+        (define-key company-active-map (kbd "C-n") #'company-select-next)
+        (define-key company-active-map (kbd "C-p") #'company-select-previous)
+        (define-key company-active-map (kbd "SPC") #'company-abort))))
 #+end_src   
 ** Helm
 
