@@ -2,7 +2,7 @@
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
 #+OPTIONS: toc:4 h:4
-#+STARTUP: showeverything
+
 
 * Introduction
   This is my emacs configuration entry point. It is written in the
@@ -19,6 +19,10 @@
 #+end_src
 
 * Theme
+** Emacs' startup screen is naf
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
 ** colours on terminal
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-approximate
@@ -34,49 +38,51 @@
 Mostly useful if you are into web development or game development.
 Every time emacs encounters a hexadecimal code that resembles a color, it will automatically highlight
 it in the appropriate color. This is a lot cooler than you may think.
+
 #+BEGIN_SRC emacs-lisp
-  (use-package rainbow-mode
-    :ensure t
-    ;; apply this mode to all programming modes.
-    :init
-      (add-hook 'prog-mode-hook 'rainbow-mode))
+(use-package rainbow-mode
+  :ensure t
+  ;; apply this mode to all programming modes.
+  :init
+  (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
-(progn
-  (defvar blink-cursor-colors (list
-                               "dark slate blue"
-                               "medium slate blue"
-                               "light slate blue"
-                               "steel blue"
-                               "royal blue"
-                               "light blue"
-                               "cyan"
-                               "cyan1"
-                               "cyan2"
-                               "cyan3"
-                               "cyan4"
-                               "spring green"
-                               "yellow"
-                               "orange"
-                               "red"
-                               "hot pink")
-    "On each blink the cursor will cycle to the next color in this list.")
-  
-  (setq blink-cursor-count 0)
-  (setq blink-cursor-interval 0.3)
-  (defun blink-cursor-timer-function ()
-    "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
+(when (display-graphic-p) 
+  (progn
+    (defvar blink-cursor-colors (list
+                                 "dark slate blue"
+                                 "medium slate blue"
+                                 "light slate blue"
+                                 "steel blue"
+                                 "royal blue"
+                                 "light blue"
+                                 "cyan"
+                                 "cyan1"
+                                 "cyan2"
+                                 "cyan3"
+                                 "cyan4"
+                                 "spring green"
+                                 "yellow"
+                                 "orange"
+                                 "red"
+                                 "hot pink")
+      "On each blink the cursor will cycle to the next color in this list.")
+    
+    (setq blink-cursor-count 0)
+    (setq blink-cursor-interval 0.3)
+    (defun blink-cursor-timer-function ()
+      "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
      Warning: overwrites original version in `frame.el'.
 
      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
-    (when (not (internal-show-cursor-p))
-      (when (>= blink-cursor-count (length blink-cursor-colors))
-        (setq blink-cursor-count 0))
-      (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-      (setq blink-cursor-count (+ 1 blink-cursor-count)))
-    (internal-show-cursor nil (not (internal-show-cursor-p)))))
+      (when (not (internal-show-cursor-p))
+        (when (>= blink-cursor-count (length blink-cursor-colors))
+          (setq blink-cursor-count 0))
+        (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+        (setq blink-cursor-count (+ 1 blink-cursor-count)))
+      (internal-show-cursor nil (not (internal-show-cursor-p))))))
 #+end_src
 
 ** DeepSky Theme
@@ -112,6 +118,26 @@ it in the appropriate color. This is a lot cooler than you may think.
 (bind-key "s-<f11>" 'disable-active-themes)
 #+end_src
 
+** Highlight line containing the point
+#+BEGIN_SRC emacs-lisp
+(when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+(defadvice hl-line-mode (after
+                         dino-advise-hl-line-mode
+                         activate compile)
+  (set-face-attribute 'hl-line nil
+                      :inherit nil
+                      :background (face-background 'highlight))
+  (set-face-background hl-line-face "gray5"))
+
+#+END_SRC
+** Pretty symbols (experimenting with this. it might be annoying.)
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (use-package pretty-mode
+    :ensure t
+    :config
+    (global-pretty-mode t)))
+#+END_SRC
 * Font
 And here's how we tell Emacs to use the font we want to use.
 
@@ -1016,26 +1042,22 @@ around so much.
     (setq w3m-use-cookies t)))
 #+END_SRC
 ** Yasnippet
-
 Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
 and have also modified them and added my own.
 
 It takes a few seconds to load and I don't need them immediately when
 Emacs starts up, so we can defer loading yasnippet until there's some
 idle time.
-
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
-  :defer t
-  :diminish yas-minor-mode
-  :init
-  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   :config
   (use-package yasnippet-snippets
     :ensure t)
+  ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  (yas-reload-all)
   (yas-global-mode))
-#+end_src
+#+END_SRC
 
 ** YAML mode
 #+begin_src emacs-lisp

@@ -42,14 +42,6 @@
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes/" user-emacs-directory))
 
-;;; some of my own utility functions
-
-;; (defun what-face (pos)
-;;   (interactive "d")
-;;   (let ((face (or (get-char-property (pos) 'read-face-name)
-;;                   (get-char-property (pos) 'face))))
-;;     (if face (message "Face: %s:" face) (message "No face at %d" pos))))
-
 ;;; Begin initialization
 ;; Turn off mouse interface early in startup to avoid momentary display
 (when window-system
@@ -117,8 +109,16 @@
 (setq use-package-verbose t)
 (server-start)
 
-
 ;;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+;;; some of my own utility functions
+
+;; (defun what-face (pos)
+;;   (interactive "d")
+;;   (let ((face (or (get-char-property (pos) 'read-face-name)
+;;                   (get-char-property (pos) 'face))))
+;;     (if face (message "Face: %s:" face) (message "No face at %d" pos))))
+
 
 
