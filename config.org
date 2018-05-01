@@ -30,9 +30,10 @@
 #+END_SRC
 ** colours on terminal
    custom colour themes generally enhance my expierience of writing
-   inside emacs, but whenthat theme is applied to an instance running
+   inside emacs, but when that theme is applied to an instance running
    inside a terminal, the effect is really just terrible. This mode
-   kind of approximates the effect in a graphical emacs frame.
+   kind of approximates the effect of a graphical emacs frame, in a
+   text console.
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-approximate
   :ensure t
