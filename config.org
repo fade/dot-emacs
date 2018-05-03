@@ -138,7 +138,7 @@ it in the appropriate color. This is a lot cooler than you may think.
   (set-face-attribute 'hl-line nil
                       :inherit nil
                       :background (face-background 'highlight))
-  (set-face-background hl-line-face "gray5"))
+  (set-face-background hl-line-face "gray10"))
 
 #+END_SRC
 ** Pretty symbols (experimenting with this. it might be annoying.)
@@ -474,18 +474,27 @@ Fancy battery has very odd colors if used in the tty, hence us disabling it.
 
 ** System monitor
 * The terminal
-I have used urxvt for years, and I miss it sometimes, but ansi-term is enough for most of my tasks.
-
-** Default shell should be bash
-I don't know why this is a thing, but asking me what shell to launch every single
-time I open a terminal makes me want to slap babies, this gets rid of it.
-This goes without saying but you can replace bash with your shell of choice.
+** Default shell should be zsh
+Don't ask me what shell I want to use. In general this is a solved problem..
 #+BEGIN_SRC emacs-lisp
-  (defvar my-term-shell "/bin/bash")
+  (defvar my-term-shell "/usr/bin/zsh")
   (defadvice ansi-term (before force-bash)
     (interactive (list my-term-shell)))
   (ad-activate 'ansi-term)
 #+END_SRC
+
+* Moving around in emacs
+Spending too much time flapping around between buffers, stuck in the
+interstitial space where work goes to die.
+** swiper and why is the default search so lame
+I like me some searching, the default search is very meh. In emacs, you mostly use search to get around your buffer, much like with avy, but sometimes it doesn't hurt to search for entire words or mode, swiper makes sure this is more efficient.
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind ("C-s" . 'swiper))
+#+END_SRC
+
+
 
 * List buffers
 
@@ -846,6 +855,7 @@ This package displays function signatures in the mode line.
 #+begin_src emacs-lisp
   (use-package company
     :ensure t
+    :diminish company-mode
     ;:bind (:map company-mode-map
     ;            (("C-n" . company-select-next)
     ;             ("C-p" . company-select-previous)
@@ -861,6 +871,7 @@ This package displays function signatures in the mode line.
         (define-key company-active-map (kbd "C-n") #'company-select-next)
         (define-key company-active-map (kbd "C-p") #'company-select-previous)
         (define-key company-active-map (kbd "SPC") #'company-abort))))
+
 #+end_src   
 ** Helm
 
@@ -885,6 +896,7 @@ This package displays function signatures in the mode line.
   
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)
+         ("C-x C-b" . 'helm-buffers-list)
          ("C-`" . helm-resume)
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files))) 
