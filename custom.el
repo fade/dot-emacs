@@ -24,7 +24,7 @@
     (solarized-color-blend it "#002b36" 0.25)
     (quote
      ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
- '(highlight-symbol-foreground-color "#00bfff")
+ '(highlight-symbol-foreground-color "#93a1a1")
  '(highlight-tail-colors
    (quote
     (("#073642" . 0)
@@ -48,7 +48,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (swiper projectile diminish smart-mode-line-powerline-theme fancy-battery spaceline dashboard yasnippet-snippets pretty-mode color-theme-approximate 2048-game org-bullets beacon jinja2-mode company-ansible ansible-vault ansible-doc zoom ansible htmlize hcl-mode helm-w3m :helm-w3m w3m yaml-mode paredit shell-pop scratch zoom-frm emmet-mode visual-regexp-steroids visual-regexp typescript-mode smooth-scrolling skewer-mode smartscan restclient geiser racket-mode olivetti multiple-cursors markdown-mode macrostep gist flycheck expand-region magit helm-swoop helm-ag helm-projectile helm company clojure-mode c-eldoc android-mode ace-window ace-jump-mode ag ido-vertical-mode transpose-frame ox-pandoc org-plus-contrib company-jedi js-auto-beautify js-comint js-doc js-format js-import js2-refactor loccur hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
+    (eww-lnum symon undotree common-lisp-snippets swiper projectile diminish smart-mode-line-powerline-theme fancy-battery spaceline dashboard yasnippet-snippets pretty-mode color-theme-approximate 2048-game org-bullets beacon jinja2-mode company-ansible ansible-vault ansible-doc zoom ansible htmlize hcl-mode helm-w3m :helm-w3m w3m yaml-mode paredit shell-pop scratch zoom-frm emmet-mode visual-regexp-steroids visual-regexp typescript-mode smooth-scrolling skewer-mode smartscan restclient geiser racket-mode olivetti multiple-cursors markdown-mode macrostep gist flycheck expand-region magit helm-swoop helm-ag helm-projectile helm company clojure-mode c-eldoc android-mode ace-window ace-jump-mode ag ido-vertical-mode transpose-frame ox-pandoc org-plus-contrib company-jedi js-auto-beautify js-comint js-doc js-format js-import js2-refactor loccur hexrgb purple-haze-theme heroku-theme company-anaconda elpy rainbow-mode slime-repl-ansi-color slime-company rust-mode crux undo-tree latex-preview-pane latex-extra xquery-mode virtualenvwrapper quickrun exec-path-from-shell page-break-lines solarized-theme cyberpunk-theme use-package)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
@@ -96,5 +96,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-lock-string-face ((t (:foreground "cornsilk3"))))
  '(helm-bookmark-directory ((t (:inherit helm-ff-directory))))
  '(helm-buffer-directory ((t (:inherit helm-ff-directory)))))

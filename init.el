@@ -1,5 +1,5 @@
 
-(setq gc-cons-threshold 400000000)
+;; (setq gc-cons-threshold 400000000)
 
 ;;; utilities to untangle many org files at load time. With thanks to
 ;;; [[https://github.com/howardabrams/dot-files.git][Howard Abrams]]
