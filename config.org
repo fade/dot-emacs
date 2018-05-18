@@ -385,7 +385,7 @@ This makes sure that everything can be a project.
 Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.org][dakrone/eos at github]].
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kd "C-x m") 'browse-url-at-point)
+(global-set-key (kbd "C-x m") 'browse-url-at-point)
 
 (use-package eww
   :defer t
