@@ -922,7 +922,8 @@ This package displays function signatures in the mode line.
     ;             ("M-." . company-show-location)))
     :config
     (progn
-      (setq company-idle-delay 0.1)
+      ;; less than this and it disrupts typing when you aren't interested in completion.
+      (setq company-idle-delay 0.3)
       (setq company-minimize-prefix-length 3)
       ;; company completion everywhere.
       (add-hook 'after-init-hook 'global-company-mode)
@@ -1542,6 +1543,8 @@ Luckily, I can modify the way Emacs formats code with this configuration.
           (clojure ("/usr/bin/Clojure")))))
     :config
     (progn
+      (setq common-lisp-hyperspec-root
+            "file:///home/fade/SourceCode/lisp/HyperSpec/")
       (slime-setup '(slime-fancy
                      slime-company
                      slime-indentation
