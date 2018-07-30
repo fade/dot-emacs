@@ -53,7 +53,8 @@
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
    (quote
-    ((Base . 10)
+    ((Package . Lexical-Contexts)
+     (Base . 10)
      (Syntax . ANSI-Common-Lisp)
      (eval sh-set-shell "zsh"))))
  '(show-paren-mode t)
