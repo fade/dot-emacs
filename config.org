@@ -22,6 +22,88 @@
 (setq user-full-name "Brian O'Reilly"
       user-mail-address "fade@deepsky.com")
 #+end_src
+* Modeline
+The modeline is the heart of emacs, it offers information at all times, it's persistent
+and verbose enough to gain a full understanding of modes and states you are in.
+
+Due to the fact that we attempt to use emacs as a desktop environment replacement,
+and external bar showing the time, the battery percentage and more system info would be great to have.
+I have however abandoned polybar in favor of a heavily modified modeline, this offers me more space
+on the screen and better integration.
+
+One modeline-related setting that is missing and is instead placed at the bottom is =diminish=.
+** Spaceline!
+I may not use spacemacs, since I do not like evil-mode and find spacemacs incredibly bloated and slow,
+however it would be stupid not to acknowledge the best parts about it, the theme and their modified powerline setup.
+
+This enables spaceline, it looks better and works very well with my theme of choice.
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line-powerline-theme
+  :ensure t)
+(use-package spaceline
+  :ensure t
+  :config
+  (require 'spaceline-config)
+  (setq spaceline-buffer-encoding-abbrev-p nil)
+  (setq spaceline-line-column-p t)
+  (setq spaceline-line-p t)
+  
+  ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
+  ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
+  (setq powerline-default-separator (quote wave))
+  (setq powerline-default-dsparator-dir '(right . left))
+  (spaceline-spacemacs-theme))
+#+END_SRC
+
+** No separator!
+#+BEGIN_SRC emacs-lisp
+  (setq powerline-default-separator nil)
+#+END_SRC
+
+** Cursor position
+Show the current line and column for your cursor. We are not going to
+have =relative-linum-mode= in every major mode, so this is useful.
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+#+END_SRC
+
+*** Enabling the mode
+This turns on the clock globally.
+#+BEGIN_SRC emacs-lisp
+  (display-time-mode 1)
+#+END_SRC
+
+** Battery indicator
+A package called =fancy-battery= will be used if we are in GUI emacs, otherwise the built in battery-mode will be used.
+Fancy battery has very odd colors if used in the tty, hence us disabling it.
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    :ensure t
+    :config
+      (setq fancy-battery-show-percentage t)
+      (setq battery-update-interval 15)
+      (if window-system
+        (fancy-battery-mode)
+        (display-battery-mode)))
+#+END_SRC
+
+** System monitor
+#+BEGIN_SRC emacs-lisp
+(use-package symon
+  :ensure t
+  :bind
+  ("s-h" . symon-mode))
+#+END_SRC   
 
 * Theme
 ** Emacs' startup screen is naf
@@ -250,6 +332,7 @@ Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 in dired mode, it is useful to mark a bunch of files and then open
 them all in separate buffers. Function implementation taken from Stack
 Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
+
 #+BEGIN_SRC emacs-lisp
 (eval-after-load "dired"
   '(progn
@@ -455,88 +538,6 @@ change the numbers to suit your liking, I find 5 to be enough.
                               (projects . 5)))
       (setq dashboard-banner-logo-title ""))
 #+END_SRC
-* Modeline
-The modeline is the heart of emacs, it offers information at all times, it's persistent
-and verbose enough to gain a full understanding of modes and states you are in.
-
-Due to the fact that we attempt to use emacs as a desktop environment replacement,
-and external bar showing the time, the battery percentage and more system info would be great to have.
-I have however abandoned polybar in favor of a heavily modified modeline, this offers me more space
-on the screen and better integration.
-
-One modeline-related setting that is missing and is instead placed at the bottom is =diminish=.
-** Spaceline!
-I may not use spacemacs, since I do not like evil-mode and find spacemacs incredibly bloated and slow,
-however it would be stupid not to acknowledge the best parts about it, the theme and their modified powerline setup.
-
-This enables spaceline, it looks better and works very well with my theme of choice.
-#+BEGIN_SRC emacs-lisp
-(use-package smart-mode-line-powerline-theme
-  :ensure t)
-(use-package spaceline
-  :ensure t
-  :config
-  (require 'spaceline-config)
-  (setq spaceline-buffer-encoding-abbrev-p nil)
-  (setq spaceline-line-column-p t)
-  (setq spaceline-line-p t)
-  
-  ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
-  ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-  (setq powerline-default-separator (quote wave))
-  (setq powerline-default-dsparator-dir '(right . left))
-  (spaceline-spacemacs-theme))
-#+END_SRC
-
-** No separator!
-#+BEGIN_SRC emacs-lisp
-  (setq powerline-default-separator nil)
-#+END_SRC
-
-** Cursor position
-Show the current line and column for your cursor. We are not going to
-have =relative-linum-mode= in every major mode, so this is useful.
-#+BEGIN_SRC emacs-lisp
-  (setq line-number-mode t)
-  (setq column-number-mode t)
-#+END_SRC
-
-** Clock
-If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
-
-*** Time format
-#+BEGIN_SRC emacs-lisp
-  (setq display-time-24hr-format t)
-  (setq display-time-format "%H:%M - %d %B %Y")
-#+END_SRC
-
-*** Enabling the mode
-This turns on the clock globally.
-#+BEGIN_SRC emacs-lisp
-  (display-time-mode 1)
-#+END_SRC
-
-** Battery indicator
-A package called =fancy-battery= will be used if we are in GUI emacs, otherwise the built in battery-mode will be used.
-Fancy battery has very odd colors if used in the tty, hence us disabling it.
-#+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    :ensure t
-    :config
-      (setq fancy-battery-show-percentage t)
-      (setq battery-update-interval 15)
-      (if window-system
-        (fancy-battery-mode)
-        (display-battery-mode)))
-#+END_SRC
-
-** System monitor
-#+BEGIN_SRC emacs-lisp
-(use-package symon
-  :ensure t
-  :bind
-  ("s-h" . symon-mode))
-#+END_SRC   
 * The terminal
 ** Default shell should be zsh
 Don't ask me what shell I want to use. In general this is a solved problem..
