@@ -118,3 +118,9 @@
 
 ;;; some of my own utility functions
 
+;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
+
+(defun slime-enable-concurrent-hints ()
+  (interactive)
+  (setf slime-inhibit-pipelining nil))
+

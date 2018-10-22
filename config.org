@@ -22,7 +22,9 @@
 (setq user-full-name "Brian O'Reilly"
       user-mail-address "fade@deepsky.com")
 #+end_src
+
 * Modeline
+  
 The modeline is the heart of emacs, it offers information at all times, it's persistent
 and verbose enough to gain a full understanding of modes and states you are in.
 
@@ -123,8 +125,8 @@ Fancy battery has very odd colors if used in the tty, hence us disabling it.
   (unless (display-graphic-p)
     (autoload 'color-theme-approximate-on "color-theme-approximate")
     (color-theme-approximate-on)))
+#+END_SRC
 
-#+END_SRC   
 ** Rainbow
    
 Mostly useful if you are into web development or game development.
@@ -141,7 +143,9 @@ it in the appropriate color. This is a lot cooler than you may think.
 
 ** Cursor tomfoolery
 #+begin_src emacs-lisp
-(set-cursor-color "yellow")
+
+;; if this is set here, it is overwritten by the colour theme.
+;; (set-cursor-color "yellow")
 
 ;; (when (display-graphic-p) 
 ;;   (progn
@@ -188,7 +192,8 @@ it in the appropriate color. This is a lot cooler than you may think.
   (set-face-attribute `mode-line nil
                       :box nil)
   (set-face-attribute `mode-line nil
-                      :box nil))
+                      :box nil)
+  (set-cursor-color "yellow"))
 #+end_src   
 
 #+begin_src emacs-lisp
@@ -225,14 +230,7 @@ it in the appropriate color. This is a lot cooler than you may think.
   (set-face-background hl-line-face "gray10"))
 
 #+END_SRC
-** Pretty symbols (experimenting with this. it might be annoying.) ((it is.))
-#+BEGIN_SRC emacs-lisp
-;; (when window-system
-;;   (use-package pretty-mode
-;;     :ensure t
-;;     :config
-;;     (global-pretty-mode t)))
-#+END_SRC
+
 * Font
 And here's how we tell Emacs to use the font we want to use.
 
@@ -1555,7 +1553,8 @@ Luckily, I can modify the way Emacs formats code with this configuration.
                      slime-tramp
                      slime-asdf
                      slime-company
-                     slime-autodoc))))
+                     slime-autodoc))
+      (slime-enable-concurrent-hints)))
 #+END_SRC
 
 *** slime-repl-ansi-color
