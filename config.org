@@ -427,7 +427,7 @@ match the same one on macOS.
   (cond
    ((string-equal system-type "darwin")
     (let* ((cmd "sw_vers -productVersion")
-           (macos-version (string-to-int
+           (macos-version (string-to-number
                            (cadr (split-string
                                   (shell-command-to-string cmd)
                                   "\\."))))
