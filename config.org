@@ -1554,7 +1554,13 @@ Luckily, I can modify the way Emacs formats code with this configuration.
                      slime-asdf
                      slime-company
                      slime-autodoc))
-      (slime-enable-concurrent-hints)))
+      (progn
+        ;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
+        (defun slime-enable-concurrent-hints ()
+          (interactive)
+          (setf slime-inhibit-pipelining nil))
+        (eval-after-load "slime"
+          (slime-enable-concurrent-hints)))))
 #+END_SRC
 
 *** slime-repl-ansi-color

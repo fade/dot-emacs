@@ -116,11 +116,3 @@
 ;;; Load the config contained in our Org-mode file.
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 
-;;; some of my own utility functions
-
-;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
-
-(defun slime-enable-concurrent-hints ()
-  (interactive)
-  (setf slime-inhibit-pipelining nil))
-
