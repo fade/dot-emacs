@@ -88,8 +88,7 @@
 (setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")
-			 ("SC"    . "http://joseito.republika.pl/sunrise-commander/")))
+			 ("org"   . "https://orgmode.org/elpa/")))
 
 (when (boundp 'package-pinned-packages)
   (setq package-pinned-packages
@@ -113,6 +112,7 @@
 ;; start the emacs daemon process.
 (server-start)
 
-;;; Load the config contained in our Org-mode file.
+;;; Load the config contained in our Org-mode file, which contains the
+;;; meat of this config..
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 

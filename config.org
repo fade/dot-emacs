@@ -278,7 +278,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
   ;; Just one space is needed.
   (setq sentence-end-double-space nil)
 
-  ;; delete the region when typing, just like as we expect nowadays.
+  ;; delete the region when typing, as is conventional these days.
   (delete-selection-mode t)
 
   (show-paren-mode t)
