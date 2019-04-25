@@ -25,20 +25,27 @@
 
 * Modeline
   
-The modeline is the heart of emacs, it offers information at all times, it's persistent
-and verbose enough to gain a full understanding of modes and states you are in.
+The modeline is the heart of emacs, it offers information at all
+times, it's persistent and verbose enough to gain a full understanding
+of modes and states you are in.
 
-Due to the fact that we attempt to use emacs as a desktop environment replacement,
-and external bar showing the time, the battery percentage and more system info would be great to have.
-I have however abandoned polybar in favor of a heavily modified modeline, this offers me more space
-on the screen and better integration.
+Due to the fact that we attempt to use emacs as a desktop environment
+replacement, and external bar showing the time, the battery percentage
+and more system info would be great to have. I have however abandoned
+polybar in favor of a heavily modified modeline, this offers me more
+space on the screen and better integration.
 
-One modeline-related setting that is missing and is instead placed at the bottom is =diminish=.
+One modeline-related setting that is missing and is instead placed at
+the bottom is =diminish=.
 ** Spaceline!
-I may not use spacemacs, since I do not like evil-mode and find spacemacs incredibly bloated and slow,
-however it would be stupid not to acknowledge the best parts about it, the theme and their modified powerline setup.
+I may not use spacemacs, since I do not like evil-mode and find
+spacemacs incredibly bloated and slow, however it would be stupid not
+to acknowledge the best parts about it, the theme and their modified
+powerline setup.
 
-This enables spaceline, it looks better and works very well with my theme of choice.
+This enables spaceline, it looks better and works very well with my
+theme of choice.
+
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line-powerline-theme
   :ensure t)
@@ -63,8 +70,10 @@ This enables spaceline, it looks better and works very well with my theme of cho
 #+END_SRC
 
 ** Cursor position
-Show the current line and column for your cursor. We are not going to
+
+   Show the current line and column for your cursor. We are not going to
 have =relative-linum-mode= in every major mode, so this is useful.
+
 #+BEGIN_SRC emacs-lisp
   (setq line-number-mode t)
   (setq column-number-mode t)
@@ -86,8 +95,9 @@ This turns on the clock globally.
 #+END_SRC
 
 ** Battery indicator
-A package called =fancy-battery= will be used if we are in GUI emacs, otherwise the built in battery-mode will be used.
-Fancy battery has very odd colors if used in the tty, hence us disabling it.
+A package called =fancy-battery= will be used if we are in GUI emacs,
+otherwise the built in battery-mode will be used. Fancy battery has
+very odd colors if used in the tty, hence us disabling it.
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-battery
     :ensure t
@@ -130,8 +140,9 @@ Fancy battery has very odd colors if used in the tty, hence us disabling it.
 ** Rainbow
    
 Mostly useful if you are into web development or game development.
-Every time emacs encounters a hexadecimal code that resembles a color, it will automatically highlight
-it in the appropriate color. This is a lot cooler than you may think.
+Every time emacs encounters a hexadecimal code that resembles a color,
+it will automatically highlight it in the appropriate color. This is a
+lot cooler than you may think.
 
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-mode
@@ -185,6 +196,8 @@ it in the appropriate color. This is a lot cooler than you may think.
 #+end_src
 
 ** DeepSky Theme
+   Load the appropriate theme, and a utility for arbitrarily loading
+   others.
 #+begin_src emacs-lisp
 (progn
   (load-theme 'deepsky t)
@@ -219,6 +232,7 @@ it in the appropriate color. This is a lot cooler than you may think.
 #+end_src
 
 ** Highlight line containing the point
+   
 #+BEGIN_SRC emacs-lisp
 (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
 (defadvice hl-line-mode (after
@@ -228,7 +242,6 @@ it in the appropriate color. This is a lot cooler than you may think.
                       :inherit nil
                       :background (face-background 'highlight))
   (set-face-background hl-line-face "gray10"))
-
 #+END_SRC
 
 * Font
@@ -298,8 +311,8 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 #+end_src
 
 The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
-[[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or the symbol
-at point as the default value for occur.
+[[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or
+the symbol at point as the default value for occur.
 
 #+begin_src emacs-lisp
 (defun occur-dwim ()
@@ -448,8 +461,9 @@ match the same one on macOS.
 #+END_SRC
 
 * Projectile
-Projectile is an awesome project manager, mostly because it recognizes directories
-with a =.git= directory as projects and helps you manage them accordingly.
+Projectile is an awesome project manager, mostly because it recognizes
+directories with a =.git= directory as projects and helps you manage
+them accordingly.
 
 ** Enable projectile globally
 This makes sure that everything can be a project.
@@ -464,6 +478,7 @@ This makes sure that everything can be a project.
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") 'projectile-compile-project)
 #+END_SRC
+
 * Default web browser
 Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.org][dakrone/eos at github]].
 
@@ -522,10 +537,12 @@ Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.or
 (global-set-key (kbd "C-c u") 'browse-last-url-in-brower)
 #+END_SRC
 * Dashboard
-This is your new startup screen, together with projectile it works in unison and
-provides you with a quick look into your latest projects and files.
-Change the welcome message to whatever string you want and
+
+  This is your new startup screen, together with projectile it works in
+unison and provides you with a quick look into your latest projects
+and files. Change the welcome message to whatever string you want and
 change the numbers to suit your liking, I find 5 to be enough.
+
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
     :ensure t
@@ -534,8 +551,9 @@ change the numbers to suit your liking, I find 5 to be enough.
       (setq dashboard-startup-banner "~/.emacs.d/img/dashLogo.png")
       (setq dashboard-items '((recents  . 5)
                               (projects . 5)))
-      (setq dashboard-banner-logo-title ""))
+      (setq dashboard-banner-logo-title "DeepSky Emacs"))
 #+END_SRC
+
 * The terminal
 ** Default shell should be zsh
 Don't ask me what shell I want to use. In general this is a solved problem..
@@ -547,26 +565,32 @@ Don't ask me what shell I want to use. In general this is a solved problem..
 #+END_SRC
 
 * Moving around in emacs
-Spending too much time flapping around between buffers, stuck in the
+
+  Spending too much time flapping around between buffers, stuck in the
 interstitial space where work goes to die.
+
 ** swiper and why is the default search so lame
-I like me some searching, the default search is very meh. In emacs, you mostly use search to get around your buffer, much like with avy, but sometimes it doesn't hurt to search for entire words or mode, swiper makes sure this is more efficient.
+   
+   I like me some searching, the default search is very meh. In emacs,
+you mostly use search to get around your buffer, much like with avy,
+but sometimes it doesn't hurt to search for entire words or mode,
+swiper makes sure this is more efficient.
+
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
     :bind ("C-s" . 'swiper))
 #+END_SRC
 
-
-
 * List buffers
 
 source: http://ergoemacs.org/emacs/emacs_buffer_management.html
 
-Auto-revert-mode updates buffers so that they reflect what's on the
+Auto-revert-mode updates buffers so that they reflect what is on the
 disk. This is particularly useful in the presence of git or other
 version control software which can change the files from beneath the
 buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][Magnar Sveen]]
+
 #+begin_src emacs-lisp
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 (global-auto-revert-mode t)
@@ -650,6 +674,7 @@ speed keys in Org mode]].
 
 #+begin_src emacs-lisp
 (setq org-use-speed-commands t)
+(require 'org-tempo)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -731,7 +756,6 @@ consistent as it doesn't pad source blocks with leading spaces.
 ** Org exporting
 
 *** Pandoc exporter
-
 Pandoc converts between a huge number of different file formats. 
 
 #+begin_src emacs-lisp
@@ -740,15 +764,20 @@ Pandoc converts between a huge number of different file formats.
   :defer 10
   :ensure t)
 #+end_src
+
 *** LaTeX exporting
 
-I've had issues with getting BiBTeX to work correctly with the LaTeX exporter for PDF exporting. By changing the command to `latexmk` references appear in the PDF output like they should. Source: http://tex.stackexchange.com/a/161619.
+I've had issues with getting BiBTeX to work correctly with the LaTeX
+exporter for PDF exporting. By changing the command to `latexmk`
+references appear in the PDF output like they should. Source:
+http://tex.stackexchange.com/a/161619.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-latex-pdf-process (list "latexmk -pdf %f"))
 #+END_SRC
 
 exporting to html sometimes (always?) requires htmlize
+
 #+BEGIN_SRC emacs-lisp
 (use-package htmlize
   :ensure t)
@@ -766,10 +795,10 @@ exporting to html sometimes (always?) requires htmlize
 Convenient keybindings to resize windows.
 
 #+begin_src emacs-lisp
-(bind-key "s-C-<left>"  'shrink-window-horizontally)
-(bind-key "s-C-<right>" 'enlarge-window-horizontally)
-(bind-key "s-C-<down>"  'shrink-window)
-(bind-key "s-C-<up>"    'enlarge-window)
+;; (bind-key "s-C-<left>"  'shrink-window-horizontally)
+;; (bind-key "s-C-<right>" 'enlarge-window-horizontally)
+;; (bind-key "s-C-<down>"  'shrink-window)
+;; (bind-key "s-C-<up>"    'enlarge-window)
 #+end_src
 
 Whenever I split windows, I usually do so and also switch to the other
@@ -799,11 +828,15 @@ do just that to reduce the repetition.
 #+end_src
 
 * Minor conveniences
-Emacs is at it's best when it just does things for you, shows you the way, guides you so to speak.
-This can be best achieved using a number of small extensions. While on their own they might not be particularly
-impressive. Together they create a nice environment for you to work in.
+Emacs is at it's best when it just does things for you, shows you the
+way, guides you so to speak. This can be best achieved using a number
+of small extensions. While on their own they might not be particularly
+impressive. Together they create a nice environment for you to work
+in.
+
 ** Visiting the configuration
 Quickly edit =~/.emacs.d/config.org=
+
 #+BEGIN_SRC emacs-lisp
   (defun config-visit ()
     (interactive)
@@ -812,9 +845,9 @@ Quickly edit =~/.emacs.d/config.org=
 #+END_SRC
 
 ** Reloading the configuration
-   
 Simply pressing =Control-c r= will reload this file, very handy.
 You can also manually invoke =config-reload=.
+
 #+BEGIN_SRC emacs-lisp
   (defun config-reload ()
     "Reloads ~/.emacs.d/config.org at runtime"
@@ -824,22 +857,25 @@ You can also manually invoke =config-reload=.
 #+END_SRC
 
 ** Subwords
-Emacs treats camelCase strings as a single word by default, this changes said behaviour.
+Emacs treats camelCase strings as a single word by default, this
+changes said behaviour.
+
 #+BEGIN_SRC emacs-lisp
   (global-subword-mode 1)
 #+END_SRC
 
 ** Beacon
-While changing buffers or workspaces, the first thing you do is look for your cursor.
-Unless you know its position, you can not move it efficiently. Every time you change
-buffers, the current position of your cursor will be briefly highlighted now.
-#+BEGIN_SRC emacs-lisp
-  (use-package beacon
-    :ensure t
-    :config
-      (beacon-mode 1))
-#+END_SRC
+While changing buffers or workspaces, the first thing you do is look
+for your cursor. Unless you know its position, you can not move it
+efficiently. Every time you change buffers, the current position of
+your cursor will be briefly highlighted now.
 
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
+#+END_SRC
 
 * ELPA packages
 
