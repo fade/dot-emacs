@@ -123,7 +123,7 @@ very odd colors if used in the tty, hence us disabling it.
 (setq inhibit-startup-message t)
 #+END_SRC
 ** colours on terminal
-   custom colour themes generally enhance my expierience of writing
+   custom colour themes generally enhance my experience of writing
    inside emacs, but when that theme is applied to an instance running
    inside a terminal, the effect is really just terrible. This mode
    kind of approximates the effect of a graphical emacs frame, in a
@@ -153,6 +153,7 @@ lot cooler than you may think.
 #+END_SRC
 
 ** Cursor tomfoolery
+   A fun hack that is in practice unusable.
 #+begin_src emacs-lisp
 
 ;; if this is set here, it is overwritten by the colour theme.
@@ -198,6 +199,7 @@ lot cooler than you may think.
 ** DeepSky Theme
    Load the appropriate theme, and a utility for arbitrarily loading
    others.
+
 #+begin_src emacs-lisp
 (progn
   (load-theme 'deepsky t)
@@ -206,8 +208,8 @@ lot cooler than you may think.
                       :box nil)
   (set-face-attribute `mode-line nil
                       :box nil)
-  (set-cursor-color "yellow"))
-#+end_src   
+  (set-cursor-color "springgreen"))
+#+end_src
 
 #+begin_src emacs-lisp
 (defun switch-theme (theme)
