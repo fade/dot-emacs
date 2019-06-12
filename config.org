@@ -1740,6 +1740,17 @@ the load average.
 #+begin_src emacs-lisp
 (setq display-time-default-load-average nil)
 #+end_src
+** Swap Buffer Windows
+   #+begin_src emacs-lisp
+(use-package buffer-move
+  :ensure t
+  :config
+  (progn
+    (global-set-key (kbd "<C-M-s-up>")     'buf-move-up)
+    (global-set-key (kbd "<C-M-s-down>")   'buf-move-down)
+    (global-set-key (kbd "<C-M-s-left>")   'buf-move-left)
+    (global-set-key (kbd "<C-M-s-right>")  'buf-move-right)))
+   #+end_src
 
 ** Display Battery Mode
 
