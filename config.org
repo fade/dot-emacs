@@ -29,14 +29,15 @@ The modeline is the heart of emacs, it offers information at all
 times, it's persistent and verbose enough to gain a full understanding
 of modes and states you are in.
 
-Due to the fact that we attempt to use emacs as a desktop environment
-replacement, and external bar showing the time, the battery percentage
-and more system info would be great to have. I have however abandoned
-polybar in favor of a heavily modified modeline, this offers me more
-space on the screen and better integration.
+# Due to the fact that we attempt to use emacs as a desktop environment
+# replacement, and external bar showing the time, the battery percentage
+# and more system info would be great to have. I have however abandoned
+# polybar in favor of a heavily modified modeline, this offers me more
+# space on the screen and better integration.
 
 One modeline-related setting that is missing and is instead placed at
 the bottom is =diminish=.
+
 ** Spaceline!
 I may not use spacemacs, since I do not like evil-mode and find
 spacemacs incredibly bloated and slow, however it would be stupid not
