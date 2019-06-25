@@ -123,12 +123,14 @@ very odd colors if used in the tty, hence us disabling it.
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
-** colours on terminal
+
+** Colours On Terminal
    custom colour themes generally enhance my experience of writing
    inside emacs, but when that theme is applied to an instance running
    inside a terminal, the effect is really just terrible. This mode
    kind of approximates the effect of a graphical emacs frame, in a
    text console.
+   
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-approximate
   :ensure t
@@ -463,6 +465,7 @@ match the same one on macOS.
       (message "Oh dear... you're using Windows. :("))))
 #+END_SRC
 
+
 * Projectile
 Projectile is an awesome project manager, mostly because it recognizes
 directories with a =.git= directory as projects and helps you manage
@@ -525,7 +528,6 @@ Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.or
   (define-key eww-mode-map "j" 'next-line)
   (define-key eww-mode-map "k" 'previous-line)
 
-
   (use-package eww-lnum
     :ensure t
     :config
@@ -539,6 +541,7 @@ Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.or
 
 (global-set-key (kbd "C-c u") 'browse-last-url-in-brower)
 #+END_SRC
+
 * Dashboard
 
   This is your new startup screen, together with projectile it works in
