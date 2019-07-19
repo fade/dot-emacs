@@ -337,7 +337,7 @@ the symbol at point as the default value for occur.
 #+end_src
 
 Here we make page-break characters look pretty, instead of appearing
-as =^L= in Emacs. [[http://ericjmritz.name/2015/08/29/using-page-breaks-in-gnu-emacs/][Here's an informative article called "Using
+as =^L= in Emacs. [[https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/][Here's an informative article called "Using
 Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 
 #+begin_src emacs-lisp
@@ -1568,14 +1568,15 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 ** Common Lisp
 *** Slime-Company
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package slime-company
-  ;;   :ensure t)
+  (use-package slime-company
+    :ensure t)
 #+END_SRC
 
 *** Slime
+    currently investigating Sly. 
 #+BEGIN_SRC emacs-lisp
 (use-package slime
-    ;; :load-path "~/SourceCode/lisp/emacsmodes/slime"
+    ;; :load-path "~/SourceCode/lisp/slime"
     :ensure t
     :init
     (progn
@@ -1597,7 +1598,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
                      slime-xref-browser
                      slime-tramp
                      slime-asdf
-                     ;; slime-company
+                     slime-company  ;; slimecompany mode.
                      slime-autodoc))
       (progn
         ;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
@@ -1618,6 +1619,27 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (use-package slime-repl-ansi-color
   :load-path "site-lisp/slime-repl-ansi-color")
 #+END_SRC
+
+*** SLY
+    interesting development of slime, but too different in nuance to persue atm.
+#+begin_src emacs-lisp
+;; (use-package sly
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     (setq sly-lisp-implementations
+;;           '((sbcl ("/usr/local/bin/sbcl"))
+;;             (ccl ("/usr/local/bin/ccl"))
+;;             ;; (ccl64 ("/usr/local/bin/ccl64"))
+;;             (abcl ("/usr/local/src/abcl/abcl"))
+;;             (clisp ("/usr/bin/clisp"))
+;;             (ecl ("/usr/local/bin/ecl"))
+;;             (decl ("/usr/bin/ecl"))
+;;             (clojure ("/usr/bin/Clojure")))))
+;;   :config
+;;   (progn
+;;     (setq inferior-lisp-program "/usr/local/bin/sbcl")))    
+#+end_src
 
 *** Paredit
 #+BEGIN_SRC emacs-lisp
