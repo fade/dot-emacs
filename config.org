@@ -39,11 +39,12 @@ One modeline-related setting that is missing and is instead placed at
 the bottom is =diminish=.
 
 ** All the icons!
+   
    #+begin_src emacs-lisp
 (use-package all-the-icons
   :ensure t)
-   
    #+end_src
+   
 ** Spaceline!
 I may not use spacemacs, since I do not like evil-mode and find
 spacemacs incredibly bloated and slow, however it would be stupid not
@@ -54,31 +55,27 @@ This enables spaceline, it looks better and works very well with my
 theme of choice.
 
 #+BEGIN_SRC emacs-lisp
-
-;; (use-package smart-mode-line-powerline-theme
-;;   :ensure t)
-
-(use-package spaceline
-  :ensure t
-  :config
-  (require 'spaceline-config)
-  (setq spaceline-buffer-encoding-abbrev-p nil)
-  (setq spaceline-line-column-p t)
-  (setq spaceline-line-p t)
-  
-  ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
-  ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-  ;; (setq powerline-default-separator (quote wave))
-  ;; (setq powerline-default-dsparator-dir '(right . left))
-  (spaceline-spacemacs-theme)
-  )
-
-(use-package spaceline-all-the-icons
-  :ensure t
-  :after spaceline
-  :config
-  (spaceline-all-the-icons-theme))
-
+(if window-system
+    (progn
+      (use-package spaceline
+        :ensure t
+        :config
+        (require 'spaceline-config)
+        (setq spaceline-buffer-encoding-abbrev-p nil)
+        (setq spaceline-line-column-p t)
+        (setq spaceline-line-p t)
+        
+        ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
+        ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
+        ;; (setq powerline-default-separator (quote wave))
+        ;; (setq powerline-default-dsparator-dir '(right . left))
+        (spaceline-spacemacs-theme)
+        )
+      (use-package spaceline-all-the-icons
+        :ensure t
+        :after spaceline
+        :config
+        (spaceline-all-the-icons-theme))))
 #+END_SRC
 
 ** No separator!
