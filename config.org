@@ -80,7 +80,7 @@ theme of choice.
 
 ** No separator!
 #+BEGIN_SRC emacs-lisp
-  ;; (setq powerline-default-separator nil)
+  (setq powerline-default-separator nil)
 #+END_SRC
 
 ** Cursor position
@@ -1010,7 +1010,7 @@ This package displays function signatures in the mode line.
             :ensure t
             :commands helm-projectile
             :bind ("C-c p h" . helm-projectile))
-          (use-package helm-ag :defer 10  :ensure t)
+          (use-package helm-ag :defer 10  :ensure t :bind ("C-c p s" . helm-do-ag))
           (setq helm-locate-command "mdfind -interpret -name %s %s"
                 helm-ff-newfile-prompt-p nil
                 helm-M-x-fuzzy-match t)
