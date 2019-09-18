@@ -6,6 +6,7 @@
 #+ATTR_HTML: :style margin-left: auto; margin-right: auto;
 
 * Introduction
+  
   This is my emacs configuration entry point. It is written in the
   [[http://www.orgmode.org][literate programming style]] in this org-mode file. The embedded code
   blocks are extracted when the init.el file is loaded, and then the
@@ -69,8 +70,7 @@ theme of choice.
         ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
         ;; (setq powerline-default-separator (quote wave))
         ;; (setq powerline-default-dsparator-dir '(right . left))
-        (spaceline-spacemacs-theme)
-        )
+        (spaceline-spacemacs-theme))
       (use-package spaceline-all-the-icons
         :ensure t
         :after spaceline
@@ -209,7 +209,7 @@ lot cooler than you may think.
 ;;           (setq blink-cursor-count 0))
 ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
 ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
-;;       (internal-show-cursor nil (not (internal-show-cursor-p))))))
+;;       (internal-show-cursor nil (not (internal-show-cursor-p)))))
 #+end_src
 
 ** DeepSky Theme
@@ -905,7 +905,11 @@ These are the packages that are not built into Emacs.
 #+BEGIN_SRC emacs-lisp
 (use-package ag
   :commands ag
-  :ensure t)
+  :ensure t
+  :config
+  (setq ag-highlight-search t
+        ag-reuse-window nil
+        ag-reuse-buffers t))
 #+END_SRC
 
 ** Ace Jump Mode
@@ -998,6 +1002,7 @@ This package displays function signatures in the mode line.
   :config
   (global-undo-tree-mode))
 #+END_SRC
+
 ** Helm
 
 #+begin_src emacs-lisp
@@ -1006,18 +1011,10 @@ This package displays function signatures in the mode line.
   :diminish helm-mode
   :init (progn
           (use-package helm-config)
-          (use-package helm-projectile
-            :ensure t
-            :commands helm-projectile
-            :bind ("C-c p h" . helm-projectile))
-          (use-package helm-ag :defer 10  :ensure t :bind ("C-c p s" . helm-do-ag))
           (setq helm-locate-command "mdfind -interpret -name %s %s"
                 helm-ff-newfile-prompt-p nil
                 helm-M-x-fuzzy-match t)
-          (helm-mode)
-          (use-package helm-swoop
-            :ensure t
-            :bind ("H-w" . helm-swoop)))
+          (helm-mode))
   
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)
@@ -1025,6 +1022,19 @@ This package displays function signatures in the mode line.
          ("C-`" . helm-resume)
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files))) 
+
+(use-package helm-ag
+  :defer 10
+  :ensure t
+  :after helm
+  :bind ("s-s" . helm-do-ag)
+  :config
+  (custom-set-variables
+   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+   '(helm-ag-command-option "--all-text")
+   '(helm-ag-insert-at-point 'symbol)
+   '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
+
 #+end_src
 
 ** Magit
@@ -1043,7 +1053,12 @@ access magit.
 
 (use-package magithub
   :ensure t
-  :defer t)
+  :after magit
+  :defer t
+  :config
+  (magithub-feature-autoinject t)
+  (setq magithub-clone-default-directory "~/SourceCode/lisp"))
+  
 #+end_src
 
 *** Fullscreen magit
@@ -1588,40 +1603,40 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 *** Slime
     currently investigating Sly. 
 #+BEGIN_SRC emacs-lisp
-(use-package slime
-    ;; :load-path "~/SourceCode/lisp/slime"
-    :ensure t
-    :init
-    (progn
-      (setq slime-lisp-implementations
-        '((sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2000"))
-          (roswell ("ros -L sbcl -Q -l ~/.sbclrc run"))
-          (ccl ("/usr/local/bin/ccl"))
-          ;; (ccl64 ("/usr/local/bin/ccl64"))
-          (abcl ("/usr/local/src/abcl/abcl"))
-          (clisp ("/usr/bin/clisp"))
-          (ecl ("/usr/local/bin/ecl"))
-          (decl ("/usr/bin/ecl"))
-          (clojure ("/usr/bin/Clojure")))))
-    :config
-    (progn
-      (setq common-lisp-hyperspec-root
-            "file:///home/fade/SourceCode/lisp/HyperSpec/")
-      (slime-setup '(slime-fancy
-                     slime-indentation
-                     slime-xref-browser
-                     slime-tramp
-                     slime-asdf
-                     slime-company  ;; slimecompany mode.
-                     slime-autodoc))
-      (progn
-        ;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
-        (defun slime-enable-concurrent-hints ()
-          (interactive)
-          (setf slime-inhibit-pipelining nil))
-        (eval-after-load "slime"
-          (slime-enable-concurrent-hints)))
-      ))
+;; (use-package slime
+;;     ;; :load-path "~/SourceCode/lisp/slime"
+;;     :ensure t
+;;     :init
+;;     (progn
+;;       (setq slime-lisp-implementations
+;;         '((sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2000"))
+;;           (roswell ("ros -L sbcl -Q -l ~/.sbclrc run"))
+;;           (ccl ("/usr/local/bin/ccl"))
+;;           ;; (ccl64 ("/usr/local/bin/ccl64"))
+;;           (abcl ("/usr/local/src/abcl/abcl"))
+;;           (clisp ("/usr/bin/clisp"))
+;;           (ecl ("/usr/local/bin/ecl"))
+;;           (decl ("/usr/bin/ecl"))
+;;           (clojure ("/usr/bin/Clojure")))))
+;;     :config
+;;     (progn
+;;       (setq common-lisp-hyperspec-root
+;;             "file:///home/fade/SourceCode/lisp/HyperSpec/")
+;;       (slime-setup '(slime-fancy
+;;                      slime-indentation
+;;                      slime-xref-browser
+;;                      slime-tramp
+;;                      slime-asdf
+;;                      slime-company  ;; slimecompany mode.
+;;                      slime-autodoc))
+;;       (progn
+;;         ;;; from http://techsnuffle.com/2018/04/17/slimeenableconcurrenthints
+;;         (defun slime-enable-concurrent-hints ()
+;;           (interactive)
+;;           (setf slime-inhibit-pipelining nil))
+;;         (eval-after-load "slime"
+;;           (slime-enable-concurrent-hints)))
+;;       ))
 #+END_SRC
 
 *** slime-repl-ansi-color
@@ -1631,29 +1646,38 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     to read the code atm.
     
 #+BEGIN_SRC emacs-lisp :tangle no
-(use-package slime-repl-ansi-color
-  :load-path "site-lisp/slime-repl-ansi-color")
+;; (use-package slime-repl-ansi-color
+;;   :load-path "site-lisp/slime-repl-ansi-color")
 #+END_SRC
 
 *** SLY
     interesting development of slime, but too different in nuance to persue atm.
 #+begin_src emacs-lisp
-;; (use-package sly
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (setq sly-lisp-implementations
-;;           '((sbcl ("/usr/local/bin/sbcl"))
-;;             (ccl ("/usr/local/bin/ccl"))
-;;             ;; (ccl64 ("/usr/local/bin/ccl64"))
-;;             (abcl ("/usr/local/src/abcl/abcl"))
-;;             (clisp ("/usr/bin/clisp"))
-;;             (ecl ("/usr/local/bin/ecl"))
-;;             (decl ("/usr/bin/ecl"))
-;;             (clojure ("/usr/bin/Clojure")))))
-;;   :config
-;;   (progn
-;;     (setq inferior-lisp-program "/usr/local/bin/sbcl")))    
+(use-package sly
+  :defer t
+  :commands sly
+  :init
+  (progn
+    (setq sly-lisp-implementations
+          '((sbcl ("/usr/local/bin/sbcl"))
+            (ccl ("/usr/local/bin/ccl"))
+            ;; (ccl64 ("/usr/local/bin/ccl64"))
+            (abcl ("/usr/local/src/abcl/abcl"))
+            (clisp ("/usr/bin/clisp"))
+            (ecl ("/usr/local/bin/ecl"))
+            (decl ("/usr/bin/ecl"))
+            (clojure ("/usr/bin/Clojure"))))
+    (setq sly-kill-without-query-p t
+          sly-net-coding-system 'utf-8-unix
+          sly-complete-symbol*-fancy t
+          common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
+  :config
+  (progn
+    (setq inferior-lisp-program "/usr/local/bin/sbcl")))
+
+(use-package sly-asdf
+  :ensure t
+  :after sly)
 #+end_src
 
 *** Paredit
@@ -1670,6 +1694,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
     (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
+    (add-hook 'sly-mrepl-mode-hook        #'enable-paredit-mode)
     (add-hook 'slime-mode-hook            #'enable-paredit-mode)
     (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
     (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
