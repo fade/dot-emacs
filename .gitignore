@@ -20,3 +20,5 @@
 /*.cache
 assets/
 /*.html
+/transient/history.el
+/session.*
