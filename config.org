@@ -1027,7 +1027,7 @@ This package displays function signatures in the mode line.
   :defer 10
   :ensure t
   :after helm
-  :bind ("s-s" . helm-do-ag)
+  :bind ("C-c M-s" . helm-do-ag)
   :config
   (custom-set-variables
    '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
@@ -1596,8 +1596,8 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 ** Common Lisp
 *** Slime-Company
 #+BEGIN_SRC emacs-lisp
-  (use-package slime-company
-    :ensure t)
+  ;; (use-package slime-company
+  ;;   :ensure t)
 #+END_SRC
 
 *** Slime
@@ -1651,7 +1651,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 #+END_SRC
 
 *** SLY
-    interesting development of slime, but too different in nuance to persue atm.
+    Still looking at this.
 #+begin_src emacs-lisp
 (use-package sly
   :defer t
