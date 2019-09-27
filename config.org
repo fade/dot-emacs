@@ -47,13 +47,13 @@ the bottom is =diminish=.
    #+end_src
    
 ** Spaceline!
-I may not use spacemacs, since I do not like evil-mode and find
-spacemacs incredibly bloated and slow, however it would be stupid not
-to acknowledge the best parts about it, the theme and their modified
-powerline setup.
+   I may not use spacemacs, since I do not like evil-mode and find
+   spacemacs incredibly bloated and slow, however it would be stupid not
+   to acknowledge the best parts about it, the theme and their modified
+   powerline setup.
 
-This enables spaceline, it looks better and works very well with my
-theme of choice.
+   This enables spaceline, it looks better and works very well with my
+   theme of choice.
 
 #+BEGIN_SRC emacs-lisp
 (if window-system
@@ -1654,8 +1654,10 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     Still looking at this.
 #+begin_src emacs-lisp
 (use-package sly
+  :load-path "~/SourceCode/lisp/sly"
   :defer t
   :commands sly
+  :bind ("C-c M-o" . sly-mrepl-clear-repl)
   :init
   (progn
     (setq sly-lisp-implementations
@@ -1676,6 +1678,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (setq inferior-lisp-program "/usr/local/bin/sbcl")))
 
 (use-package sly-asdf
+  :load-path "~/SourceCode/lisp/sly-asdf"
   :ensure t
   :after sly)
 #+end_src
@@ -1693,9 +1696,9 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
     (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-    (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
+    ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
     (add-hook 'sly-mrepl-mode-hook        #'enable-paredit-mode)
-    (add-hook 'slime-mode-hook            #'enable-paredit-mode)
+    ;; (add-hook 'slime-mode-hook            #'enable-paredit-mode)
     (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
     (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
     ))
