@@ -1647,14 +1647,15 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     
 #+BEGIN_SRC emacs-lisp :tangle no
 ;; (use-package slime-repl-ansi-color
-;;   :load-path "site-lisp/slime-repl-ansi-color")
+;;   :load-path "site-lisp/slime-repl-ansi-color"
+;;   :after slime)
 #+END_SRC
 
 *** SLY
     Still looking at this.
 #+begin_src emacs-lisp
 (use-package sly
-  :load-path "~/SourceCode/lisp/sly"
+  ;; :load-path "~/SourceCode/lisp/sly"
   :defer t
   :commands sly
   :bind ("C-c M-o" . sly-mrepl-clear-repl)
@@ -1678,7 +1679,23 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (setq inferior-lisp-program "/usr/local/bin/sbcl")))
 
 (use-package sly-asdf
-  :load-path "~/SourceCode/lisp/sly-asdf"
+  ;; :load-path "~/SourceCode/lisp/sly-asdf"
+  :ensure t
+  :after sly)
+
+(use-package sly-macrostep
+  :ensure t
+  :after sly)
+
+(use-package sly-named-readtables
+  :ensure t
+  :after sly)
+
+(use-package sly-repl-ansi-color
+  :ensure t
+  :after sly)
+
+(use-package sly-quicklisp
   :ensure t
   :after sly)
 #+end_src
@@ -1800,6 +1817,11 @@ Luckily, I can modify the way Emacs formats code with this configuration.
    * C-M-x   :: `skewer-eval-defun'
    * C-c C-k :: `skewer-load-buffer'
 
+** Nim                
+   #+begin_src emacs-lisp
+(use-package nim-mode
+  :ensure t)
+   #+end_src
 * Misc
 ** Display Time
 
