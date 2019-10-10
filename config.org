@@ -30,12 +30,6 @@ The modeline is the heart of emacs, it offers information at all
 times, it's persistent and verbose enough to gain a full understanding
 of modes and states you are in.
 
-# Due to the fact that we attempt to use emacs as a desktop environment
-# replacement, and external bar showing the time, the battery percentage
-# and more system info would be great to have. I have however abandoned
-# polybar in favor of a heavily modified modeline, this offers me more
-# space on the screen and better integration.
-
 One modeline-related setting that is missing and is instead placed at
 the bottom is =diminish=.
 
@@ -65,12 +59,17 @@ the bottom is =diminish=.
         (setq spaceline-buffer-encoding-abbrev-p nil)
         (setq spaceline-line-column-p t)
         (setq spaceline-line-p t)
-        
+
         ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
         ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
         ;; (setq powerline-default-separator (quote wave))
         ;; (setq powerline-default-dsparator-dir '(right . left))
-        (spaceline-spacemacs-theme))
+        (spaceline-spacemacs-theme)
+        (spaceline-toggle-flycheck-info-off)
+        (spaceline-toggle-flycheck-error-off)
+        (spaceline-toggle-flycheck-warning-off)
+        (spaceline-toggle-version-control-on))
+      
       (use-package spaceline-all-the-icons
         :ensure t
         :after spaceline
@@ -645,8 +644,9 @@ Although Org mode ships with Emacs, the latest version can be installed external
 (use-package org
   :defer t
   :ensure org-plus-contrib
-  :config (eval-after-load "org"
-            '(require 'ox-md nil t)))
+  :config (progn (eval-after-load "org"
+                   '(require 'ox-md nil t))
+                 (setq org-support-shift-select 'always)))
 #+END_SRC
 
 On Org mode version 9 I wasn't able to execute source blocks out of the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to remove the .elc files from the package directory:
@@ -1163,14 +1163,6 @@ We'll also need to ~(require 'multiple-cusors)~ because of [[https://github.com/
          ("s-d"         . mc/mark-all-dwim)))
 #+end_src
 
-** Olivetti
-
-#+begin_src emacs-lisp
-(use-package olivetti
-  :ensure t
-  :bind ("s-<f6>" . olivetti-mode))
-#+end_src
-
 ** Perspective
 
 Workspaces in Emacs.
@@ -1545,6 +1537,12 @@ Not using this right now.
 #+end_src
 
 * Languages
+** Generically useful programming utilities
+   #+begin_src emacs-lisp
+(use-package yatemplate
+  :defer t
+  :ensure t)   
+   #+end_src
 ** C/Java
 
 I don't like the default way that Emacs handles indentation. For instance,
@@ -1724,6 +1722,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 ** Hashicorp Configuration Language
 #+BEGIN_SRC emacs-lisp
 (use-package hcl-mode
+  :defer t
   :ensure t)
 #+END_SRC
 
@@ -1822,6 +1821,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (use-package nim-mode
   :ensure t)
    #+end_src
+
 * Misc
 ** Display Time
 
