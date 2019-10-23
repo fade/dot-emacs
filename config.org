@@ -618,6 +618,7 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
 (setq auto-revert-verbose nil)
 #+end_src
 
+
 * Recentf
 
 #+begin_src emacs-lisp
@@ -1677,7 +1678,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (setq inferior-lisp-program "/usr/local/bin/sbcl")))
 
 (use-package sly-asdf
-  ;; :load-path "~/SourceCode/lisp/sly-asdf"
+  :load-path "~/SourceCode/lisp/sly-asdf"
   :ensure t
   :after sly)
 
