@@ -56,7 +56,7 @@ the bottom is =diminish=.
         :ensure t
         :config
         (require 'spaceline-config)
-        (setq spaceline-buffer-encoding-abbrev-p nil)
+        (setq spaceline-buffer-encoding-abbrev-p t)
         (setq spaceline-line-column-p t)
         (setq spaceline-line-p t)
 
@@ -477,7 +477,6 @@ match the same one on macOS.
       (message "Oh dear... you're using Windows. :("))))
 #+END_SRC
 
-
 * Projectile
 Projectile is an awesome project manager, mostly because it recognizes
 directories with a =.git= directory as projects and helps you manage
@@ -617,7 +616,6 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 #+end_src
-
 
 * Recentf
 
@@ -973,29 +971,36 @@ This package displays function signatures in the mode line.
 
 ** Company
 #+begin_src emacs-lisp
-  (use-package company
-    :ensure t
-    :diminish company-mode
-    ;:bind (:map company-mode-map
-    ;            (("C-n" . company-select-next)
-    ;             ("C-p" . company-select-previous)
-    ;             ("C-d" . company-show-doc-buffer)
-    ;             ("M-." . company-show-location)))
-    :config
-    (progn
-      ;; less than this and it disrupts typing when you aren't interested in completion.
-      (setq company-idle-delay 0.3)
-      (setq company-minimize-prefix-length 2)
-      ;; company completion everywhere.
-      (add-hook 'after-init-hook 'global-company-mode)
-      (with-eval-after-load 'company
-        (define-key company-active-map (kbd "M-n") nil)
-        (define-key company-active-map (kbd "M-p") nil)
-        (define-key company-active-map (kbd "C-n") #'company-select-next)
-        (define-key company-active-map (kbd "C-p") #'company-select-previous)
-        (define-key company-active-map (kbd "SPC") #'company-abort))))
+(use-package company
+  :ensure nil
+  :diminish company-mode
+                                        ;:bind (:map company-mode-map
+                                        ;            (("C-n" . company-select-next)
+                                        ;             ("C-p" . company-select-previous)
+                                        ;             ("C-d" . company-show-doc-buffer)
+                                        ;             ("M-." . company-show-location)))
+  ;; :config
+  ;; (progn
+  ;;   ;; less than this and it disrupts typing when you aren't interested in completion.
+  ;;   (setq company-idle-delay 0.3)
+  ;;   (setq company-minimize-prefix-length 2)
+  ;;   ;; company completion everywhere.
+  ;;   (add-hook 'after-init-hook 'global-company-mode)
+  ;;   (with-eval-after-load 'company
+  ;;     (define-key company-active-map (kbd "M-n") nil)
+  ;;     (define-key company-active-map (kbd "M-p") nil)
+  ;;     (define-key company-active-map (kbd "C-n") #'company-select-next)
+  ;;     (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  ;;     (define-key company-active-map (kbd "SPC") #'company-abort)
+  )
 
-#+end_src   
+#+end_src
+** flycheck
+   #+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t)
+   
+   #+end_src
 ** undotree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
@@ -1092,22 +1097,6 @@ No more juggling windows after commiting. It's magit bliss.
 (use-package expand-region
   :ensure t
   :bind ("C-@" . er/expand-region))
-#+end_src
-
-** Flycheck
-
-Still need to set up hooks so that flycheck automatically runs in
-python mode, etc. js2-mode is already really good for the syntax
-checks, so I probably don't need the jshint checks with flycheck for
-it.
-
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :defer 10
-  :config (setq flycheck-html-tidy-executable "tidy")
-  :init (progn
-          global-flycheck-mode))
 #+end_src
 
 *** Linter setups
@@ -1697,6 +1686,15 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (use-package sly-quicklisp
   :ensure t
   :after sly)
+
+(use-package helm-sly
+  :ensure t
+  :after sly
+  :config
+  (progn
+    (global-helm-sly-mode t)
+    (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
+    (setq helm-completion-in-region-fuzzy-match t)))
 #+end_src
 
 *** Paredit
