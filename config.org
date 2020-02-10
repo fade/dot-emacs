@@ -1595,7 +1595,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
   (progn
     (setq sly-lisp-implementations
           '((sbcl ("/usr/local/bin/sbcl"))
-            (ccl ("/usr/local/bin/ccl"))
+            (ccl ("/usr/bin/ccl"))
             ;; (ccl64 ("/usr/local/bin/ccl64"))
             (abcl ("/usr/local/src/abcl/abcl"))
             (clisp ("/usr/bin/clisp"))
