@@ -266,7 +266,9 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
-             '(font . "Envy Code R"))
+             ;; '(font . (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal))
+             '(font . "Envy Code R-14")
+             )
 #+end_src
 
 * Sane defaults
@@ -590,7 +592,7 @@ interstitial space where work goes to die.
    
    I like me some searching, the default search is very meh. In emacs,
 you mostly use search to get around your buffer, much like with avy,
-but sometimes it doesn't hurt to search for entire words or mode,
+but sometimes it doesn't hurt to search for entire words or modes,
 swiper makes sure this is more efficient.
 
 #+BEGIN_SRC emacs-lisp
@@ -974,25 +976,36 @@ This package displays function signatures in the mode line.
 (use-package company
   :ensure nil
   :diminish company-mode
-                                        ;:bind (:map company-mode-map
-                                        ;            (("C-n" . company-select-next)
-                                        ;             ("C-p" . company-select-previous)
-                                        ;             ("C-d" . company-show-doc-buffer)
-                                        ;             ("M-." . company-show-location)))
-  ;; :config
-  ;; (progn
-  ;;   ;; less than this and it disrupts typing when you aren't interested in completion.
-  ;;   (setq company-idle-delay 0.3)
-  ;;   (setq company-minimize-prefix-length 2)
-  ;;   ;; company completion everywhere.
-  ;;   (add-hook 'after-init-hook 'global-company-mode)
+  :bind (:map company-mode-map
+              (("C-n" . company-select-next)
+               ("C-p" . company-select-previous)
+               ("C-d" . company-show-doc-buffer)
+               ("M-." . company-show-location)))
+  :config
+  (progn
+    ;; less than this and it disrupts typing when you aren't interested in completion.
+    (setq company-idle-delay 0.3)
+    (setq company-minimize-prefix-length 2)
+    ;; company completion everywhere.
+    (add-hook 'after-init-hook 'global-company-mode)
+    (require 'color)
+    
+    (let ((bg (face-attribute 'default :background)))
+      (custom-set-faces
+       `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+       `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+       `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+       `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+       `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))))
+
+  
   ;;   (with-eval-after-load 'company
   ;;     (define-key company-active-map (kbd "M-n") nil)
   ;;     (define-key company-active-map (kbd "M-p") nil)
   ;;     (define-key company-active-map (kbd "C-n") #'company-select-next)
   ;;     (define-key company-active-map (kbd "C-p") #'company-select-previous)
   ;;     (define-key company-active-map (kbd "SPC") #'company-abort)
-  )
+  ;; )
 
 #+end_src
 ** flycheck
@@ -1022,12 +1035,14 @@ This package displays function signatures in the mode line.
                 helm-M-x-fuzzy-match t)
           (helm-mode))
   
-  :bind (("C-c h" . helm-command-prefix)
-         ("C-x b" . helm-mini)
-         ("C-x C-b" . 'helm-buffers-list)
-         ("C-`" . helm-resume)
-         ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files))) 
+  :bind ((:map helm-map
+               ("<tab>" . helm-execute-persistent-action)
+               ("C-c h" . helm-command-prefix)
+               ("C-x b" . helm-mini)
+               ("C-x C-b" . 'helm-buffers-list)
+               ("C-`" . helm-resume)))
+  :bind*   (("M-x" . helm-M-x)
+            ("C-x C-f" . helm-find-files))) 
 
 (use-package helm-ag
   :defer 10
@@ -1041,8 +1056,24 @@ This package displays function signatures in the mode line.
    '(helm-ag-insert-at-point 'symbol)
    '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
 
+  
 #+end_src
 
+** Auto Complete
+Helm is not a good autocomplete interface in an intellisense ...
+sense. Autocomplete is better.
+#+begin_src emacs-lisp
+(use-package auto-complete
+  :ensure t
+  :bind (:map ac-menu-map
+              ("C-n" . ac-next)
+              ("C-p" . ac-previous))
+  :config
+  (setq ac-auto-start 1
+        ac-auto-show-menu 0.1
+        ac-use-menu-map t))
+
+#+end_src
 ** Magit
 
 A great interface for git projects. It's much more pleasant to use
@@ -1611,7 +1642,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (setq inferior-lisp-program "/usr/local/bin/sbcl")))
 
 (use-package sly-asdf
-  :load-path "~/SourceCode/lisp/sly-asdf"
+  ;; :load-path "~/SourceCode/lisp/sly-asdf"
   :ensure t
   :after sly)
 
@@ -1631,14 +1662,26 @@ Luckily, I can modify the way Emacs formats code with this configuration.
   :ensure t
   :after sly)
 
-(use-package helm-sly
+(use-package ac-sly
   :ensure t
-  :after sly
-  :config
-  (progn
-    (global-helm-sly-mode t)
-    (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
-    (setq helm-completion-in-region-fuzzy-match t)))
+  :after sly)
+
+(use-package sly-repl-ansi-color
+  :ensure t
+  :after sly)
+
+;; (use-package ac-helm
+;;   :ensure t
+;;   :after sly)
+
+;; (use-package helm-sly
+;;   :ensure t
+;;   :after sly
+;;   :config
+;;   (progn
+;;     (global-helm-sly-mode t)
+;;     (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
+;;     (setq helm-completion-in-region-fuzzy-match t)))
 #+end_src
 
 *** Paredit
