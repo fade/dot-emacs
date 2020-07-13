@@ -1271,23 +1271,19 @@ Integrates with IPython.
 #+end_src
 
 ** Racket
-
-Starting to use Racket now, mainly for programming paradigms class,
-though I'm looking forward to some "REPL-driven development" whenever
-I get the chance.
-
+   Not using Racket much any more. When I do, drracket is sufficient.
 #+begin_src emacs-lisp
-(use-package racket-mode
-  :ensure t
-  :commands racket-mode
-  :config
-  (setq racket-smart-open-bracket-enable t))
+;; (use-package racket-mode
+;;   :ensure t
+;;   :commands racket-mode
+;;   :config
+;;   (setq racket-smart-open-bracket-enable t))
 
-(use-package geiser
-  :ensure t
-  :defer t
-  :config
-  (setq geiser-default-implementation '(racket)))
+;; (use-package geiser
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (setq geiser-default-implementation '(racket)))
 #+end_src
 
 ** Restclient
