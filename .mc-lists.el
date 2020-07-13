@@ -6,6 +6,8 @@
         TeX-insert-backslash
         TeX-insert-dollar
         TeX-insert-sub-or-superscript
+        ace-jump-mode
+        ace-jump-move
         beginning-of-visual-line
         c-electric-colon
         c-electric-delete-forward
@@ -16,9 +18,11 @@
         delete-horizontal-space
         electric-newline-and-maybe-indent
         end-of-visual-line
+        handle-switch-frame
         helm-confirm-and-exit-minibuffer
         indent-for-tab-command
         kill-visual-line
+        make-frame-command
         mark-whole-buffer
         markdown-insert-bold
         mc/mark-next-line-like-this
@@ -47,4 +51,5 @@
         markdown-exdent-or-delete
         mouse-drag-vertical-line
         mouse-select-window
+        sly-interactive-eval
         ))

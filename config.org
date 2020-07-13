@@ -223,7 +223,7 @@ lot cooler than you may think.
                       :box nil)
   (set-face-attribute `mode-line nil
                       :box nil)
-  (set-cursor-color "springgreen"))
+  (set-cursor-color "yellow"))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1026,14 +1026,27 @@ This package displays function signatures in the mode line.
       (define-key company-active-map (kbd "C-n") #'company-select-next)
       (define-key company-active-map (kbd "C-p") #'company-select-previous)
       (define-key company-active-map (kbd "SPC") #'company-abort))))
-
 #+end_src
+
 ** flycheck
-   #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :init (global-flycheck-mode))
+
+(use-package flycheck-cython
+  :ensure t
+  :after flycheck)
+
+(use-package flycheck-clojure
+  :ensure t
+  :init (flycheck-clojure-setup))
+
+(use-package flycheck-nim
+  :ensure t
+  :after flycheck)
+#+end_src
    
-   #+end_src
 ** undotree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
@@ -1079,21 +1092,6 @@ This package displays function signatures in the mode line.
   
 #+end_src
 
-** Auto Complete
-Helm is not a good autocomplete interface in an intellisense ...
-sense. Autocomplete is better.
-#+begin_src emacs-lisp
-(use-package auto-complete
-  :ensure t
-  :bind (:map ac-menu-map
-              ("C-n" . ac-next)
-              ("C-p" . ac-previous))
-  :config
-  (setq ac-auto-start 1
-        ac-auto-show-menu 0.1
-        ac-use-menu-map t))
-
-#+end_src
 ** Magit
 
 A great interface for git projects. It's much more pleasant to use
