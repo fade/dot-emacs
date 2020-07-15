@@ -1628,7 +1628,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 
 ** Common Lisp
 *** SLY
-    Still looking at this.
+    Jury is in. Sly is superior to Slime.
     
 #+begin_src emacs-lisp
 (use-package sly
