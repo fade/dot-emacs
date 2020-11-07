@@ -1028,6 +1028,13 @@ This package displays function signatures in the mode line.
       (define-key company-active-map (kbd "SPC") #'company-abort))))
 #+end_src
 
+** CSV mode
+   #+begin_src emacs-lisp
+(use-package csv-mode
+  :ensure t)
+
+   #+end_src
+
 ** flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
