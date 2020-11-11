@@ -15,7 +15,7 @@
 
 ;; (defun fa/tangle-file (file)
 ;;   "Given an 'org-mode' FILE, tangle the source code."
-;;   (interactive "fOrg File: ")
+;;   (interactive "Org File: ")
 ;;   (find-file file)   ;;  (expand-file-name file \"$DIR\")
 ;;   (org-babel-tangle)
 ;;   (kill-buffer))
@@ -85,10 +85,10 @@
 ;;; Set up package
 (require 'package)
 
-(setq package-archives '(("ELPA"  . "http://tromey.com/elpa/")
-			 ("gnu"   . "http://elpa.gnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("org"   . "https://orgmode.org/elpa/")
+                         ("ELPA"  . "http://tromey.com/elpa/")
+			 ("gnu"   . "http://elpa.gnu.org/packages/")))
 
 (when (boundp 'package-pinned-packages)
   (setq package-pinned-packages

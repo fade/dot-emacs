@@ -14,7 +14,7 @@
   configuration.
 
   Pieces of this configuration have been taken from Magnar Sveen,
-  Sascha Chua, Uncle Dave, and a host of others referenced in various
+  Sascha Chua, Uncle Dave, [[https://github.com/daviwil/emacs-from-scratch][David Wilson]] and a host of others referenced in various
   places on the internet, but primarily [[http://www.emacswiki.org][Emacs Wiki]].
   
 * Personal Information
@@ -24,117 +24,18 @@
       user-mail-address "fade@deepsky.com")
 #+end_src
 
-* Modeline
-  
-The modeline is the heart of emacs, it offers information at all
-times, it's persistent and verbose enough to gain a full understanding
-of modes and states you are in.
-
-One modeline-related setting that is missing and is instead placed at
-the bottom is =diminish=.
-
-** All the icons!
-   
-   #+begin_src emacs-lisp
-(use-package all-the-icons
-  :ensure t)
-   #+end_src
-   
-** Spaceline!
-   I may not use spacemacs, since I do not like evil-mode and find
-   spacemacs incredibly bloated and slow, however it would be stupid not
-   to acknowledge the best parts about it, the theme and their modified
-   powerline setup.
-
-   This enables spaceline, it looks better and works very well with my
-   theme of choice.
-
-#+BEGIN_SRC emacs-lisp
-(if window-system
-    (progn
-      (use-package spaceline
-        :ensure t
-        :config
-        (require 'spaceline-config)
-        (setq spaceline-buffer-encoding-abbrev-p t)
-        (setq spaceline-line-column-p t)
-        (setq spaceline-line-p t)
-
-        ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
-        ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-        ;; (setq powerline-default-separator (quote wave))
-        ;; (setq powerline-default-dsparator-dir '(right . left))
-        (spaceline-spacemacs-theme)
-        (spaceline-toggle-flycheck-info-off)
-        (spaceline-toggle-flycheck-error-off)
-        (spaceline-toggle-flycheck-warning-off)
-        (spaceline-toggle-version-control-on))
-      
-      (use-package spaceline-all-the-icons
-        :ensure t
-        :after spaceline
-        :config
-        (spaceline-all-the-icons-theme))))
-#+END_SRC
-
-** No separator!
-#+BEGIN_SRC emacs-lisp
-  (setq powerline-default-separator nil)
-#+END_SRC
-
-** Cursor position
-
-   Show the current line and column for your cursor. We are not going to
-have =relative-linum-mode= in every major mode, so this is useful.
-
-#+BEGIN_SRC emacs-lisp
-  (setq line-number-mode t)
-  (setq column-number-mode t)
-#+END_SRC
-
-** Clock
-If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
-
-*** Time format
-#+BEGIN_SRC emacs-lisp
-  (setq display-time-24hr-format t)
-  (setq display-time-format "%H:%M - %d %B %Y")
-#+END_SRC
-
-*** Enabling the mode
-This turns on the clock globally.
-#+BEGIN_SRC emacs-lisp
-  (display-time-mode 1)
-#+END_SRC
-
-** Battery indicator
-A package called =fancy-battery= will be used if we are in GUI emacs,
-otherwise the built in battery-mode will be used. Fancy battery has
-very odd colors if used in the tty, hence us disabling it.
-#+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    :ensure t
-    :config
-      (setq fancy-battery-show-percentage t)
-      (setq battery-update-interval 15)
-      (if window-system
-        (fancy-battery-mode)
-        (display-battery-mode)))
-#+END_SRC
-
-** System monitor
-#+BEGIN_SRC emacs-lisp
-(use-package symon
-  :ensure t
-  :bind
-  ("s-h" . symon-mode))
-#+END_SRC   
-
 * Theme
 ** Emacs' startup screen is naf
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
+** Testing the themes from Doom emacs
+
+   #+begin_src emacs-lisp
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config (load-theme 'doom-dracula t))
+   #+end_src
 
 ** Colours On Terminal
    custom colour themes generally enhance my experience of writing
@@ -260,6 +161,123 @@ lot cooler than you may think.
                       :background (face-background 'highlight))
   (set-face-background hl-line-face "gray10"))
 #+END_SRC
+* Modeline
+  
+The modeline is the heart of emacs, it offers information at all
+times, it's persistent and verbose enough to gain a full understanding
+of modes and states you are in.
+
+One modeline-related setting that is missing and is instead placed at
+the bottom is =diminish=.
+
+** All the icons!
+   
+   #+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t)
+   #+end_src
+   
+** Doom Modeline
+
+The Doom modeline is by default a little less garish than the
+spaceline modeline. Anyhow, I'm trying it out. 
+
+   #+begin_src emacs-lisp
+(use-package doom-modeline
+  :ensure t
+  :config (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
+   #+end_src
+
+** Spaceline!
+   I may not use spacemacs, since I do not like evil-mode and find
+   spacemacs incredibly bloated and slow, however it would be stupid not
+   to acknowledge the best parts about it, the theme and their modified
+   powerline setup.
+
+   This enables spaceline, it looks better and works very well with my
+   theme of choice.
+
+   #+BEGIN_SRC emacs-lisp
+;; (if window-system
+;;     (progn
+;;       (use-package spaceline
+;;         :ensure t
+;;         :config
+;;         (require 'spaceline-config)
+;;         (setq spaceline-buffer-encoding-abbrev-p t)
+;;         (setq spaceline-line-column-p t)
+;;         (setq spaceline-line-p t)
+
+;;         ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
+;;         ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
+;;         ;; (setq powerline-default-separator (quote wave))
+;;         ;; (setq powerline-default-dsparator-dir '(right . left))
+;;         (spaceline-spacemacs-theme)
+;;         (spaceline-toggle-flycheck-info-off)
+;;         (spaceline-toggle-flycheck-error-off)
+;;         (spaceline-toggle-flycheck-warning-off)
+;;         (spaceline-toggle-version-control-on))
+      
+;;       (use-package spaceline-all-the-icons
+;;         :ensure t
+;;         :after spaceline
+;;         :config
+;;         (spaceline-all-the-icons-theme))))
+   #+END_SRC
+   
+** No separator!
+ #+BEGIN_SRC emacs-lisp
+ (setq powerline-default-separator nil)
+ #+END_SRC
+
+** Cursor position
+
+   Show the current line and column for your cursor. We are not going to
+have =relative-linum-mode= in every major mode, so this is useful.
+
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+#+END_SRC
+
+*** Enabling the mode
+This turns on the clock globally.
+#+BEGIN_SRC emacs-lisp
+  (display-time-mode 1)
+#+END_SRC
+
+** Battery indicator
+A package called =fancy-battery= will be used if we are in GUI emacs,
+otherwise the built in battery-mode will be used. Fancy battery has
+very odd colors if used in the tty, hence us disabling it.
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    :ensure t
+    :config
+      (setq fancy-battery-show-percentage t)
+      (setq battery-update-interval 15)
+      (if window-system
+        (fancy-battery-mode)
+        (display-battery-mode)))
+#+END_SRC
+
+** System monitor
+#+BEGIN_SRC emacs-lisp
+(use-package symon
+  :ensure t
+  :bind
+  ("s-h" . symon-mode))
+#+END_SRC   
 
 * Font
 And here's how we tell Emacs to use the font we want to use.
@@ -270,6 +288,18 @@ And here's how we tell Emacs to use the font we want to use.
              '(font . "Envy Code R-14")
              )
 #+end_src
+
+* Which Key
+[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
+
+  #+begin_src emacs-lisp
+(use-package which-key
+  :ensure t
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+  #+end_src
 
 * Sane defaults
 
@@ -658,6 +688,39 @@ remove the .elc files from the package directory:
 rm ${ORG_DIR}/*.elc
 #+END_SRC
 
+** Better Font Faces
+
+The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
+
+#+begin_src emacs-lisp
+
+  (defun efs/org-font-setup ()
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+    ;; Set faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+
+#+end_src
 ** Org activation bindings
 
 Set up some global key bindings that integrate with Org Mode features.
