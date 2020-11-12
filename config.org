@@ -288,10 +288,13 @@ And here's how we tell Emacs which font we want.
 ;;              ;; '(font . (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal))
 ;;              '(font . "Envy Code R-14")
 ;;              )
-(set-face-attribute 'default nil :font "Envy Code R" :height 140)
-(set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
-;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+(if window-system
+    (progn
+      (set-face-attribute 'default nil :font "Envy Code R" :height 140)
+      (set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
+      ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+      (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
+
 
 #+end_src
 
@@ -815,8 +818,8 @@ speed keys in Org mode]].
 
 #+begin_src emacs-lisp
 (defun efs/org-mode-visual-fill ()
-  (setq visual-fill-collumn-width 100
-        visual-fill-collumn-center-text t)
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
@@ -929,7 +932,6 @@ exporting to html sometimes (always?) requires htmlize
 (use-package htmlize
   :ensure t)
 #+END_SRC
-
 
 * Tramp
 
