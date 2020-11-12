@@ -186,7 +186,7 @@ spaceline modeline. Anyhow, I'm trying it out.
 (use-package doom-modeline
   :ensure t
   :config (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  :custom ((doom-modeline-height 12)))
    #+end_src
 
 ** Spaceline!
@@ -280,13 +280,19 @@ very odd colors if used in the tty, hence us disabling it.
 #+END_SRC   
 
 * Font
-And here's how we tell Emacs to use the font we want to use.
+And here's how we tell Emacs which font we want.
 
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist
-             ;; '(font . (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal))
-             '(font . "Envy Code R-14")
-             )
+
+;; (add-to-list 'default-frame-alist
+;;              ;; '(font . (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal))
+;;              '(font . "Envy Code R-14")
+;;              )
+(set-face-attribute 'default nil :font "Envy Code R" :height 140)
+(set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
+;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+
 #+end_src
 
 * Which Key
@@ -661,9 +667,7 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
 
 * Org mode
 
-Truly the way to [[http://orgmode.org/][live life in plain text]]. I mainly use it to take
-notes and save executable source blocks. I'm also starting to make use
-of its agenda, timestamping, and capturing features.
+Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable.
 
 It goes without saying that I also use it to manage my Emacs config.
 
@@ -672,12 +676,26 @@ It goes without saying that I also use it to manage my Emacs config.
 Although Org mode ships with Emacs, the latest version can be installed externally. The configuration here follows the [[http://orgmode.org/elpa.html][Org mode ELPA installation instructions]].
 
 #+BEGIN_SRC emacs-lisp
+
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
 (use-package org
+  :hook (org-mode . efs/org-mode-setup)
   :defer t
   :ensure org-plus-contrib
-  :config (progn (eval-after-load "org"
-                   '(require 'ox-md nil t))
-                 (setq org-support-shift-select 'always)))
+  :config
+  (setq org-ellipsis " ▾")
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
+  (progn (eval-after-load "org"
+           '(require 'ox-md nil t))
+         (setq org-support-shift-select 'always)))
+
 #+END_SRC
 
 On Org mode version 9 I wasn't able to execute source blocks out of
@@ -693,7 +711,6 @@ rm ${ORG_DIR}/*.elc
 The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
 
 #+begin_src emacs-lisp
-
   (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
     (font-lock-add-keywords 'org-mode
@@ -720,7 +737,9 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
+  (efs/org-font-setup)
 #+end_src
+
 ** Org activation bindings
 
 Set up some global key bindings that integrate with Org Mode features.
@@ -790,13 +809,36 @@ speed keys in Org mode]].
 (setq org-highlight-latex-and-related '(latex script entities))
 #+END_SRC
 
+** Center Org Buffers
+
+[[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] will center =org-mode= buffers. This gives a more pleasing effect when writing long documents in natural languages.
+
+#+begin_src emacs-lisp
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-collumn-width 100
+        visual-fill-collumn-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :after org
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
+#+end_src
+
 ** Org Bullets
 Makes it all look a bit nicer, I hate looking at asterisks.
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+  ;; (use-package org-bullets
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+
+(use-package org-bullets
+  :ensure t
+  :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+END_SRC
 
 ** Org tags
@@ -887,6 +929,7 @@ exporting to html sometimes (always?) requires htmlize
 (use-package htmlize
   :ensure t)
 #+END_SRC
+
 
 * Tramp
 
