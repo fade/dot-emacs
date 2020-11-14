@@ -680,24 +680,27 @@ Although Org mode ships with Emacs, the latest version can be installed external
 
 #+BEGIN_SRC emacs-lisp
 
-(defun efs/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
+  (defun efs/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
 
-(use-package org
-  :hook (org-mode . efs/org-mode-setup)
-  :defer t
-  :ensure org-plus-contrib
-  :config
-  (setq org-ellipsis " ▾")
-  (setq org-agenda-start-with-log-mode t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
-
-  (progn (eval-after-load "org"
-           '(require 'ox-md nil t))
-         (setq org-support-shift-select 'always)))
+  (use-package org
+    :hook (org-mode . efs/org-mode-setup)
+    :defer t
+    :ensure org-plus-contrib
+    :custom
+    (org-ellipsis " ▾")
+    (org-agenda-start-with-log-mode t)
+    (org-log-done 'time)
+    (org-log-into-drawer t)
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+    :config
+    (progn (eval-after-load "org"
+             '(require 'ox-md nil t))
+           (setq org-support-shift-select 'always)))
 
 #+END_SRC
 
@@ -755,13 +758,18 @@ Set up some global key bindings that integrate with Org Mode features.
 
 *** Org agenda
 
-Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]].
+Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]]. This form will add the agenda file to the org-agenda-files list if the file actually exists at the place indicated. Remember to touch the file if you change this list.
 
 #+begin_src emacs-lisp
-(setq org-agenda-files
-      (delq nil
-            (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/Agenda/personal-agenda.org"))))
+  (setq org-agenda-files
+        (delq nil
+              (mapcar (lambda (x) (and (file-exists-p x) x))
+                      '("~/Dropbox/OrgFiles/personal-agenda.org"
+                        "~/Dropbox/Notes/notes.org"
+                        "~/Dropbox/OrgFiles/todos.org"
+                        "~/Dropbox/OrgFiles/Tasks.org"
+                        "~/Dropbox/OrgFiles/people.org"
+                        "~/Dropbox/OrgFiles/Archive.org"))))
 #+end_src
 
 *** Org capture
@@ -774,20 +782,21 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 *** Org Roam
 #+begin_src emacs-lisp
 
-(use-package org-roam
-  :ensure t
-  :after org)
+  (use-package org-roam
+    :ensure t
+    :after org)
 
-(use-package  org-roam-bibtex
-  :ensure t
-  :after org-roam)
-(use-package org-roam-server
-  :ensure t
-  :after org-roam)
+  (use-package company-org-roam
+    :ensure t
+    :after org)
 
-(use-package company-org-roam
-  :ensure t
-  :after org)
+  (use-package  org-roam-bibtex
+    :ensure t
+    :after org-roam)
+
+  (use-package org-roam-server
+    :ensure t
+    :after org-roam)
 
 #+end_src
 
@@ -812,6 +821,15 @@ speed keys in Org mode]].
 (setq org-highlight-latex-and-related '(latex script entities))
 #+END_SRC
 
+#+begin_src emacs-lisp
+  (setq org-refile-targets
+    '(("Archive.org" :maxlevel . 1)
+      ("Tasks.org" :maxlevel . 1)))
+
+  ;; Save Org buffers after refiling!
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+end_src
+
 ** Center Org Buffers
 
 [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] will center =org-mode= buffers. This gives a more pleasing effect when writing long documents in natural languages.
@@ -829,13 +847,9 @@ speed keys in Org mode]].
 #+end_src
 
 ** Org Bullets
-Makes it all look a bit nicer, I hate looking at asterisks.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package org-bullets
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode-setup= configuration function at the top of this file.
 
+#+BEGIN_SRC emacs-lisp
 (use-package org-bullets
   :ensure t
   :after org
@@ -851,9 +865,104 @@ I'd rather have the tags align horizontally with the header. 45 is a
 good column number to do that.
 
 #+begin_src emacs-lisp
-(setq org-tags-column 45)
+  (setq org-tags-column 45)
+
+  (setq org-tag-alist
+        '((:startgroup)
+                                          ; Put mutually exclusive tags here
+          (:endgroup)
+          ("@errand" . ?E)
+          ("@home" . ?H)
+          ("@work" . ?W)
+          ("agenda" . ?a)
+          ("planning" . ?p)
+          ("publish" . ?P)
+          ("batch" . ?b)
+          ("note" . ?n)
+          ("idea" . ?i)))
+
+  ;; Configure custom agenda views
+  (setq org-agenda-custom-commands
+        '(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))
+            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+          ("n" "Next Tasks"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ("W" "Work Tasks" tags-todo "+work-email")
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))
+
+          ("w" "Workflow Status"
+           ((todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting on External")
+                   (org-agenda-files org-agenda-files)))
+            (todo "REVIEW"
+                  ((org-agenda-overriding-header "In Review")
+                   (org-agenda-files org-agenda-files)))
+            (todo "PLAN"
+                  ((org-agenda-overriding-header "In Planning")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "BACKLOG"
+                  ((org-agenda-overriding-header "Project Backlog")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "READY"
+                  ((org-agenda-overriding-header "Ready for Work")
+                   (org-agenda-files org-agenda-files)))
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "COMPLETED"
+                  ((org-agenda-overriding-header "Completed Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "CANC"
+                  ((org-agenda-overriding-header "Cancelled Projects")
+                   (org-agenda-files org-agenda-files)))))))
 #+end_src
 
+** Org Capture Templates
+#+begin_src emacs-lisp
+  (use-package doct
+    :ensure t)
+#+end_src
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+      `(("t" "Tasks / Projects")
+        ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
+             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+        ("j" "Journal Entries")
+        ("jj" "Journal" entry
+             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+             :clock-in :clock-resume
+             :empty-lines 1)
+        ("jm" "Meeting" entry
+             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+             :clock-in :clock-resume
+             :empty-lines 1)
+
+        ("w" "Workflows")
+        ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+        ;; ("m" "Metrics Capture")
+        ;; ("mw" "Weight" table-line (file+headline "~/Dropbox/OrgFiles/Metrics.org" "Weight")
+        ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+        ))
+#+end_src
 ** Org babel languages
 
 #+begin_src emacs-lisp
@@ -899,7 +1008,7 @@ consistent as it doesn't pad source blocks with leading spaces.
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
       org-src-strip-leading-and-trailing-blank-lines t
-      org-src-preserve-indentation t
+      ;; org-src-preserve-indentation t
       org-src-tab-acts-natively t)
 #+end_src
 
