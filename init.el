@@ -1,42 +1,32 @@
 
 ;; (setq gc-cons-threshold 400000000)
 
-;;; utilities to untangle many org files at load time. With thanks to
-;;; [[https://github.com/howardabrams/dot-files.git][Howard Abrams]]
+;;; Set up package
+(require 'package)
 
-;; (require 'org)
-;; (require 'ob)
-;; (require 'ob-tangle)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("org"   . "https://orgmode.org/elpa/")
+                         ("ELPA"  . "http://tromey.com/elpa/")
+			 ("gnu"   . "http://elpa.gnu.org/packages/")))
 
-;; (defun fa/build-dot-files ()
-;;   "Compile and place all init files in this directory into their
-;;   respective places"
-;;   )
+(when (boundp 'package-pinned-packages)
+  (setq package-pinned-packages
+        '((org-plus-contrib . "org"))))
+(package-initialize)
 
-;; (defun fa/tangle-file (file)
-;;   "Given an 'org-mode' FILE, tangle the source code."
-;;   (interactive "Org File: ")
-;;   (find-file file)   ;;  (expand-file-name file \"$DIR\")
-;;   (org-babel-tangle)
-;;   (kill-buffer))
+;;; Bootstrap use-package
 
+;; Install use-package if it's not already installed.
+;; use-package is used to configure the rest of the packages.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; (defun fa/tangle-files (path)
-;;   "Given a directory, PATH, of 'org-mode' files, tangle source code out of all literate programming files."
-;;   (interactive "D")
-;;   (mapc 'fa/tangle-file (fa/get-files path)))
-
-
-;; (defun fa/get-dot-files ()
-;;   "Pull and build latest from the Github repository.  Load the resulting Lisp code."
-;;   (interactive)
-;;   (let ((git-results
-;;          (shell-command (concat "cd " dot-files-src "; git pull"))))
-;;     (if (not (= git-results 0))
-;;         (message "Can't pull the goodness. Pull from git by hand.")
-;;       (load-file (concat dot-files-src "/emacs.d/shell-script-funcs.el"))
-;;       (load-file (concat dot-files-src "/build.el"))
-;;       (require 'init-main))))
+;; From use-package README
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+(setq use-package-verbose t)
 
 ;;; themes need finding.
 (add-to-list 'custom-theme-load-path
@@ -82,32 +72,6 @@
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
 
-;;; Set up package
-(require 'package)
-
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")
-                         ("ELPA"  . "http://tromey.com/elpa/")
-			 ("gnu"   . "http://elpa.gnu.org/packages/")))
-
-(when (boundp 'package-pinned-packages)
-  (setq package-pinned-packages
-        '((org-plus-contrib . "org"))))
-(package-initialize)
-
-;;; Bootstrap use-package
-
-;; Install use-package if it's not already installed.
-;; use-package is used to configure the rest of the packages.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-;; From use-package README
-(eval-when-compile
-  (require 'use-package))
-(require 'bind-key)
-(setq use-package-verbose t)
 
 ;; start the emacs daemon process.
 (server-start)

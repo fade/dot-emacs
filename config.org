@@ -177,18 +177,6 @@ the bottom is =diminish=.
   :ensure t)
    #+end_src
    
-** Doom Modeline
-
-The Doom modeline is by default a little less garish than the
-spaceline modeline. Anyhow, I'm trying it out. 
-
-   #+begin_src emacs-lisp
-(use-package doom-modeline
-  :ensure t
-  :config (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 12)))
-   #+end_src
-
 ** Spaceline!
    I may not use spacemacs, since I do not like evil-mode and find
    spacemacs incredibly bloated and slow, however it would be stupid not
@@ -199,31 +187,31 @@ spaceline modeline. Anyhow, I'm trying it out.
    theme of choice.
 
    #+BEGIN_SRC emacs-lisp
-;; (if window-system
-;;     (progn
-;;       (use-package spaceline
-;;         :ensure t
-;;         :config
-;;         (require 'spaceline-config)
-;;         (setq spaceline-buffer-encoding-abbrev-p t)
-;;         (setq spaceline-line-column-p t)
-;;         (setq spaceline-line-p t)
+     (if window-system
+         (progn
+           (use-package spaceline
+             :ensure t
+             :config
+             (require 'spaceline-config)
+             (setq spaceline-buffer-encoding-abbrev-p t)
+             (setq spaceline-line-column-p t)
+             (setq spaceline-line-p t)
 
-;;         ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
-;;         ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-;;         ;; (setq powerline-default-separator (quote wave))
-;;         ;; (setq powerline-default-dsparator-dir '(right . left))
-;;         (spaceline-spacemacs-theme)
-;;         (spaceline-toggle-flycheck-info-off)
-;;         (spaceline-toggle-flycheck-error-off)
-;;         (spaceline-toggle-flycheck-warning-off)
-;;         (spaceline-toggle-version-control-on))
+             ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
+             ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
+             ;; (setq powerline-default-separator (quote wave))
+             ;; (setq powerline-default-dsparator-dir '(right . left))
+             (spaceline-spacemacs-theme)
+             (spaceline-toggle-flycheck-info-off)
+             (spaceline-toggle-flycheck-error-off)
+             (spaceline-toggle-flycheck-warning-off)
+             (spaceline-toggle-version-control-on))
       
-;;       (use-package spaceline-all-the-icons
-;;         :ensure t
-;;         :after spaceline
-;;         :config
-;;         (spaceline-all-the-icons-theme))))
+           (use-package spaceline-all-the-icons
+             :ensure t
+             :after spaceline
+             :config
+             (spaceline-all-the-icons-theme))))
    #+END_SRC
    
 ** No separator!
@@ -284,17 +272,12 @@ And here's how we tell Emacs which font we want.
 
 #+begin_src emacs-lisp
 
-;; (add-to-list 'default-frame-alist
-;;              ;; '(font . (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal))
-;;              '(font . "Envy Code R-14")
-;;              )
-(if window-system
-    (progn
-      (set-face-attribute 'default nil :font "Envy Code R" :height 140)
-      (set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
-      ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-      (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
-
+  (if window-system
+      (progn
+        (set-face-attribute 'default nil :font "Envy Code R" :height 140)
+        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
+        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
 
 #+end_src
 
@@ -313,6 +296,7 @@ And here's how we tell Emacs which font we want.
 * Sane defaults
 
 #+BEGIN_SRC emacs-lisp
+
 (use-package diminish
   :ensure t)
 
