@@ -52,6 +52,9 @@
       (expand-file-name "site-lisp" user-emacs-directory))
 (setq settings-dir
       (expand-file-name "settings" user-emacs-directory))
+(setq site-org-files
+      (expand-file-name "OrgFiles" "~/Dropbox/"))
+
 
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.zshrc\\'" . sh-mode))
