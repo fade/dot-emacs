@@ -1350,25 +1350,6 @@ No more juggling windows after commiting. It's magit bliss.
     (jump-to-register :magit-fullscreen))
 #+end_src
 
-** Expand region
-
-#+begin_src emacs-lisp
-(use-package expand-region
-  :ensure t
-  :bind ("C-@" . er/expand-region))
-#+end_src
-
-*** Linter setups
-
-Install the HTML5/CSS/JavaScript linters.
-
-#+begin_src sh
-brew tap homebrew/dupes
-brew install tidy
-npm install -g jshint
-npm install -g csslint
-#+end_src
-
 ** Gists
 
 #+BEGIN_SRC emacs-lisp
@@ -1376,17 +1357,6 @@ npm install -g csslint
   :ensure t
   :commands gist-list)
 #+END_SRC
-
-** Macrostep
-
-Macrostep allows you to see what Elisp macros expand to. Learned about
-it from the [[https://www.youtube.com/watch?v%3D2TSKxxYEbII][package highlight talk for use-package]].
-
-#+begin_src emacs-lisp
-(use-package macrostep
-  :ensure t
-  :bind ("H-`" . macrostep-expand))
-#+end_src
 
 ** Markdown mode
 
@@ -1402,14 +1372,14 @@ it from the [[https://www.youtube.com/watch?v%3D2TSKxxYEbII][package highlight t
 We'll also need to ~(require 'multiple-cusors)~ because of [[https://github.com/magnars/multiple-cursors.el/issues/105][an autoload issue]].
 
 #+begin_src emacs-lisp
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->"         . mc/mark-next-like-this)
-         ("C-<"         . mc/mark-previous-like-this)
-         ("C-c C-<"     . mc/mark-all-like-this)
-         ("C-!"         . mc/mark-next-symbol-like-this)
-         ("s-d"         . mc/mark-all-dwim)))
+  (use-package multiple-cursors
+    :ensure t
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+           ("C->"         . mc/mark-next-like-this)
+           ("C-<"         . mc/mark-previous-like-this)
+           ("C-c C-<"     . mc/mark-all-like-this)
+           ("C-!"         . mc/mark-next-symbol-like-this)
+           ("s-d"         . mc/mark-all-dwim)))
 #+end_src
 
 ** Perspective
@@ -1452,30 +1422,21 @@ Integrates with IPython.
   ;;   :defer t
   ;;   :ensure t)
 
+  (use-package jedi
+    :ensure t)
+
+  (use-package company-jedi
+    :after jedi
+    :ensure t)
+
   (use-package elpy
-    :defer t
     :ensure t
     :config
     (setq elpy-rpc-backend "jedi")
     (elpy-use-ipython)  
-    (elpy-enable)) 
-
-  ;; (use-package anaconda-mode
-  ;;   :defer t
-  ;;   :ensure t
-  ;;   :init (progn
-  ;;           (add-hook 'python-mode-hook 'anaconda-mode)))
-
-  ;; (use-package company-anaconda
-  ;;   :defer t
-  ;;   :ensure t
-  ;;   :config (progn
-  ;;             (add-to-list 'company-backends 'company-anaconda)
-  ;;             (eval-after-load "company"
-  ;;               '(add-to-list 'company-backends 'company-anaconda))))
+    (elpy-enable))
 
   (use-package jinja2-mode
-    :defer t
     :ensure t)
 
 #+end_src
@@ -1519,11 +1480,11 @@ http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
 
 
 #+begin_src emacs-lisp
-(use-package smartscan
-  :ensure t
-  :config (global-smartscan-mode 1)
-  :bind (("s-n" . smartscan-symbol-go-forward)
-         ("s-p" . smartscan-symbol-go-backward)))
+  (use-package smartscan
+    :ensure t
+    :config (global-smartscan-mode 1)
+    :bind (("s-n" . smartscan-symbol-go-forward)
+           ("s-p" . smartscan-symbol-go-backward)))
 #+end_src
 
 ** Skewer mode
@@ -1605,22 +1566,21 @@ idle time.
 
 ** Ansible
 #+BEGIN_SRC emacs-lisp
-(use-package ansible
-  :ensure t
-  :defer t
-  :config
-  (use-package ansible-doc
-  :ensure t
-  :defer t)
-  (use-package ansible-vault
+  (use-package ansible
+    :ensure t
+    :defer t
+    :config
+    (use-package ansible-doc
     :ensure t
     :defer t)
-  (use-package company-ansible
-    :ensure t
-    :defer t))
-
-
+    (use-package ansible-vault
+      :ensure t
+      :defer t)
+    (use-package company-ansible
+      :ensure t
+      :defer t))
 #+END_SRC
+
 ** Emmet
 
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
@@ -1841,74 +1801,77 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     Jury is in. Sly is superior to Slime.
     
 #+begin_src emacs-lisp
-(use-package sly
-  ;; :load-path "~/SourceCode/lisp/sly"
-  :defer t
-  :commands sly
-  :bind ("C-c M-o" . sly-mrepl-clear-repl)
-  :init
-  (progn
-    (setq sly-lisp-implementations
-          '((sbcl ("/usr/local/bin/sbcl"))
-            (ccl ("/usr/bin/ccl"))
-            ;; (ccl64 ("/usr/local/bin/ccl64"))
-            (abcl ("/usr/local/src/abcl/abcl"))
-            (clisp ("/usr/bin/clisp"))
-            (ecl ("/usr/local/bin/ecl"))
-            (decl ("/usr/bin/ecl"))
-            (clojure ("/usr/bin/Clojure"))))
-    (setq sly-kill-without-query-p t
-          sly-net-coding-system 'utf-8-unix
-          sly-complete-symbol*-fancy t
-          common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
-  :config
-  (progn
-    (setq inferior-lisp-program "/usr/local/bin/sbcl")))
+  (use-package sly
+    ;; :load-path "~/SourceCode/lisp/sly"
+    :defer t
+    :commands sly
+    :bind ("C-c M-o" . sly-mrepl-clear-repl)
+    :init
+    (progn
+      (setq sly-lisp-implementations
+            '((sbcl ("/usr/local/bin/sbcl"))
+              (ccl ("/usr/bin/ccl"))
+              ;; (ccl64 ("/usr/local/bin/ccl64"))
+              (abcl ("/usr/local/src/abcl/abcl"))
+              (clisp ("/usr/bin/clisp"))
+              (ecl ("/usr/local/bin/ecl"))
+              (decl ("/usr/bin/ecl"))
+              (clojure ("/usr/bin/Clojure"))))
 
-(use-package sly-asdf
-  ;; :load-path "~/SourceCode/lisp/sly-asdf"
-  :ensure t
-  :after sly)
+      (setq sly-kill-without-query-p t
+            sly-net-coding-system 'utf-8-unix
+            sly-complete-symbol*-fancy t
+            common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
 
-(use-package sly-macrostep
-  :ensure t
-  :after sly)
+    :config
+    (progn
+      (setq inferior-lisp-program "/usr/local/bin/sbcl")))
 
-(use-package sly-named-readtables
-  :ensure t
-  :after sly)
+  (use-package sly-asdf
+    ;; :load-path "~/SourceCode/lisp/sly-asdf"
+    :ensure t
+    :after sly)
 
-(use-package sly-repl-ansi-color
-  :ensure t
-  :after sly)
+  (use-package sly-macrostep
+    :ensure t
+    :after sly)
 
-(use-package sly-quicklisp
-  :ensure t
-  :after sly)
+  (use-package sly-named-readtables
+    :ensure t
+    :after sly)
 
-(use-package ac-sly
-  :ensure t
-  :after sly)
+  (use-package sly-repl-ansi-color
+    :ensure t
+    :after sly)
 
-(use-package sly-repl-ansi-color
-  :ensure t
-  :after sly)
+  (use-package sly-quicklisp
+    :ensure t
+    :after sly)
 
-;; (use-package ac-helm
-;;   :ensure t
-;;   :after sly)
+  ;; sly internally integrates company mode, so none of the following are necessary any more.
 
-;; (use-package helm-sly
-;;   :ensure t
-;;   :after sly
-;;   :config
-;;   (progn
-;;     (global-helm-sly-mode t)
-;;     (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
-;;     (setq helm-completion-in-region-fuzzy-match t)))
+  ;; (use-package ac-sly
+  ;;   :ensure t
+  ;;   :after sly)
+
+  ;; (use-package ac-helm
+  ;;   :ensure t
+  ;;   :after sly)
+
+  ;; (use-package helm-sly
+  ;;   :ensure t
+  ;;   :after sly
+  ;;   :config
+  ;;   (progn
+  ;;     (global-helm-sly-mode t)
+  ;;     (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
+  ;;     (setq helm-completion-in-region-fuzzy-match t)))
 #+end_src
 
 *** Paredit
+
+I spend almost all of my time in emacs writing common lisp code, and in that endeavour, Paredit is the single most useful package in my configuration. It allows me to treat code as structure, moving forms in their entirety. It also ensures that the famous parenthesis are always balanced, and that I usually only have to type the opening 50% of them. This mode is useful in all programming languages for the paren matching features, but it is indespensible if you write any lisp dialect regularly.
+
 #+BEGIN_SRC emacs-lisp
 (use-package paredit
   :ensure t
@@ -1928,6 +1891,9 @@ Luckily, I can modify the way Emacs formats code with this configuration.
     (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
     ))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** Hashicorp Configuration Language
 #+BEGIN_SRC emacs-lisp

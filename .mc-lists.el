@@ -51,5 +51,6 @@
         markdown-exdent-or-delete
         mouse-drag-vertical-line
         mouse-select-window
+        paredit-forward-delete
         sly-interactive-eval
         ))
