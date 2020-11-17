@@ -53,21 +53,6 @@
     (color-theme-approximate-on)))
 #+END_SRC
 
-** Rainbow
-   
-Mostly useful if you are into web development or game development.
-Every time emacs encounters a hexadecimal code that resembles a color,
-it will automatically highlight it in the appropriate color. This is a
-lot cooler than you may think.
-
-#+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode
-  :ensure t
-  ;; apply this mode to all programming modes.
-  :init
-  (add-hook 'prog-mode-hook 'rainbow-mode))
-#+END_SRC
-
 ** Cursor tomfoolery
    A fun hack that is in practice unusable.
 #+begin_src emacs-lisp
@@ -150,17 +135,34 @@ lot cooler than you may think.
 #+end_src
 
 ** Highlight line containing the point
-   
+
 #+BEGIN_SRC emacs-lisp
-(when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
-(defadvice hl-line-mode (after
-                         dino-advise-hl-line-mode
-                         activate compile)
-  (set-face-attribute 'hl-line nil
-                      :inherit nil
-                      :background (face-background 'highlight))
-  (set-face-background hl-line-face "gray10"))
+  (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+
+  (defadvice hl-line-mode (after
+                           dino-advise-hl-line-mode
+                           activate compile)
+    (set-face-attribute 'hl-line nil
+                        :inherit nil
+                        :background (face-background 'highlight))
+    (set-face-background hl-line-face "1f1f1f"))
 #+END_SRC
+
+** Rainbow
+   
+Mostly useful if you are into web development or game development.
+Every time emacs encounters a hexadecimal code that resembles a color,
+it will automatically highlight it in the appropriate color. This is a
+lot cooler than you may think.
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+  :ensure t
+  ;; apply this mode to all programming modes.
+  :init
+  (add-hook 'prog-mode-hook 'rainbow-mode))
+#+END_SRC
+
 * Modeline
   
 The modeline is the heart of emacs, it offers information at all
@@ -172,10 +174,10 @@ the bottom is =diminish=.
 
 ** All the icons!
    
-   #+begin_src emacs-lisp
-(use-package all-the-icons
-  :ensure t)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
+#+end_src
    
 ** Spaceline!
    I may not use spacemacs, since I do not like evil-mode and find
@@ -197,16 +199,19 @@ the bottom is =diminish=.
              (setq spaceline-line-column-p t)
              (setq spaceline-line-p t)
 
+             ;; setting the powerline-default-separator here breaks
+             ;; spaceline due to the use of spaceline-spacemacs-theme.
+             ;; ** following left for documentation reasons. **
              ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
              ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-             ;; (setq powerline-default-separator (quote wave))
+             ;; (setq powerline-default-separator (quote roundstub))
              ;; (setq powerline-default-dsparator-dir '(right . left))
              (spaceline-spacemacs-theme)
              (spaceline-toggle-flycheck-info-off)
              (spaceline-toggle-flycheck-error-off)
              (spaceline-toggle-flycheck-warning-off)
              (spaceline-toggle-version-control-on))
-      
+
            (use-package spaceline-all-the-icons
              :ensure t
              :after spaceline
@@ -748,12 +753,12 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/Dropbox/OrgFiles/personal-agenda.org"
-                        "~/Dropbox/Notes/notes.org"
-                        "~/Dropbox/OrgFiles/todos.org"
-                        "~/Dropbox/OrgFiles/Tasks.org"
-                        "~/Dropbox/OrgFiles/people.org"
-                        "~/Dropbox/OrgFiles/Archive.org"))))
+                      (list (expand-file-name "personal-agenda.org" site-org-files)
+                            (expand-file-name "notes.org" site-org-files)
+                            (expand-file-name "todos.org" site-org-files)
+                            (expand-file-name "Tasks.org" site-org-files)
+                            (expand-file-name "people.org" site-org-files)
+                            (expand-file-name "Archive.org" site-org-files)))))
 #+end_src
 
 *** Org capture
@@ -1120,9 +1125,10 @@ your cursor will be briefly highlighted now.
   (beacon-mode 1))
 #+END_SRC
 
+
 * ELPA packages
 
-These are the packages that are not built into Emacs.
+These are the packages that are neither built into Emacs nor required to achieve the base configuration state. feel free to add or remove as many or as few of these as you want; they generally reflect my own biases and developmental requirements, so it is unlikely that this list will be perfectly harmonic with your own needs.
 
 ** Ag -- The Silver Searcher.
 
@@ -1157,12 +1163,11 @@ buffer navigation, but applies it to windows. The default keys are
 1-9.
 
 #+begin_src emacs-lisp
-(use-package ace-window
-  :ensure t
-  :config
-  ;; (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (ace-window-display-mode)
-  :bind ("s-o" . ace-window))
+  (use-package ace-window
+    :ensure t
+    :config
+    (ace-window-display-mode)
+    :bind ("s-o" . ace-window))
 #+end_src
 
 ** Android mode
@@ -1231,9 +1236,8 @@ This package displays function signatures in the mode line.
 
 ** CSV mode
    #+begin_src emacs-lisp
-(use-package csv-mode
-  :ensure t)
-
+     (use-package csv-mode
+       :ensure t)
    #+end_src
 
 ** flycheck
@@ -1255,7 +1259,7 @@ This package displays function signatures in the mode line.
   :after flycheck)
 #+end_src
    
-** undotree
+** Undotree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :ensure t
@@ -1296,7 +1300,6 @@ This package displays function signatures in the mode line.
    '(helm-ag-command-option "--all-text")
    '(helm-ag-insert-at-point 'symbol)
    '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
-
   
 #+end_src
 
@@ -1321,7 +1324,6 @@ access magit.
   :config
   (magithub-feature-autoinject t)
   (setq magithub-clone-default-directory "~/SourceCode/lisp"))
-  
 #+end_src
 
 *** Fullscreen magit
@@ -1335,17 +1337,17 @@ No more juggling windows after commiting. It's magit bliss.
 [[http://whattheemacsd.com/setup-magit.el-01.html][Source: Magnar Sveen]]
 
 #+begin_src emacs-lisp
-;; full screen magit-status
-(defadvice magit-status (around magit-fullscreen activate)
-  (window-configuration-to-register :magit-fullscreen)
-  ad-do-it
-  (delete-other-windows))
+  ;; full screen magit-status
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it ;; ad-do-it is a special marker for 'around advice that refers to the wrapped function.
+    (delete-other-windows))
 
-(defun magit-quit-session ()
-  "Restores the previous window configuration and kills the magit buffer"
-  (interactive)
-  (kill-buffer)
-  (jump-to-register :magit-fullscreen))
+  (defun magit-quit-session ()
+    "Restores the previous window configuration and kills the magit buffer"
+    (interactive)
+    (kill-buffer)
+    (jump-to-register :magit-fullscreen))
 #+end_src
 
 ** Expand region
