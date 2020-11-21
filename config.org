@@ -657,6 +657,7 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
   (setq recentf-max-saved-items 200))
 #+end_src
 
+
 * Org mode
 
 Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable.
@@ -917,10 +918,12 @@ good column number to do that.
 #+end_src
 
 ** Org Capture Templates
+
 #+begin_src emacs-lisp
   (use-package doct
     :ensure t)
 #+end_src
+
 #+begin_src emacs-lisp
   (setq org-capture-templates
       `(("t" "Tasks / Projects")
@@ -949,6 +952,7 @@ good column number to do that.
         ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
         ))
 #+end_src
+
 ** Org babel languages
 
 #+begin_src emacs-lisp
@@ -1605,14 +1609,16 @@ called.
 Changing the =frame-zoom-font-difference= essentially enables a
 "presentation mode" when calling =toggle-zoom-frame=.
 
+This mode is not available in elpa/melpa, so use-package will obviously not work in this case. If you are giving a lot of presentations with emacs, it is very useful, and you can still find the system at [[https://www.emacswiki.org/emacs/zoom-frm.el][Emacs WIKI zoom-frm.el]]. Include it from init.el.
+
 #+begin_src emacs-lisp :tangle no
-;; (use-package zoom-frm 
-;;   :ensure t
-;;   :bind (("C-M-=" . zoom-in/out)
-;;          ("H-z"   . toggle-zoom-frame)
-;;          ("s-<f1>" . toggle-zoom-frame))
-;;   :config
-;;   (setq frame-zoom-font-difference 10))
+  ;; (use-package zoom-frm 
+  ;;   :ensure t
+  ;;   :bind (("C-M-=" . zoom-in/out)
+  ;;          ("H-z"   . toggle-zoom-frame)
+  ;;          ("s-<f1>" . toggle-zoom-frame))
+  ;;   :config
+  ;;   (setq frame-zoom-font-difference 10))
 #+end_src
 
 ** Scratch
