@@ -77,6 +77,13 @@
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
 
+;; configure dired early, because it is built in.
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-hal --group-directories-first")))
+
 
 ;; start the emacs daemon process.
 (server-start)

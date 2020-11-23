@@ -19,6 +19,8 @@
   
 * Personal Information
 
+Obviously, you'll want to change this to match your personal credentials.
+
 #+begin_src emacs-lisp
 (setq user-full-name "Brian O'Reilly"
       user-mail-address "fade@deepsky.com")
@@ -367,8 +369,6 @@ the symbol at point as the default value for occur.
   (interactive)
   (push (if (region-active-p)
             (buffer-substring-no-properties
-             
-             
              (region-beginning)
              (region-end))
           (thing-at-point 'symbol))
@@ -1072,10 +1072,28 @@ do just that to reduce the repetition.
 #+end_src
 
 * Whitespace mode
+Because sometimes you have to look at python code that came from a person with unusual editor defaults.
 #+begin_src emacs-lisp
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
 #+end_src
+
+* File Management
+** Dired
+Dired configuration is split between =init.el= and this clause in =config.org=, for reasons related to the way that emacs is initialised in this regime. If dired is not configured early, emacs throws to the debugger with an error when dired is called in regular use.
+#+begin_src emacs-lisp
+  (use-package dired-single
+    :ensure t
+    :after dired)
+
+  (use-package all-the-icons-dired
+    :ensure t
+    :after dired
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+
+#+RESULTS:
+| dired-extra-startup | all-the-icons-dired-mode | auto-revert-mode |
 
 * Minor conveniences
 Emacs is at it's best when it just does things for you, shows you the
