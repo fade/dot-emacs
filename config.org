@@ -27,16 +27,27 @@ Obviously, you'll want to change this to match your personal credentials.
 #+end_src
 
 * Theme
+** Autothemer
+#+begin_src emacs-lisp
+  (use-package autothemer
+    :ensure t)
+#+end_src
 ** Emacs' startup screen is naf
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
+** Modus these are exemplars of theme packaging
+#+begin_src emacs-lisp
+  (use-package modus-vivendi-theme
+    :ensure t)
+#+end_src
 ** Testing the themes from Doom emacs
 
    #+begin_src emacs-lisp
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config (load-theme 'doom-dracula t))
+     (use-package doom-themes
+       :ensure t
+       ;; :config (load-theme 'doom-dracula t)
+       )
    #+end_src
 
 ** Colours On Terminal
