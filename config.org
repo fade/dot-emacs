@@ -115,14 +115,15 @@ Obviously, you'll want to change this to match your personal credentials.
    others.
 
 #+begin_src emacs-lisp
-(progn
-  (load-theme 'deepsky t)
-  (message "Loading theme deepsky")
-  (set-face-attribute `mode-line nil
-                      :box nil)
-  (set-face-attribute `mode-line nil
-                      :box nil)
-  (set-cursor-color "yellow"))
+  (progn
+    ;; on the terminal, the theme situation needs more attention.
+    (load-theme 'modus-vivendi t)
+    (message "Loading theme modus-vivendi")
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-cursor-color "yellow"))
 #+end_src
 
 #+begin_src emacs-lisp
