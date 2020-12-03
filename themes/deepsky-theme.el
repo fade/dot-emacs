@@ -131,7 +131,7 @@
  '(match ((t (:background "RoyalBlue3"))))
  '(menu ((t (nil))))
  '(message-cited-text-face ((t (:foreground "white"))))
- '(message-header-cc-face ((t (:foreground "#4186be")))) 
+ '(message-header-cc-face ((t (:foreground "#4186be"))))
 '(message-header-name-face ((t (:foreground "white"))))
  '(message-header-newsgroups-face ((t (:bold t :foreground "Coral" :weight bold))))
  '(message-header-other-face ((t (:foreground "steel blue"))))
