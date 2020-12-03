@@ -22,3 +22,5 @@ assets/
 /*.html
 /transient/history.el
 /session.*
+/%backup%~
+/magithub/

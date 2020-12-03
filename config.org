@@ -44,11 +44,13 @@ Obviously, you'll want to change this to match your personal credentials.
 ** Testing the themes from Doom emacs
 
    #+begin_src emacs-lisp
-     (use-package doom-themes
-       :ensure t
-       ;; :config (load-theme 'doom-dracula t)
-       )
+     ;; (use-package doom-themes
+     ;;   :ensure t
+     ;;   ;; :config (load-theme 'doom-dracula t)
+     ;;   )
    #+end_src
+
+   #+RESULTS:
 
 ** Colours On Terminal
    custom colour themes generally enhance my experience of writing
@@ -115,14 +117,15 @@ Obviously, you'll want to change this to match your personal credentials.
    others.
 
 #+begin_src emacs-lisp
-(progn
-  (load-theme 'deepsky t)
-  (message "Loading theme deepsky")
-  (set-face-attribute `mode-line nil
-                      :box nil)
-  (set-face-attribute `mode-line nil
-                      :box nil)
-  (set-cursor-color "yellow"))
+  (progn
+    ;; on the terminal, the theme situation needs more attention.
+    (load-theme 'modus-vivendi t)
+    (message "Loading theme modus-vivendi")
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-cursor-color "yellow"))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -169,11 +172,11 @@ it will automatically highlight it in the appropriate color. This is a
 lot cooler than you may think.
 
 #+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode
-  :ensure t
-  ;; apply this mode to all programming modes.
-  :init
-  (add-hook 'prog-mode-hook 'rainbow-mode))
+  (use-package rainbow-mode
+    :ensure t
+    ;; apply this mode to all programming modes.
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
 * Modeline
@@ -207,23 +210,21 @@ the bottom is =diminish=.
            (use-package spaceline
              :ensure t
              :config
-             (require 'spaceline-config)
-             (setq spaceline-buffer-encoding-abbrev-p t)
-             (setq spaceline-line-column-p t)
-             (setq spaceline-line-p t)
+             ;; (mis)using use-package here to put config in an envelope.
+             (use-package spaceline-config
+               :config
+               (setq spaceline-buffer-encoding-abbrev-p t)
+               (setq spaceline-line-column-p t)
+               (setq spaceline-line-p t)
 
-             ;; setting the powerline-default-separator here breaks
-             ;; spaceline due to the use of spaceline-spacemacs-theme.
-             ;; ** following left for documentation reasons. **
-             ;;Valid Values: alternate, arrow, arrow-fade, bar, box, brace, butt,
-             ;;chamfer, contour, curve, rounded, roundstub, wave, zigzag, utf-8
-             ;; (setq powerline-default-separator (quote roundstub))
-             ;; (setq powerline-default-dsparator-dir '(right . left))
-             (spaceline-spacemacs-theme)
-             (spaceline-toggle-flycheck-info-off)
-             (spaceline-toggle-flycheck-error-off)
-             (spaceline-toggle-flycheck-warning-off)
-             (spaceline-toggle-version-control-on))
+               (spaceline-toggle-flycheck-info-off)
+               (spaceline-toggle-flycheck-error-off)
+               (spaceline-toggle-flycheck-warning-off)
+               (spaceline-toggle-version-control-on)
+
+               (spaceline-spacemacs-theme)))
+
+      
 
            (use-package spaceline-all-the-icons
              :ensure t
@@ -1575,16 +1576,16 @@ It takes a few seconds to load and I don't need them immediately when
 Emacs starts up, so we can defer loading yasnippet until there's some
 idle time.
 #+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :config
-  (use-package yasnippet-snippets
-    :ensure t)
-  (use-package common-lisp-snippets
-    :ensure t)
-  ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-  (yas-reload-all)
-  (yas-global-mode))
+  (use-package yasnippet
+    :ensure t
+    :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (use-package common-lisp-snippets
+      :ensure t)
+    ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+    (yas-reload-all)
+    (yas-global-mode))
 #+END_SRC
 
 ** YAML mode
