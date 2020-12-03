@@ -44,11 +44,13 @@ Obviously, you'll want to change this to match your personal credentials.
 ** Testing the themes from Doom emacs
 
    #+begin_src emacs-lisp
-     (use-package doom-themes
-       :ensure t
-       ;; :config (load-theme 'doom-dracula t)
-       )
+     ;; (use-package doom-themes
+     ;;   :ensure t
+     ;;   ;; :config (load-theme 'doom-dracula t)
+     ;;   )
    #+end_src
+
+   #+RESULTS:
 
 ** Colours On Terminal
    custom colour themes generally enhance my experience of writing
