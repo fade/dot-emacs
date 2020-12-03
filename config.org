@@ -70,6 +70,7 @@ Obviously, you'll want to change this to match your personal credentials.
 
 ** Cursor tomfoolery
    A fun hack that is in practice unusable.
+
 #+begin_src emacs-lisp
 
 ;; if this is set here, it is overwritten by the colour theme.
@@ -123,10 +124,10 @@ Obviously, you'll want to change this to match your personal credentials.
     (message "Loading theme modus-vivendi")
     (set-face-attribute `mode-line nil
                         :box nil)
-    (set-face-attribute `mode-line nil
-                        :box nil)
     (set-cursor-color "yellow"))
 #+end_src
+
+#+RESULTS:
 
 #+begin_src emacs-lisp
 (defun switch-theme (theme)
@@ -250,7 +251,6 @@ have =relative-linum-mode= in every major mode, so this is useful.
 
 ** Clock
 If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
-
 *** Time format
 #+BEGIN_SRC emacs-lisp
   (setq display-time-24hr-format t)
@@ -267,6 +267,7 @@ This turns on the clock globally.
 A package called =fancy-battery= will be used if we are in GUI emacs,
 otherwise the built in battery-mode will be used. Fancy battery has
 very odd colors if used in the tty, hence us disabling it.
+
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-battery
     :ensure t
