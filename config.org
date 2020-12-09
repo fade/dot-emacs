@@ -314,6 +314,8 @@ And here's how we tell Emacs which font we want.
   #+end_src
 
 * Sane defaults
+  
+Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+BEGIN_SRC emacs-lisp
 
@@ -321,11 +323,10 @@ And here's how we tell Emacs which font we want.
   :ensure t)
 
 #+END_SRC
-  
-Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+begin_src emacs-lisp
-  ;; These functions are useful. Activate them.
+  ;; These functions are useful. Activate them. This use of #'put is
+  ;; strange, but this feature uses symbol properties.
   (put 'downcase-region 'disabled nil)
   (put 'upcase-region 'disabled nil)
   (put 'narrow-to-region 'disabled nil)
@@ -1671,6 +1672,16 @@ creating a buffer to do some scratch work or reusing the initial
   :ensure t
   :bind ("M-<f12>" . shell-pop))
 #+END_SRC
+
+** Skeletor
+I'm constantly looking for tools that make starting projects faster, and more correct. There seem to be dozens of them, at least one for every language. The workflow in these tools is always "Run the tool, then find the resulting project in Emacs." ... since most of my projects are written in Common Lisp,  I live in Emacs pretty much all the time. It seems like a redundancy in tooling which is not necessary. Starting in emacs, and running the project skeleton tool is practically ideal, and would be bested only by a system running in an Emacs written in Common Lisp. At any rate, I'm looking at Skeletor to see how it fares under my generally unusual requirements.
+
+#+begin_src emacs-lisp
+  (use-package skeletor
+    :ensure t
+    :custom
+    (skeletor-project-directory "~/SourceCode/lisp/"))
+#+end_src
 
 ** Quickrun
 
