@@ -206,8 +206,7 @@ the bottom is =diminish=.
    theme of choice.
 
    #+BEGIN_SRC emacs-lisp
-     (if window-system
-         (progn
+     (progn
            (use-package spaceline
              :ensure t
              :config
@@ -225,13 +224,14 @@ the bottom is =diminish=.
 
                (spaceline-spacemacs-theme)))
 
-      
+
 
            (use-package spaceline-all-the-icons
              :ensure t
              :after spaceline
              :config
-             (spaceline-all-the-icons-theme))))
+             (spaceline-all-the-icons-theme)))
+
    #+END_SRC
    
 ** No separator!
