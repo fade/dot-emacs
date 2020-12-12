@@ -1274,6 +1274,15 @@ This package displays function signatures in the mode line.
        :ensure t)
    #+end_src
 
+** Extempore mode
+Extempore is a scheme defined for live performance programming.
+#+begin_src emacs-lisp
+  (use-package extempore-mode
+    :ensure t
+    :config
+    (setq extempore-path "/usr/bin/extempore"))
+#+end_src
+
 ** flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
@@ -1335,6 +1344,33 @@ This package displays function signatures in the mode line.
    '(helm-ag-insert-at-point 'symbol)
    '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
   
+#+end_src
+
+** Helpful
+This package gives richer help information, and makes interrogating emacs more fruitful.
+#+begin_src emacs-lisp
+  (use-package helpful
+    :ensure t
+    :config
+    (global-set-key (kbd "C-h f") #'helpful-callable)
+    (global-set-key (kbd "C-h v") #'helpful-variable)
+    (global-set-key (kbd "C-h k") #'helpful-key)
+    ;; Lookup the current symbol at point. C-c C-d is a common keybinding
+    ;; for this in lisp modes.
+    (global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+    ;; Look up *F*unctions (excludes macros).
+    ;;
+    ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+    ;; already links to the manual, if a function is referenced there.
+    (global-set-key (kbd "C-h F") #'helpful-function)
+
+    ;; Look up *C*ommands.
+    ;;
+    ;; By default, C-h C is bound to describe `describe-coding-system'. I
+    ;; don't find this very useful, but it's frequently useful to only
+    ;; look at interactive functions.
+    (global-set-key (kbd "C-h C") #'helpful-command))
 #+end_src
 
 ** Magit
@@ -1920,23 +1956,22 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 I spend almost all of my time in emacs writing common lisp code, and in that endeavour, Paredit is the single most useful package in my configuration. It allows me to treat code as structure, moving forms in their entirety. It also ensures that the famous parenthesis are always balanced, and that I usually only have to type the opening 50% of them. This mode is useful in all programming languages for the paren matching features, but it is indespensible if you write any lisp dialect regularly.
 
 #+BEGIN_SRC emacs-lisp
-(use-package paredit
-  :ensure t
-  :config
-  (progn
-    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-    (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-    (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-    (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-    (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-    ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
-    (add-hook 'sly-mrepl-mode-hook        #'enable-paredit-mode)
-    ;; (add-hook 'slime-mode-hook            #'enable-paredit-mode)
-    (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
-    (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
-    ))
+  (use-package paredit
+    :ensure t
+    :config
+    (progn
+      (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+      (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+      (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+      (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+      (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+      (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+      (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+      ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
+      (add-hook 'sly-mrepl-mode-hook        #'enable-paredit-mode)
+      ;; (add-hook 'slime-mode-hook            #'enable-paredit-mode)
+      (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
+      (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)))
 #+END_SRC
 
 #+RESULTS:
