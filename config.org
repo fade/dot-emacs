@@ -1048,6 +1048,17 @@ exporting to html sometimes (always?) requires htmlize
 #+END_SRC
 
 
+* PDF Tools
+This really is the best PDF management system I've ever used.
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq pdf-annot-activate-created-annotations t))
+#+end_src
+
 * Tramp
 
 #+begin_src emacs-lisp

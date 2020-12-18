@@ -24,3 +24,10 @@ assets/
 /session.*
 /%backup%~
 /magithub/
+/*.aux
+/*.fdb_latexmk
+/*.fls
+/*.log
+/*.out
+/*.tex
+/*.toc
