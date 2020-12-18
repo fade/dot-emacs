@@ -56,7 +56,35 @@
  '(rustic-ansi-faces
    ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
  '(safe-local-variable-values
-   '((indent-tabs)
+   '((eval cl-flet
+           ((enhance-imenu-lisp
+             (&rest keywords)
+             (dolist
+                 (keyword keywords)
+               (add-to-list 'lisp-imenu-generic-expression
+                            (list
+                             (purecopy
+                              (concat
+                               (capitalize keyword)
+                               (if
+                                   (string=
+                                    (substring-no-properties keyword -1)
+                                    "s")
+                                   "es" "s")))
+                             (purecopy
+                              (concat "^\\s-*("
+                                      (regexp-opt
+                                       (list
+                                        (concat "define-" keyword))
+                                       t)
+                                      "\\s-+\\(" lisp-mode-symbol-regexp "\\)"))
+                             2)))))
+           (enhance-imenu-lisp "bookmarklet-command" "class" "command" "function" "mode" "parenscript" "user-class"))
+     (Package . CL-UNICODE)
+     (Package . containers)
+     (eval put 'test-js-eval 'common-lisp-indent-function 1)
+     (eval put 'test-ps-js 'common-lisp-indent-function 1)
+     (indent-tabs)
      (Package . CL-FAD)
      (Syntax . COMMON-LISP)
      (Package . Lexical-Contexts)

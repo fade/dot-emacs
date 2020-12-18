@@ -262,22 +262,6 @@ This turns on the clock globally.
   (display-time-mode 1)
 #+END_SRC
 
-** Battery indicator
-A package called =fancy-battery= will be used if we are in GUI emacs,
-otherwise the built in battery-mode will be used. Fancy battery has
-very odd colors if used in the tty, hence us disabling it.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    :ensure t
-    :config
-      (setq fancy-battery-show-percentage t)
-      (setq battery-update-interval 15)
-      (if window-system
-        (fancy-battery-mode)
-        (display-battery-mode)))
-#+END_SRC
-
 ** System monitor
 #+BEGIN_SRC emacs-lisp
 (use-package symon
@@ -531,7 +515,8 @@ This makes sure that everything can be a project.
   (use-package projectile
     :ensure t
     :init
-      (projectile-mode 1))
+    ;;(projectile-mode 1)
+    )
 #+END_SRC
 
 ** Let projectile call make
@@ -673,7 +658,7 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
 
 * Org mode
 
-Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable.
+Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable. 
 
 It goes without saying that I also use it to manage my Emacs config.
 
@@ -690,7 +675,7 @@ Although Org mode ships with Emacs, the latest version can be installed external
 
   (use-package org
     :hook (org-mode . efs/org-mode-setup)
-    :defer t
+    ;; :ensure t
     :ensure org-plus-contrib
     :custom
     (org-ellipsis " ▾")
@@ -799,7 +784,24 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
                             (expand-file-name "Tasks.org" site-org-files)
                             (expand-file-name "people.org" site-org-files)
                             (expand-file-name "Archive.org" site-org-files)))))
+
+  ;; when we finish a todo, just mark it DONE and fold down the entry.
+  (defun org-toggle-todo-and-fold ()
+    (interactive)
+    (save-excursion
+      (org-back-to-heading t) ;; Make sure command works even if point is
+      ;; below target heading
+      (cond ((looking-at "\*+ TODO")
+             (org-todo "DONE")
+             (hide-subtree))
+            ((looking-at "\*+ DONE")
+             (org-todo "TODO")
+             (hide-subtree))
+            (t (message "Can only toggle between TODO and DONE.")))))
+
+  (define-key org-mode-map (kbd "C-c C-d") 'org-toggle-todo-and-fold)
 #+end_src
+
 ** Org Roam
 #+begin_src emacs-lisp
 
@@ -1050,7 +1052,14 @@ exporting to html sometimes (always?) requires htmlize
 
 #+begin_src emacs-lisp
   (use-package tramp
-    :ensure t)
+    :ensure t
+    :config
+    ;; tramp hangs when remote has weird prompt. Check in for this terminal type.
+    (setf tramp-terminal-type "tramp")
+    ;; (add-to-list 'tramp-connection-properties
+    ;;              (list (regexp-quote "/ssh:fade@deepsky.com:")
+    ;;                    "remote-shell" "/bin/sh"))
+    ) 
 #+end_src
 
 * Window
@@ -1985,23 +1994,23 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 
 ** JavaScript
   #+BEGIN_SRC elisp
-    (use-package js2-mode
-      :ensure t
-      :init
-      (setq js-basic-indent 2)
-      (setq-default js2-basic-indent 2
-                    js2-basic-offset 2
-                    js2-auto-indent-p t
-                    js2-cleanup-whitespace t
-                    js2-enter-indents-newline t
-                    js2-indent-on-enter-key t
-                    js2-global-externs (list "window" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "jQuery" "$"))
+    ;; (use-package js2-mode
+    ;;   :ensure t
+    ;;   :init
+    ;;   (setq js-basic-indent 2)
+    ;;   (setq-default js2-basic-indent 2
+    ;;                 js2-basic-offset 2
+    ;;                 js2-auto-indent-p t
+    ;;                 js2-cleanup-whitespace t
+    ;;                 js2-enter-indents-newline t
+    ;;                 js2-indent-on-enter-key t
+    ;;                 js2-global-externs (list "window" "module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "jQuery" "$"))
 
-      (add-hook 'js2-mode-hook
-                (lambda ()
-                  (push '("function" . ?ƒ) prettify-symbols-alist)))
+    ;;   (add-hook 'js2-mode-hook
+    ;;             (lambda ()
+    ;;               (push '("function" . ?ƒ) prettify-symbols-alist)))
 
-      (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+    ;;   (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
   #+END_SRC
 
     Color /defined/ variables with [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]]:
@@ -2073,8 +2082,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
    * C-M-x   :: `skewer-eval-defun'
    * C-c C-k :: `skewer-load-buffer'
 
-** Nim                
-   #+begin_src emacs-lisp
+** Nim  #+begin_src emacs-lisp
 (use-package nim-mode
   :ensure t)
    #+end_src
