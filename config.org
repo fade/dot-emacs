@@ -26,6 +26,399 @@ Obviously, you'll want to change this to match your personal credentials.
       user-mail-address "fade@deepsky.com")
 #+end_src
 
+
+* Org mode
+
+Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable. 
+
+It goes without saying that I also use it to manage my Emacs config.
+
+** Installation
+
+Although Org mode ships with Emacs, the latest version can be installed externally. The configuration here follows the [[http://orgmode.org/elpa.html][Org mode ELPA installation instructions]].
+
+#+BEGIN_SRC emacs-lisp
+
+  (defun efs/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
+
+  (use-package org
+    :hook (org-mode . efs/org-mode-setup)
+    ;; :ensure t
+    :ensure org-plus-contrib
+    :custom
+    (org-ellipsis " ▾")
+    (org-agenda-start-with-log-mode t)
+    (org-log-done 'time)
+    (org-log-into-drawer t)
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+    :config
+    (progn (eval-after-load "org"
+             '(require 'ox-md nil t))
+           (setq org-support-shift-select 'always)))
+
+#+END_SRC
+
+On Org mode version 9 I wasn't able to execute source blocks out of
+the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to
+remove the .elc files from the package directory:
+
+#+BEGIN_SRC sh :var ORG_DIR=(let* ((org-v (cadr (split-string (org-version nil t) "@"))) (len (length org-v))) (substring org-v 1 (- len 2)))
+rm ${ORG_DIR}/*.elc
+#+END_SRC
+
+** Better Font Faces
+
+The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
+
+#+begin_src emacs-lisp
+  (defun efs/org-font-setup ()
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+    ;; Set faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+
+  (efs/org-font-setup)
+#+end_src
+
+** Org setup
+
+Speed commands are a nice and quick way to perform certain actions
+while at the beginning of a heading. It's not activated by default.
+
+See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for
+speed keys in Org mode]].
+
+#+begin_src emacs-lisp
+(setq org-use-speed-commands t)
+(require 'org-tempo)
+#+end_src
+
+#+begin_src emacs-lisp
+(setq org-image-actual-width 550)
+#+end_src
+
+#+BEGIN_SRC emacs-lisp
+(setq org-highlight-latex-and-related '(latex script entities))
+#+END_SRC
+
+#+begin_src emacs-lisp
+  (setq org-refile-targets
+    '(("Archive.org" :maxlevel . 1)
+      ("Tasks.org" :maxlevel . 1)))
+
+  ;; Save Org buffers after refiling!
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+end_src
+
+** Org capture
+
+#+begin_src emacs-lisp
+(bind-key "C-c c" 'org-capture)
+(setq org-default-notes-file "~/Dropbox/Notes/notes.org")
+#+end_src
+** Org agenda
+
+Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]]. This form will add the agenda file to the org-agenda-files list if the file actually exists at the place indicated. Remember to touch the file if you change this list.
+
+#+begin_src emacs-lisp
+  (setq org-agenda-files
+        (delq nil
+              (mapcar (lambda (x) (and (file-exists-p x) x))
+                      (list (expand-file-name "personal-agenda.org" site-org-files)
+                            (expand-file-name "notes.org" site-org-files)
+                            (expand-file-name "todos.org" site-org-files)
+                            (expand-file-name "Tasks.org" site-org-files)
+                            (expand-file-name "people.org" site-org-files)
+                            (expand-file-name "Archive.org" site-org-files)))))
+
+  ;; when we finish a todo, just mark it DONE and fold down the entry.
+  (defun org-toggle-todo-and-fold ()
+    (interactive)
+    (save-excursion
+      (org-back-to-heading t) ;; Make sure command works even if point is
+      ;; below target heading
+      (cond ((looking-at "\*+ TODO")
+             (org-todo "DONE")
+             (hide-subtree))
+            ((looking-at "\*+ DONE")
+             (org-todo "TODO")
+             (hide-subtree))
+            (t (message "Can only toggle between TODO and DONE.")))))
+
+  (define-key org-mode-map (kbd "C-c C-d") 'org-toggle-todo-and-fold)
+#+end_src
+
+** Org Roam
+#+begin_src emacs-lisp
+
+  (use-package org-roam
+    :ensure t
+    :after org)
+
+  (use-package company-org-roam
+    :ensure t
+    :after org)
+
+  (use-package  org-roam-bibtex
+    :ensure t
+    :after org-roam)
+
+  (use-package org-roam-server
+    :ensure t
+    :after org-roam)
+
+#+end_src
+** Org activation bindings
+
+Set up some global key bindings that integrate with Org Mode features.
+
+#+begin_src emacs-lisp
+(bind-key "C-c l" 'org-store-link)
+(bind-key "C-c c" 'org-capture)
+(bind-key "C-c a" 'org-agenda)
+#+end_src
+
+** Center Org Buffers
+
+[[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] will center =org-mode= buffers. This gives a more pleasing effect when writing long documents in natural languages.
+
+#+begin_src emacs-lisp
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :after org
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
+#+end_src
+
+** Org Bullets
+Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode-setup= configuration function at the top of this file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+END_SRC
+
+** Org tags
+
+The default value is -77, which is weird for smaller width windows.
+I'd rather have the tags align horizontally with the header. 45 is a
+good column number to do that.
+
+#+begin_src emacs-lisp
+  (setq org-tags-column 45)
+
+  (setq org-tag-alist
+        '((:startgroup)
+                                          ; Put mutually exclusive tags here
+          (:endgroup)
+          ("@errand" . ?E)
+          ("@home" . ?H)
+          ("@work" . ?W)
+          ("agenda" . ?a)
+          ("planning" . ?p)
+          ("publish" . ?P)
+          ("batch" . ?b)
+          ("note" . ?n)
+          ("idea" . ?i)))
+
+  ;; Configure custom agenda views
+  (setq org-agenda-custom-commands
+        '(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))
+            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+          ("n" "Next Tasks"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ("W" "Work Tasks" tags-todo "+work-email")
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))
+
+          ("w" "Workflow Status"
+           ((todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting on External")
+                   (org-agenda-files org-agenda-files)))
+            (todo "REVIEW"
+                  ((org-agenda-overriding-header "In Review")
+                   (org-agenda-files org-agenda-files)))
+            (todo "PLAN"
+                  ((org-agenda-overriding-header "In Planning")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "BACKLOG"
+                  ((org-agenda-overriding-header "Project Backlog")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "READY"
+                  ((org-agenda-overriding-header "Ready for Work")
+                   (org-agenda-files org-agenda-files)))
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "COMPLETED"
+                  ((org-agenda-overriding-header "Completed Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "CANC"
+                  ((org-agenda-overriding-header "Cancelled Projects")
+                   (org-agenda-files org-agenda-files)))))))
+#+end_src
+
+** Org Capture Templates
+
+#+begin_src emacs-lisp
+  (use-package doct
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+      `(("t" "Tasks / Projects")
+        ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
+             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+        ("j" "Journal Entries")
+        ("jj" "Journal" entry
+             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+             ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+             :clock-in :clock-resume
+             :empty-lines 1)
+        ("jm" "Meeting" entry
+             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+             :clock-in :clock-resume
+             :empty-lines 1)
+
+        ("w" "Workflows")
+        ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
+             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+        ;; ("m" "Metrics Capture")
+        ;; ("mw" "Weight" table-line (file+headline "~/Dropbox/OrgFiles/Metrics.org" "Weight")
+        ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+        ))
+#+end_src
+
+** Org babel languages
+
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (C . t)
+   (calc . t)
+   (latex . t)
+   (java . t)
+   (ruby . t)
+   (lisp . t)
+   (scheme . t)
+   (shell . t)
+   (sqlite . t)
+   (js . t)))
+   
+
+(defun my-org-confirm-babel-evaluate (lang body)
+  "Do not confirm evaluation for these languages."
+  (not (or (string= lang "C")
+           (string= lang "java")
+           (string= lang "python")
+           (string= lang "emacs-lisp")
+           (string= lang "sqlite"))))
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+#+end_src
+
+** Org babel/source blocks
+
+I like to have source blocks properly syntax highlighted and with the
+editing popup window staying within the same window so all the windows
+don't jump around. Also, having the top and bottom trailing lines in
+the block is a waste of space, so we can remove them.
+
+I noticed that fontification doesn't work with markdown mode when the
+block is indented after editing it in the org src buffer---the leading
+#s for headers don't get fontified properly because they appear as Org
+comments. Setting ~org-src-preserve-indentation~ makes things
+consistent as it doesn't pad source blocks with leading spaces.
+
+#+begin_src emacs-lisp
+(setq org-src-fontify-natively t
+      org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      ;; org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
+#+end_src
+
+** Org exporting
+
+*** Pandoc exporter
+Pandoc converts between a huge number of different file formats. 
+
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :no-require t
+  :defer 10
+  :ensure t)
+#+end_src
+
+*** LaTeX exporting
+
+I've had issues with getting BiBTeX to work correctly with the LaTeX
+exporter for PDF exporting. By changing the command to `latexmk`
+references appear in the PDF output like they should. Source:
+http://tex.stackexchange.com/a/161619.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-latex-pdf-process (list "latexmk -pdf %f"))
+#+END_SRC
+
+exporting to html sometimes (always?) requires htmlize
+
+#+BEGIN_SRC emacs-lisp
+(use-package htmlize
+  :ensure t)
+#+END_SRC
+
+
 * Theme
 ** Autothemer
 #+begin_src emacs-lisp
@@ -38,8 +431,8 @@ Obviously, you'll want to change this to match your personal credentials.
 #+END_SRC
 ** Modus these are exemplars of theme packaging
 #+begin_src emacs-lisp
-  (use-package modus-vivendi-theme
-    :ensure t)
+  ;; (use-package modus-vivendi-theme
+  ;;   :ensure t)
 #+end_src
 ** Testing the themes from Doom emacs
 
@@ -120,8 +513,8 @@ Obviously, you'll want to change this to match your personal credentials.
 #+begin_src emacs-lisp
   (progn
     ;; on the terminal, the theme situation needs more attention.
-    (load-theme 'modus-vivendi t)
-    (message "Loading theme modus-vivendi")
+    (load-theme 'deepsky-modus-fade t)
+    (message "Loading DeepSky theme... ")
     (set-face-attribute `mode-line nil
                         :box nil)
     (set-cursor-color "yellow"))
@@ -154,15 +547,15 @@ Obviously, you'll want to change this to match your personal credentials.
 ** Highlight line containing the point
 
 #+BEGIN_SRC emacs-lisp
-  (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
 
-  (defadvice hl-line-mode (after
-                           dino-advise-hl-line-mode
-                           activate compile)
-    (set-face-attribute 'hl-line nil
-                        :inherit nil
-                        :background (face-background 'highlight))
-    (set-face-background hl-line-face "1f1f1f"))
+  ;; (defadvice hl-line-mode (after
+  ;;                          dino-advise-hl-line-mode
+  ;;                          activate compile)
+  ;;   (set-face-attribute 'hl-line nil
+  ;;                       :inherit nil
+  ;;                       :background (face-background 'highlight))
+  ;;   (set-face-background hl-line-face "1f1f1f"))
 #+END_SRC
 
 ** Rainbow
@@ -655,399 +1048,6 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
   (setq recentf-max-saved-items 200))
 #+end_src
 
-
-* Org mode
-
-Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable. 
-
-It goes without saying that I also use it to manage my Emacs config.
-
-** Installation
-
-Although Org mode ships with Emacs, the latest version can be installed externally. The configuration here follows the [[http://orgmode.org/elpa.html][Org mode ELPA installation instructions]].
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun efs/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (visual-line-mode 1))
-
-  (use-package org
-    :hook (org-mode . efs/org-mode-setup)
-    ;; :ensure t
-    :ensure org-plus-contrib
-    :custom
-    (org-ellipsis " ▾")
-    (org-agenda-start-with-log-mode t)
-    (org-log-done 'time)
-    (org-log-into-drawer t)
-    (org-todo-keywords
-     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
-    :config
-    (progn (eval-after-load "org"
-             '(require 'ox-md nil t))
-           (setq org-support-shift-select 'always)))
-
-#+END_SRC
-
-On Org mode version 9 I wasn't able to execute source blocks out of
-the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to
-remove the .elc files from the package directory:
-
-#+BEGIN_SRC sh :var ORG_DIR=(let* ((org-v (cadr (split-string (org-version nil t) "@"))) (len (length org-v))) (substring org-v 1 (- len 2)))
-rm ${ORG_DIR}/*.elc
-#+END_SRC
-
-** Better Font Faces
-
-The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
-
-#+begin_src emacs-lisp
-  (defun efs/org-font-setup ()
-    ;; Replace list hyphen with dot
-    (font-lock-add-keywords 'org-mode
-                            '(("^ *\\([-]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-    ;; Set faces for heading levels
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.05)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.1)
-                    (org-level-6 . 1.1)
-                    (org-level-7 . 1.1)
-                    (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
-    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
-
-  (efs/org-font-setup)
-#+end_src
-
-** Org setup
-
-Speed commands are a nice and quick way to perform certain actions
-while at the beginning of a heading. It's not activated by default.
-
-See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for
-speed keys in Org mode]].
-
-#+begin_src emacs-lisp
-(setq org-use-speed-commands t)
-(require 'org-tempo)
-#+end_src
-
-#+begin_src emacs-lisp
-(setq org-image-actual-width 550)
-#+end_src
-
-#+BEGIN_SRC emacs-lisp
-(setq org-highlight-latex-and-related '(latex script entities))
-#+END_SRC
-
-#+begin_src emacs-lisp
-  (setq org-refile-targets
-    '(("Archive.org" :maxlevel . 1)
-      ("Tasks.org" :maxlevel . 1)))
-
-  ;; Save Org buffers after refiling!
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
-#+end_src
-
-** Org capture
-
-#+begin_src emacs-lisp
-(bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/Dropbox/Notes/notes.org")
-#+end_src
-** Org agenda
-
-Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]]. This form will add the agenda file to the org-agenda-files list if the file actually exists at the place indicated. Remember to touch the file if you change this list.
-
-#+begin_src emacs-lisp
-  (setq org-agenda-files
-        (delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-                      (list (expand-file-name "personal-agenda.org" site-org-files)
-                            (expand-file-name "notes.org" site-org-files)
-                            (expand-file-name "todos.org" site-org-files)
-                            (expand-file-name "Tasks.org" site-org-files)
-                            (expand-file-name "people.org" site-org-files)
-                            (expand-file-name "Archive.org" site-org-files)))))
-
-  ;; when we finish a todo, just mark it DONE and fold down the entry.
-  (defun org-toggle-todo-and-fold ()
-    (interactive)
-    (save-excursion
-      (org-back-to-heading t) ;; Make sure command works even if point is
-      ;; below target heading
-      (cond ((looking-at "\*+ TODO")
-             (org-todo "DONE")
-             (hide-subtree))
-            ((looking-at "\*+ DONE")
-             (org-todo "TODO")
-             (hide-subtree))
-            (t (message "Can only toggle between TODO and DONE.")))))
-
-  (define-key org-mode-map (kbd "C-c C-d") 'org-toggle-todo-and-fold)
-#+end_src
-
-** Org Roam
-#+begin_src emacs-lisp
-
-  (use-package org-roam
-    :ensure t
-    :after org)
-
-  (use-package company-org-roam
-    :ensure t
-    :after org)
-
-  (use-package  org-roam-bibtex
-    :ensure t
-    :after org-roam)
-
-  (use-package org-roam-server
-    :ensure t
-    :after org-roam)
-
-#+end_src
-** Org activation bindings
-
-Set up some global key bindings that integrate with Org Mode features.
-
-#+begin_src emacs-lisp
-(bind-key "C-c l" 'org-store-link)
-(bind-key "C-c c" 'org-capture)
-(bind-key "C-c a" 'org-agenda)
-#+end_src
-
-** Center Org Buffers
-
-[[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] will center =org-mode= buffers. This gives a more pleasing effect when writing long documents in natural languages.
-
-#+begin_src emacs-lisp
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :after org
-  :ensure t
-  :hook (org-mode . efs/org-mode-visual-fill))
-#+end_src
-
-** Org Bullets
-Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode-setup= configuration function at the top of this file.
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :after org
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-#+END_SRC
-
-** Org tags
-
-The default value is -77, which is weird for smaller width windows.
-I'd rather have the tags align horizontally with the header. 45 is a
-good column number to do that.
-
-#+begin_src emacs-lisp
-  (setq org-tags-column 45)
-
-  (setq org-tag-alist
-        '((:startgroup)
-                                          ; Put mutually exclusive tags here
-          (:endgroup)
-          ("@errand" . ?E)
-          ("@home" . ?H)
-          ("@work" . ?W)
-          ("agenda" . ?a)
-          ("planning" . ?p)
-          ("publish" . ?P)
-          ("batch" . ?b)
-          ("note" . ?n)
-          ("idea" . ?i)))
-
-  ;; Configure custom agenda views
-  (setq org-agenda-custom-commands
-        '(("d" "Dashboard"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))
-            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-
-          ("n" "Next Tasks"
-           ((todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-
-          ("W" "Work Tasks" tags-todo "+work-email")
-
-          ;; Low-effort next actions
-          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-           ((org-agenda-overriding-header "Low Effort Tasks")
-            (org-agenda-max-todos 20)
-            (org-agenda-files org-agenda-files)))
-
-          ("w" "Workflow Status"
-           ((todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting on External")
-                   (org-agenda-files org-agenda-files)))
-            (todo "REVIEW"
-                  ((org-agenda-overriding-header "In Review")
-                   (org-agenda-files org-agenda-files)))
-            (todo "PLAN"
-                  ((org-agenda-overriding-header "In Planning")
-                   (org-agenda-todo-list-sublevels nil)
-                   (org-agenda-files org-agenda-files)))
-            (todo "BACKLOG"
-                  ((org-agenda-overriding-header "Project Backlog")
-                   (org-agenda-todo-list-sublevels nil)
-                   (org-agenda-files org-agenda-files)))
-            (todo "READY"
-                  ((org-agenda-overriding-header "Ready for Work")
-                   (org-agenda-files org-agenda-files)))
-            (todo "ACTIVE"
-                  ((org-agenda-overriding-header "Active Projects")
-                   (org-agenda-files org-agenda-files)))
-            (todo "COMPLETED"
-                  ((org-agenda-overriding-header "Completed Projects")
-                   (org-agenda-files org-agenda-files)))
-            (todo "CANC"
-                  ((org-agenda-overriding-header "Cancelled Projects")
-                   (org-agenda-files org-agenda-files)))))))
-#+end_src
-
-** Org Capture Templates
-
-#+begin_src emacs-lisp
-  (use-package doct
-    :ensure t)
-#+end_src
-
-#+begin_src emacs-lisp
-  (setq org-capture-templates
-      `(("t" "Tasks / Projects")
-        ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
-             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-
-        ("j" "Journal Entries")
-        ("jj" "Journal" entry
-             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
-             "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-             ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-             :clock-in :clock-resume
-             :empty-lines 1)
-        ("jm" "Meeting" entry
-             (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
-             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-             :clock-in :clock-resume
-             :empty-lines 1)
-
-        ("w" "Workflows")
-        ("we" "Checking Email" entry (file+olp+datetree "~/Dropbox/OrgFiles/Journal.org")
-             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-
-        ;; ("m" "Metrics Capture")
-        ;; ("mw" "Weight" table-line (file+headline "~/Dropbox/OrgFiles/Metrics.org" "Weight")
-        ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
-        ))
-#+end_src
-
-** Org babel languages
-
-#+begin_src emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (C . t)
-   (calc . t)
-   (latex . t)
-   (java . t)
-   (ruby . t)
-   (lisp . t)
-   (scheme . t)
-   (shell . t)
-   (sqlite . t)
-   (js . t)))
-   
-
-(defun my-org-confirm-babel-evaluate (lang body)
-  "Do not confirm evaluation for these languages."
-  (not (or (string= lang "C")
-           (string= lang "java")
-           (string= lang "python")
-           (string= lang "emacs-lisp")
-           (string= lang "sqlite"))))
-(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-#+end_src
-
-** Org babel/source blocks
-
-I like to have source blocks properly syntax highlighted and with the
-editing popup window staying within the same window so all the windows
-don't jump around. Also, having the top and bottom trailing lines in
-the block is a waste of space, so we can remove them.
-
-I noticed that fontification doesn't work with markdown mode when the
-block is indented after editing it in the org src buffer---the leading
-#s for headers don't get fontified properly because they appear as Org
-comments. Setting ~org-src-preserve-indentation~ makes things
-consistent as it doesn't pad source blocks with leading spaces.
-
-#+begin_src emacs-lisp
-(setq org-src-fontify-natively t
-      org-src-window-setup 'current-window
-      org-src-strip-leading-and-trailing-blank-lines t
-      ;; org-src-preserve-indentation t
-      org-src-tab-acts-natively t)
-#+end_src
-
-** Org exporting
-
-*** Pandoc exporter
-Pandoc converts between a huge number of different file formats. 
-
-#+begin_src emacs-lisp
-(use-package ox-pandoc
-  :no-require t
-  :defer 10
-  :ensure t)
-#+end_src
-
-*** LaTeX exporting
-
-I've had issues with getting BiBTeX to work correctly with the LaTeX
-exporter for PDF exporting. By changing the command to `latexmk`
-references appear in the PDF output like they should. Source:
-http://tex.stackexchange.com/a/161619.
-
-#+BEGIN_SRC emacs-lisp
-(setq org-latex-pdf-process (list "latexmk -pdf %f"))
-#+END_SRC
-
-exporting to html sometimes (always?) requires htmlize
-
-#+BEGIN_SRC emacs-lisp
-(use-package htmlize
-  :ensure t)
-#+END_SRC
-
-
 * PDF Tools
 This really is the best PDF management system I've ever used.
 
@@ -1056,6 +1056,7 @@ This really is the best PDF management system I've ever used.
     :ensure t
     :config
     (pdf-tools-install)
+    (setq-default pdf-view-display-size 'fit-width)
     (setq pdf-annot-activate-created-annotations t))
 #+end_src
 
@@ -1729,7 +1730,7 @@ creating a buffer to do some scratch work or reusing the initial
 #+END_SRC
 
 ** Skeletor
-I'm constantly looking for tools that make starting projects faster, and more correct. There seem to be dozens of them, at least one for every language. The workflow in these tools is always "Run the tool, then find the resulting project in Emacs." ... since most of my projects are written in Common Lisp,  I live in Emacs pretty much all the time. It seems like a redundancy in tooling which is not necessary. Starting in emacs, and running the project skeleton tool is practically ideal, and would be bested only by a system running in an Emacs written in Common Lisp. At any rate, I'm looking at Skeletor to see how it fares under my generally unusual requirements.
+I'm constantly looking for tools that make starting projects faster, and more correct. There seem to be dozens of them, at least one for every language. The workflow in these tools is always "Run the tool, then find the resulting project in Emacs." ... since most of my projects are written in Common Lisp,  I live in Emacs pretty much all the time. It seems like a redundancy in tooling which is not necessary. Starting in emacs, and running the project skeleton tool is practically ideal, and would be bested only by a system running in an Emacs written in Common Lisp. At any rate, I'm looking at [[https://github.com/chrisbarrett/skeletor.el][Skeletor]] to see how it fares under my generally unusual requirements.
 
 #+begin_src emacs-lisp
   (use-package skeletor

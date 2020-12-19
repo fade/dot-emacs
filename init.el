@@ -1,4 +1,4 @@
-
+;;
 ;; (setq gc-cons-threshold 400000000)
 
 ;;; Set up package
@@ -9,9 +9,10 @@
                          ("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")))
 
-(when (boundp 'package-pinned-packages)
-  (setq package-pinned-packages
-        '((org-plus-contrib . "org"))))
+;; (when (boundp 'package-pinned-packages)
+;;   (setq package-pinned-packages
+;;         '((org-plus-contrib . "org"))))
+
 (package-initialize)
 
 ;;; Bootstrap use-package
@@ -96,3 +97,5 @@
 ;;; meat of this config..
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 
+(provide 'init)
+;;; init.el ends here
