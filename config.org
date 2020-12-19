@@ -26,6 +26,157 @@ Obviously, you'll want to change this to match your personal credentials.
       user-mail-address "fade@deepsky.com")
 #+END_SRC
 
+* Theme
+** Autothemer
+#+BEGIN_SRC emacs-lisp
+  (use-package autothemer
+    :ensure t)
+#+END_SRC
+** Emacs' startup screen is naf
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
+** Modus these are exemplars of theme packaging
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package modus-vivendi-theme
+  ;;   :ensure t)
+#+END_SRC
+** Testing the themes from Doom emacs
+
+   #+BEGIN_SRC emacs-lisp
+     ;; (use-package doom-themes
+     ;;   :ensure t
+     ;;   ;; :config (load-theme 'doom-dracula t)
+     ;;   )
+   #+END_SRC
+
+   #+RESULTS:
+
+** Colours On Terminal
+   custom colour themes generally enhance my experience of writing
+   inside emacs, but when that theme is applied to an instance running
+   inside a terminal, the effect is really just terrible. This mode
+   kind of approximates the effect of a graphical emacs frame, in a
+   text console.
+   
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme-approximate
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+    (autoload 'color-theme-approximate-on "color-theme-approximate")
+    (color-theme-approximate-on)))
+#+END_SRC
+
+** Cursor tomfoolery
+   A fun hack that is in practice unusable.
+
+#+BEGIN_SRC emacs-lisp
+
+;; if this is set here, it is overwritten by the colour theme.
+;; (set-cursor-color "yellow")
+
+;; (when (display-graphic-p) 
+;;   (progn
+;;     (defvar blink-cursor-colors (list
+;;                                  "dark slate blue"
+;;                                  "medium slate blue"
+;;                                  "light slate blue"
+;;                                  "steel blue"
+;;                                  "royal blue"
+;;                                  "light blue"
+;;                                  "cyan"
+;;                                  "cyan1"
+;;                                  "cyan2"
+;;                                  "cyan3"
+;;                                  "cyan4"
+;;                                  "spring green"
+;;                                  "yellow"
+;;                                  "orange"
+;;                                  "red"
+;;                                  "hot pink")
+;;       "On each blink the cursor will cycle to the next color in this list.")
+    
+;;     (setq blink-cursor-count 0)
+;;     (setq blink-cursor-interval 0.3)
+;;     (defun blink-cursor-timer-function ()
+;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
+;;      Warning: overwrites original version in `frame.el'.
+
+;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+
+;;       (when (not (internal-show-cursor-p))
+;;         (when (>= blink-cursor-count (length blink-cursor-colors))
+;;           (setq blink-cursor-count 0))
+;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
+;;       (internal-show-cursor nil (not (internal-show-cursor-p)))))
+#+END_SRC
+
+** DeepSky Theme
+   Load the appropriate theme, and a utility for arbitrarily loading
+   others.
+
+#+BEGIN_SRC emacs-lisp
+  (progn
+    ;; on the terminal, the theme situation needs more attention.
+    (load-theme 'deepsky-modus-fade t)
+    (message "Loading DeepSky theme... ")
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-cursor-color "#Ffff00"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun switch-theme (theme)
+  "Disables any currently active themes and loads THEME."
+  ;; This interactive call is taken from `load-theme'
+  (interactive
+   (list
+    (intern (completing-read "Load custom theme: "
+                             (mapc 'symbol-name
+                                   (custom-available-themes))))))
+  (let ((enabled-themes custom-enabled-themes))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme t)))
+
+(defun disable-active-themes ()
+  "Disables any currently active themes listed in `custom-enabled-themes'."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes))
+
+(bind-key "s-<f12>" 'switch-theme)
+(bind-key "s-<f11>" 'disable-active-themes)
+#+END_SRC
+
+** Highlight line containing the point
+
+#+BEGIN_SRC emacs-lisp
+  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+
+  ;; (defadvice hl-line-mode (after
+  ;;                          dino-advise-hl-line-mode
+  ;;                          activate compile)
+  ;;   (set-face-attribute 'hl-line nil
+  ;;                       :inherit nil
+  ;;                       :background (face-background 'highlight))
+  ;;   (set-face-background hl-line-face "1f1f1f"))
+#+END_SRC
+
+** Rainbow
+   
+Mostly useful if you are into web development or game development.
+Every time emacs encounters a hexadecimal code that resembles a color,
+it will automatically highlight it in the appropriate color. This is a
+lot cooler than you may think.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    ;; apply this mode to all programming modes.
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-mode))
+#+END_SRC
 
 * Org mode
 
@@ -137,11 +288,11 @@ speed keys in Org mode]].
 #+END_SRC
 
 ** Org capture
-
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-c c" 'org-capture)
 (setq org-default-notes-file "~/Dropbox/Notes/notes.org")
 #+END_SRC
+
 ** Org agenda
 
 Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]]. This form will add the agenda file to the org-agenda-files list if the file actually exists at the place indicated. Remember to touch the file if you change this list.
@@ -420,159 +571,6 @@ exporting to html sometimes (always?) requires htmlize
 #+END_SRC
 
 
-* Theme
-** Autothemer
-#+BEGIN_SRC emacs-lisp
-  (use-package autothemer
-    :ensure t)
-#+END_SRC
-** Emacs' startup screen is naf
-#+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-#+END_SRC
-** Modus these are exemplars of theme packaging
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package modus-vivendi-theme
-  ;;   :ensure t)
-#+END_SRC
-** Testing the themes from Doom emacs
-
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package doom-themes
-     ;;   :ensure t
-     ;;   ;; :config (load-theme 'doom-dracula t)
-     ;;   )
-   #+END_SRC
-
-   #+RESULTS:
-
-** Colours On Terminal
-   custom colour themes generally enhance my experience of writing
-   inside emacs, but when that theme is applied to an instance running
-   inside a terminal, the effect is really just terrible. This mode
-   kind of approximates the effect of a graphical emacs frame, in a
-   text console.
-   
-#+BEGIN_SRC emacs-lisp
-(use-package color-theme-approximate
-  :ensure t
-  :config
-  (unless (display-graphic-p)
-    (autoload 'color-theme-approximate-on "color-theme-approximate")
-    (color-theme-approximate-on)))
-#+END_SRC
-
-** Cursor tomfoolery
-   A fun hack that is in practice unusable.
-
-#+BEGIN_SRC emacs-lisp
-
-;; if this is set here, it is overwritten by the colour theme.
-;; (set-cursor-color "yellow")
-
-;; (when (display-graphic-p) 
-;;   (progn
-;;     (defvar blink-cursor-colors (list
-;;                                  "dark slate blue"
-;;                                  "medium slate blue"
-;;                                  "light slate blue"
-;;                                  "steel blue"
-;;                                  "royal blue"
-;;                                  "light blue"
-;;                                  "cyan"
-;;                                  "cyan1"
-;;                                  "cyan2"
-;;                                  "cyan3"
-;;                                  "cyan4"
-;;                                  "spring green"
-;;                                  "yellow"
-;;                                  "orange"
-;;                                  "red"
-;;                                  "hot pink")
-;;       "On each blink the cursor will cycle to the next color in this list.")
-    
-;;     (setq blink-cursor-count 0)
-;;     (setq blink-cursor-interval 0.3)
-;;     (defun blink-cursor-timer-function ()
-;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
-;;      Warning: overwrites original version in `frame.el'.
-
-;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
-
-;;       (when (not (internal-show-cursor-p))
-;;         (when (>= blink-cursor-count (length blink-cursor-colors))
-;;           (setq blink-cursor-count 0))
-;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
-;;       (internal-show-cursor nil (not (internal-show-cursor-p)))))
-#+END_SRC
-
-** DeepSky Theme
-   Load the appropriate theme, and a utility for arbitrarily loading
-   others.
-
-#+BEGIN_SRC emacs-lisp
-  (progn
-    ;; on the terminal, the theme situation needs more attention.
-    (load-theme 'deepsky-modus-fade t)
-    (message "Loading DeepSky theme... ")
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-cursor-color "yellow"))
-#+END_SRC
-
-#+RESULTS:
-
-#+BEGIN_SRC emacs-lisp
-(defun switch-theme (theme)
-  "Disables any currently active themes and loads THEME."
-  ;; This interactive call is taken from `load-theme'
-  (interactive
-   (list
-    (intern (completing-read "Load custom theme: "
-                             (mapc 'symbol-name
-                                   (custom-available-themes))))))
-  (let ((enabled-themes custom-enabled-themes))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme theme t)))
-
-(defun disable-active-themes ()
-  "Disables any currently active themes listed in `custom-enabled-themes'."
-  (interactive)
-  (mapc #'disable-theme custom-enabled-themes))
-
-(bind-key "s-<f12>" 'switch-theme)
-(bind-key "s-<f11>" 'disable-active-themes)
-#+END_SRC
-
-** Highlight line containing the point
-
-#+BEGIN_SRC emacs-lisp
-  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
-
-  ;; (defadvice hl-line-mode (after
-  ;;                          dino-advise-hl-line-mode
-  ;;                          activate compile)
-  ;;   (set-face-attribute 'hl-line nil
-  ;;                       :inherit nil
-  ;;                       :background (face-background 'highlight))
-  ;;   (set-face-background hl-line-face "1f1f1f"))
-#+END_SRC
-
-** Rainbow
-   
-Mostly useful if you are into web development or game development.
-Every time emacs encounters a hexadecimal code that resembles a color,
-it will automatically highlight it in the appropriate color. This is a
-lot cooler than you may think.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-mode
-    :ensure t
-    ;; apply this mode to all programming modes.
-    :init
-    (add-hook 'prog-mode-hook 'rainbow-mode))
-#+END_SRC
 
 * Modeline
   
@@ -1848,9 +1846,9 @@ Not using this right now.
 * Languages
 ** Generically useful programming utilities
    #+BEGIN_SRC emacs-lisp
-(use-package yatemplate
-  :defer t
-  :ensure t)   
+     (use-package yatemplate
+       :defer t
+       :ensure t)   
    #+END_SRC
 ** C/Java
 
