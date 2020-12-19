@@ -21,10 +21,10 @@
 
 Obviously, you'll want to change this to match your personal credentials.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Brian O'Reilly"
       user-mail-address "fade@deepsky.com")
-#+end_src
+#+END_SRC
 
 
 * Org mode
@@ -75,7 +75,7 @@ rm ${ORG_DIR}/*.elc
 
 The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
     (font-lock-add-keywords 'org-mode
@@ -91,7 +91,8 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
                     (org-level-6 . 1.1)
                     (org-level-7 . 1.1)
                     (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+      ;; (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+      (set-face-attribute (car face) nil :font "Droid Sans" :weight 'regular :height (cdr face)))
 
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
     (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -103,7 +104,7 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
   (efs/org-font-setup)
-#+end_src
+#+END_SRC
 
 ** Org setup
 
@@ -113,39 +114,39 @@ while at the beginning of a heading. It's not activated by default.
 See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for
 speed keys in Org mode]].
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-use-speed-commands t)
 (require 'org-tempo)
-#+end_src
+#+END_SRC
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-image-actual-width 550)
-#+end_src
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
 (setq org-highlight-latex-and-related '(latex script entities))
 #+END_SRC
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (setq org-refile-targets
     '(("Archive.org" :maxlevel . 1)
       ("Tasks.org" :maxlevel . 1)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
-#+end_src
+#+END_SRC
 
 ** Org capture
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (bind-key "C-c c" 'org-capture)
 (setq org-default-notes-file "~/Dropbox/Notes/notes.org")
-#+end_src
+#+END_SRC
 ** Org agenda
 
 Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]]. This form will add the agenda file to the org-agenda-files list if the file actually exists at the place indicated. Remember to touch the file if you change this list.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -171,10 +172,10 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
             (t (message "Can only toggle between TODO and DONE.")))))
 
   (define-key org-mode-map (kbd "C-c C-d") 'org-toggle-todo-and-fold)
-#+end_src
+#+END_SRC
 
 ** Org Roam
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
   (use-package org-roam
     :ensure t
@@ -192,22 +193,22 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
     :ensure t
     :after org-roam)
 
-#+end_src
+#+END_SRC
 ** Org activation bindings
 
 Set up some global key bindings that integrate with Org Mode features.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (bind-key "C-c l" 'org-store-link)
 (bind-key "C-c c" 'org-capture)
 (bind-key "C-c a" 'org-agenda)
-#+end_src
+#+END_SRC
 
 ** Center Org Buffers
 
 [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]] will center =org-mode= buffers. This gives a more pleasing effect when writing long documents in natural languages.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
@@ -217,7 +218,7 @@ Set up some global key bindings that integrate with Org Mode features.
   :after org
   :ensure t
   :hook (org-mode . efs/org-mode-visual-fill))
-#+end_src
+#+END_SRC
 
 ** Org Bullets
 Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode-setup= configuration function at the top of this file.
@@ -237,7 +238,7 @@ The default value is -77, which is weird for smaller width windows.
 I'd rather have the tags align horizontally with the header. 45 is a
 good column number to do that.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (setq org-tags-column 45)
 
   (setq org-tag-alist
@@ -301,16 +302,16 @@ good column number to do that.
             (todo "CANC"
                   ((org-agenda-overriding-header "Cancelled Projects")
                    (org-agenda-files org-agenda-files)))))))
-#+end_src
+#+END_SRC
 
 ** Org Capture Templates
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package doct
     :ensure t)
-#+end_src
+#+END_SRC
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
       `(("t" "Tasks / Projects")
         ("tt" "Task" entry (file+olp "~/Dropbox/OrgFiles/Tasks.org" "Inbox")
@@ -337,11 +338,11 @@ good column number to do that.
         ;; ("mw" "Weight" table-line (file+headline "~/Dropbox/OrgFiles/Metrics.org" "Weight")
         ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
         ))
-#+end_src
+#+END_SRC
 
 ** Org babel languages
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
@@ -365,7 +366,7 @@ good column number to do that.
            (string= lang "emacs-lisp")
            (string= lang "sqlite"))))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-#+end_src
+#+END_SRC
 
 ** Org babel/source blocks
 
@@ -380,25 +381,25 @@ block is indented after editing it in the org src buffer---the leading
 comments. Setting ~org-src-preserve-indentation~ makes things
 consistent as it doesn't pad source blocks with leading spaces.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
       org-src-strip-leading-and-trailing-blank-lines t
       ;; org-src-preserve-indentation t
       org-src-tab-acts-natively t)
-#+end_src
+#+END_SRC
 
 ** Org exporting
 
 *** Pandoc exporter
 Pandoc converts between a huge number of different file formats. 
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package ox-pandoc
   :no-require t
   :defer 10
   :ensure t)
-#+end_src
+#+END_SRC
 
 *** LaTeX exporting
 
@@ -421,27 +422,27 @@ exporting to html sometimes (always?) requires htmlize
 
 * Theme
 ** Autothemer
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package autothemer
     :ensure t)
-#+end_src
+#+END_SRC
 ** Emacs' startup screen is naf
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
 ** Modus these are exemplars of theme packaging
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package modus-vivendi-theme
   ;;   :ensure t)
-#+end_src
+#+END_SRC
 ** Testing the themes from Doom emacs
 
-   #+begin_src emacs-lisp
+   #+BEGIN_SRC emacs-lisp
      ;; (use-package doom-themes
      ;;   :ensure t
      ;;   ;; :config (load-theme 'doom-dracula t)
      ;;   )
-   #+end_src
+   #+END_SRC
 
    #+RESULTS:
 
@@ -464,7 +465,7 @@ exporting to html sometimes (always?) requires htmlize
 ** Cursor tomfoolery
    A fun hack that is in practice unusable.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
 ;; if this is set here, it is overwritten by the colour theme.
 ;; (set-cursor-color "yellow")
@@ -504,13 +505,13 @@ exporting to html sometimes (always?) requires htmlize
 ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
 ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
 ;;       (internal-show-cursor nil (not (internal-show-cursor-p)))))
-#+end_src
+#+END_SRC
 
 ** DeepSky Theme
    Load the appropriate theme, and a utility for arbitrarily loading
    others.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (progn
     ;; on the terminal, the theme situation needs more attention.
     (load-theme 'deepsky-modus-fade t)
@@ -518,11 +519,11 @@ exporting to html sometimes (always?) requires htmlize
     (set-face-attribute `mode-line nil
                         :box nil)
     (set-cursor-color "yellow"))
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun switch-theme (theme)
   "Disables any currently active themes and loads THEME."
   ;; This interactive call is taken from `load-theme'
@@ -542,7 +543,7 @@ exporting to html sometimes (always?) requires htmlize
 
 (bind-key "s-<f12>" 'switch-theme)
 (bind-key "s-<f11>" 'disable-active-themes)
-#+end_src
+#+END_SRC
 
 ** Highlight line containing the point
 
@@ -584,10 +585,10 @@ the bottom is =diminish=.
 
 ** All the icons!
    
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :ensure t)
-#+end_src
+#+END_SRC
    
 ** Spaceline!
    I may not use spacemacs, since I do not like evil-mode and find
@@ -666,7 +667,7 @@ This turns on the clock globally.
 * Font
 And here's how we tell Emacs which font we want.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
   (if window-system
       (progn
@@ -675,19 +676,19 @@ And here's how we tell Emacs which font we want.
         ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
         (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
 
-#+end_src
+#+END_SRC
 
 * Which Key
 [[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
 
-  #+begin_src emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :ensure t
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
-  #+end_src
+  #+END_SRC
 
 * Sane defaults
   
@@ -700,7 +701,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
 #+END_SRC
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   ;; These functions are useful. Activate them. This use of #'put is
   ;; strange, but this feature uses symbol properties.
   (put 'downcase-region 'disabled nil)
@@ -747,13 +748,13 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
   ;; Don't beep at me
   (setq visible-bell t)
-#+end_src
+#+END_SRC
 
 The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
 [[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or
 the symbol at point as the default value for occur.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun occur-dwim ()
   "Call `occur' with a sane default."
   (interactive)
@@ -766,16 +767,16 @@ the symbol at point as the default value for occur.
   (call-interactively 'occur))
 
 (bind-key "M-s o" 'occur-dwim)
-#+end_src
+#+END_SRC
 
 Here we make page-break characters look pretty, instead of appearing
 as =^L= in Emacs. [[https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/][Here's an informative article called "Using
 Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; (use-package page-break-lines
 ;;   :ensure t)
-#+end_src
+#+END_SRC
 
 in dired mode, it is useful to mark a bunch of files and then open
 them all in separate buffers. Function implementation taken from Stack
@@ -798,7 +799,7 @@ point, or when prefix arg, the next N files. "
 There are configurations to make when running Emacs on macOS (hence the
 "darwin" system-type check).
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (when (string-equal system-type "darwin")
   ;; delete files by moving them to the trash
   (setq delete-by-moving-to-trash t)
@@ -856,18 +857,18 @@ There are configurations to make when running Emacs on macOS (hence the
   ;; Not going to use these commands
   (put 'ns-print-buffer 'disabled t)
   (put 'suspend-frame 'disabled t))
-#+end_src
+#+END_SRC
 
 ~exec-path-from-shell~ makes the command-line path with Emacs's shell
 match the same one on macOS.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :ensure t
   :init
   (exec-path-from-shell-initialize))
-#+end_src
+#+END_SRC
 
 ** El Capitan fixes
 
@@ -1029,40 +1030,40 @@ disk. This is particularly useful in the presence of git or other
 version control software which can change the files from beneath the
 buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][Magnar Sveen]]
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 (global-auto-revert-mode t)
 
 ;; Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
-#+end_src
+#+END_SRC
 
 * Recentf
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package recentf
   :bind ("C-x C-r" . helm-recentf)
   :config
   (recentf-mode t)
   (setq recentf-max-saved-items 200))
-#+end_src
+#+END_SRC
 
 * PDF Tools
 This really is the best PDF management system I've ever used.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package pdf-tools
     :ensure t
     :config
     (pdf-tools-install)
     (setq-default pdf-view-display-size 'fit-width)
     (setq pdf-annot-activate-created-annotations t))
-#+end_src
+#+END_SRC
 
 * Tramp
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package tramp
     :ensure t
     :config
@@ -1072,24 +1073,24 @@ This really is the best PDF management system I've ever used.
     ;;              (list (regexp-quote "/ssh:fade@deepsky.com:")
     ;;                    "remote-shell" "/bin/sh"))
     ) 
-#+end_src
+#+END_SRC
 
 * Window
 
 Convenient keybindings to resize windows.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; (bind-key "s-C-<left>"  'shrink-window-horizontally)
 ;; (bind-key "s-C-<right>" 'enlarge-window-horizontally)
 ;; (bind-key "s-C-<down>"  'shrink-window)
 ;; (bind-key "s-C-<up>"    'enlarge-window)
-#+end_src
+#+END_SRC
 
 Whenever I split windows, I usually do so and also switch to the other
 window as well, so might as well rebind the splitting key bindings to
 do just that to reduce the repetition.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun vsplit-other-window ()
   "Splits the window vertically and switches to that window."
   (interactive)
@@ -1103,19 +1104,19 @@ do just that to reduce the repetition.
 
 (bind-key "C-x 2" 'vsplit-other-window)
 (bind-key "C-x 3" 'hsplit-other-window)
-#+end_src
+#+END_SRC
 
 * Whitespace mode
 Because sometimes you have to look at python code that came from a person with unusual editor defaults.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
-#+end_src
+#+END_SRC
 
 * File Management
 ** Dired
 Dired configuration is split between =init.el= and this clause in =config.org=, for reasons related to the way that emacs is initialised in this regime. If dired is not configured early, emacs throws to the debugger with an error when dired is called in regular use.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package dired-single
     :ensure t
     :after dired)
@@ -1124,7 +1125,7 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
     :ensure t
     :after dired
     :hook (dired-mode . all-the-icons-dired-mode))
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 | dired-extra-startup | all-the-icons-dired-mode | auto-revert-mode |
@@ -1202,13 +1203,13 @@ A quick way to jump around text in buffers.
 
 [[http://emacsrocks.com/e10.html][See Emacs Rocks Episode 10 for a screencast.]]
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package ace-jump-mode
   :ensure t
   :diminish ace-jump-mode
   :commands ace-jump-mode
   :bind ("C-s-." . ace-jump-mode))
-#+end_src
+#+END_SRC
 
 ** Ace Window
 
@@ -1216,21 +1217,21 @@ A quick way to jump around text in buffers.
 buffer navigation, but applies it to windows. The default keys are
 1-9.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
     :config
     (ace-window-display-mode)
     :bind ("s-o" . ace-window))
-#+end_src
+#+END_SRC
 
 ** Android mode
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package android-mode
   :ensure t
   :defer t)
-#+end_src
+#+END_SRC
 ** C-Eldoc
    :PROPERTIES:
    :GitHub:   https://github.com/mooz/c-eldoc
@@ -1238,23 +1239,23 @@ buffer navigation, but applies it to windows. The default keys are
 
 This package displays function signatures in the mode line.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package c-eldoc
   :commands c-turn-on-eldoc-mode
   :ensure t
   :init (add-hook 'c-mode-hook #'c-turn-on-eldoc-mode))
-#+end_src
+#+END_SRC
 
 ** Clojure
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package clojure-mode
   :defer t
   :ensure t)
-#+end_src
+#+END_SRC
 
 ** Company
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure nil
   :diminish company-mode
@@ -1286,25 +1287,25 @@ This package displays function signatures in the mode line.
       (define-key company-active-map (kbd "C-n") #'company-select-next)
       (define-key company-active-map (kbd "C-p") #'company-select-previous)
       (define-key company-active-map (kbd "SPC") #'company-abort))))
-#+end_src
+#+END_SRC
 
 ** CSV mode
-   #+begin_src emacs-lisp
+   #+BEGIN_SRC emacs-lisp
      (use-package csv-mode
        :ensure t)
-   #+end_src
+   #+END_SRC
 
 ** Extempore mode
 Extempore is a scheme defined for live performance programming.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package extempore-mode
     :ensure t
     :config
     (setq extempore-path "/usr/bin/extempore"))
-#+end_src
+#+END_SRC
 
 ** flycheck
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
@@ -1320,7 +1321,7 @@ Extempore is a scheme defined for live performance programming.
 (use-package flycheck-nim
   :ensure t
   :after flycheck)
-#+end_src
+#+END_SRC
    
 ** Undotree
 #+BEGIN_SRC emacs-lisp
@@ -1332,7 +1333,7 @@ Extempore is a scheme defined for live performance programming.
 
 ** Helm
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package helm
   :ensure t
   :diminish helm-mode
@@ -1364,11 +1365,11 @@ Extempore is a scheme defined for live performance programming.
    '(helm-ag-insert-at-point 'symbol)
    '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
   
-#+end_src
+#+END_SRC
 
 ** Helpful
 This package gives richer help information, and makes interrogating emacs more fruitful.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package helpful
     :ensure t
     :config
@@ -1391,7 +1392,7 @@ This package gives richer help information, and makes interrogating emacs more f
     ;; don't find this very useful, but it's frequently useful to only
     ;; look at interactive functions.
     (global-set-key (kbd "C-h C") #'helpful-command))
-#+end_src
+#+END_SRC
 
 ** Magit
 
@@ -1399,7 +1400,7 @@ A great interface for git projects. It's much more pleasant to use
 than the git interface on the command line. Use an easy keybinding to
 access magit.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
   :defer t
@@ -1414,7 +1415,7 @@ access magit.
   :config
   (magithub-feature-autoinject t)
   (setq magithub-clone-default-directory "~/SourceCode/lisp"))
-#+end_src
+#+END_SRC
 
 *** Fullscreen magit
 
@@ -1426,7 +1427,7 @@ No more juggling windows after commiting. It's magit bliss.
 #+END_QUOTE
 [[http://whattheemacsd.com/setup-magit.el-01.html][Source: Magnar Sveen]]
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   ;; full screen magit-status
   (defadvice magit-status (around magit-fullscreen activate)
     (window-configuration-to-register :magit-fullscreen)
@@ -1438,7 +1439,7 @@ No more juggling windows after commiting. It's magit bliss.
     (interactive)
     (kill-buffer)
     (jump-to-register :magit-fullscreen))
-#+end_src
+#+END_SRC
 
 ** Gists
 
@@ -1450,18 +1451,18 @@ No more juggling windows after commiting. It's magit bliss.
 
 ** Markdown mode
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :ensure t
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'"       . markdown-mode)))
-#+end_src
+#+END_SRC
 
 ** Multiple cursors
 
 We'll also need to ~(require 'multiple-cusors)~ because of [[https://github.com/magnars/multiple-cursors.el/issues/105][an autoload issue]].
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
     :ensure t
     :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -1470,18 +1471,18 @@ We'll also need to ~(require 'multiple-cusors)~ because of [[https://github.com/
            ("C-c C-<"     . mc/mark-all-like-this)
            ("C-!"         . mc/mark-next-symbol-like-this)
            ("s-d"         . mc/mark-all-dwim)))
-#+end_src
+#+END_SRC
 
 ** Perspective
 
 Workspaces in Emacs.
 
-#+begin_src emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package perspective
   :ensure t
   :defer t
   :config (persp-mode))
-#+end_src
+#+END_SRC
 
 ** Projectile
 [[http://batsov.com/projectile/][Projectile Home]]
@@ -1490,7 +1491,7 @@ Workspaces in Emacs.
 Project navigation and management library for Emacs.
 #+END_QUOTE
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
   :diminish projectile-mode
@@ -1500,13 +1501,13 @@ Project navigation and management library for Emacs.
   (projectile-global-mode t)
   (setq projectile-enable-caching t)
   (setq projectile-switch-project-action 'projectile-dired))
-#+end_src
+#+END_SRC
 
 ** Python
 
 Integrates with IPython.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
   ;; (use-package ein
   ;;   :defer t
@@ -1530,11 +1531,11 @@ Integrates with IPython.
   (use-package jinja2-mode
     :ensure t)
 
-#+end_src
+#+END_SRC
 
 ** Racket
    Not using Racket much any more. When I do, drracket is sufficient.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; (use-package racket-mode
 ;;   :ensure t
 ;;   :commands racket-mode
@@ -1546,7 +1547,7 @@ Integrates with IPython.
 ;;   :defer t
 ;;   :config
 ;;   (setq geiser-default-implementation '(racket)))
-#+end_src
+#+END_SRC
 
 ** Restclient
 
@@ -1556,11 +1557,11 @@ aren't constrainted within Emacs; there's the
 =restclient-copy-curl-command= to get the equivalent =curl= call
 string to keep things portable.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package restclient
   :ensure t
   :mode ("\\.restclient\\'" . restclient-mode))
-#+end_src
+#+END_SRC
 
 ** Smartscan
 
@@ -1570,34 +1571,34 @@ Quickly jumps between other symbols found at point in Emacs.
 http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
 
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package smartscan
     :ensure t
     :config (global-smartscan-mode 1)
     :bind (("s-n" . smartscan-symbol-go-forward)
            ("s-p" . smartscan-symbol-go-backward)))
-#+end_src
+#+END_SRC
 
 ** Skewer mode
 
 Live coding for HTML/CSS/JavaScript.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package skewer-mode
   :commands skewer-mode
   :ensure t
   :config (skewer-setup))
-#+end_src
+#+END_SRC
 
 ** Smoothscrolling
 
 This makes it so ~C-n~-ing and ~C-p~-ing won't make the buffer jump
 around so much.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package smooth-scrolling
   :ensure t)
-#+end_src
+#+END_SRC
 
 ** Typescript mode
 
@@ -1609,10 +1610,10 @@ around so much.
 
 ** Webmode
 
-#+begin_src emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package web-mode
   :ensure t)
-#+end_src
+#+END_SRC
 
 ** w3m for webby reading
 #+BEGIN_SRC emacs-lisp
@@ -1647,13 +1648,13 @@ idle time.
 #+END_SRC
 
 ** YAML mode
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
   :ensure t
   :defer t
   :config
   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
-#+end_src
+#+END_SRC
 
 ** Ansible
 #+BEGIN_SRC emacs-lisp
@@ -1676,14 +1677,14 @@ idle time.
 
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package emmet-mode
   :ensure t
   :commands emmet-mode
   :config
   (add-hook 'html-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook 'emmet-mode))
-#+end_src
+#+END_SRC
 
 ** Zoom-frm
 
@@ -1699,7 +1700,7 @@ Changing the =frame-zoom-font-difference= essentially enables a
 
 This mode is not available in elpa/melpa, so use-package will obviously not work in this case. If you are giving a lot of presentations with emacs, it is very useful, and you can still find the system at [[https://www.emacswiki.org/emacs/zoom-frm.el][Emacs WIKI zoom-frm.el]]. Include it from init.el.
 
-#+begin_src emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; (use-package zoom-frm 
   ;;   :ensure t
   ;;   :bind (("C-M-=" . zoom-in/out)
@@ -1707,7 +1708,7 @@ This mode is not available in elpa/melpa, so use-package will obviously not work
   ;;          ("s-<f1>" . toggle-zoom-frame))
   ;;   :config
   ;;   (setq frame-zoom-font-difference 10))
-#+end_src
+#+END_SRC
 
 ** Scratch
 
@@ -1716,11 +1717,11 @@ current buffer's major mode. This is more convienent than manually
 creating a buffer to do some scratch work or reusing the initial
 =*scratch*= buffer.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package scratch
   :ensure t
   :commands scratch)
-#+end_src
+#+END_SRC
 
 ** Shell pop
 #+BEGIN_SRC emacs-lisp
@@ -1732,12 +1733,12 @@ creating a buffer to do some scratch work or reusing the initial
 ** Skeletor
 I'm constantly looking for tools that make starting projects faster, and more correct. There seem to be dozens of them, at least one for every language. The workflow in these tools is always "Run the tool, then find the resulting project in Emacs." ... since most of my projects are written in Common Lisp,  I live in Emacs pretty much all the time. It seems like a redundancy in tooling which is not necessary. Starting in emacs, and running the project skeleton tool is practically ideal, and would be bested only by a system running in an Emacs written in Common Lisp. At any rate, I'm looking at [[https://github.com/chrisbarrett/skeletor.el][Skeletor]] to see how it fares under my generally unusual requirements.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package skeletor
     :ensure t
     :custom
     (skeletor-project-directory "~/SourceCode/lisp/"))
-#+end_src
+#+END_SRC
 
 ** Quickrun
 
@@ -1756,11 +1757,11 @@ text-mode, which is what I had done in order to see invisible text
 (with org hyperlinks). The entire buffer contents will be visible
 while still being in org mode.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package visible-mode
   :bind (("H-v" . visible-mode)
          ("s-<f2>" . visible-mode)))
-#+end_src
+#+END_SRC
 
 ** Virtualenvwrapper
 
@@ -1826,7 +1827,7 @@ hostname for the computer without any "domain information," such as
 the ".local" suffix.
 
 Not using this right now.
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; (require 'subr-x) ;; #'string-trim
 ;; (defvar fade/user-settings-dir nil
 ;;   "The directory with user-specific Emacs settings for this
@@ -1842,20 +1843,20 @@ Not using this right now.
 ;; ;; Load settings specific for the current user
 ;; (when (file-exists-p fade/user-settings-dir)
 ;;   (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
-#+end_src
+#+END_SRC
 
 * Languages
 ** Generically useful programming utilities
-   #+begin_src emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (use-package yatemplate
   :defer t
   :ensure t)   
-   #+end_src
+   #+END_SRC
 ** C/Java
 
 I don't like the default way that Emacs handles indentation. For instance,
 
-#+begin_src C
+#+BEGIN_SRC C
 int main(int argc, char *argv[])
 {
   /* What's with the brace alignment? */
@@ -1864,9 +1865,9 @@ int main(int argc, char *argv[])
     }
   return 0;
 }
-#+end_src
+#+END_SRC
 
-#+begin_src java
+#+BEGIN_SRC java
 switch (number)
     {
     case 1:
@@ -1878,11 +1879,11 @@ switch (number)
     default:
         break;
     }
-#+end_src
+#+END_SRC
 
 Luckily, I can modify the way Emacs formats code with this configuration.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun my-c-mode-hook ()
   (setq c-basic-offset 4)
   (c-set-offset 'substatement-open 0)   ; Curly braces alignment
@@ -1890,7 +1891,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'java-mode-hook 'my-c-mode-hook)
-#+end_src
+#+END_SRC
 
 ** Rust
 #+BEGIN_SRC emacs-lisp
@@ -1903,7 +1904,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 *** SLY
     Jury is in. Sly is superior to Slime.
     
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package sly
     ;; :load-path "~/SourceCode/lisp/sly"
     :defer t
@@ -1969,7 +1970,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
   ;;     (global-helm-sly-mode t)
   ;;     (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
   ;;     (setq helm-completion-in-region-fuzzy-match t)))
-#+end_src
+#+END_SRC
 
 *** Paredit
 
@@ -2094,10 +2095,10 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
    * C-M-x   :: `skewer-eval-defun'
    * C-c C-k :: `skewer-load-buffer'
 
-** Nim  #+begin_src emacs-lisp
+** Nim  #+BEGIN_SRC emacs-lisp
 (use-package nim-mode
   :ensure t)
-   #+end_src
+   #+END_SRC
 
 * Misc
 ** Display Time
@@ -2105,11 +2106,11 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 When displaying the time with =display-time-mode=, I don't care about
 the load average.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq display-time-default-load-average nil)
-#+end_src
+#+END_SRC
 ** Swap Buffer Windows
-   #+begin_src emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (use-package buffer-move
   :ensure t
   :config
@@ -2118,41 +2119,41 @@ the load average.
     (global-set-key (kbd "<C-M-s-down>")   'buf-move-down)
     (global-set-key (kbd "<C-M-s-left>")   'buf-move-left)
     (global-set-key (kbd "<C-M-s-right>")  'buf-move-right)))
-   #+end_src
+   #+END_SRC
 
 ** Display Battery Mode
 
 See the documentation for =battery-mode-line-format= for the format
 characters.
 
-#+begin_src emacs-lisp
-(setq battery-mode-line-format "[%b%p%% %t]")
-#+end_src
+#+BEGIN_SRC emacs-lisp
+  ;; (setq battery-mode-line-format "[%b%p%% %t]")
+#+END_SRC
 
 ** Docview keybindings
 
 Convenience bindings to use doc-view with the arrow keys.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package doc-view
   :commands doc-view-mode
   :config
   (define-key doc-view-mode-map (kbd "<right>") 'doc-view-next-page)
   (define-key doc-view-mode-map (kbd "<left>") 'doc-view-previous-page))
-#+end_src
+#+END_SRC
 
 ** OS X scrolling
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-scroll-amount (quote (0.01)))
-#+end_src
+#+END_SRC
 
 ** Emacsclient
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package server
   :config
   (server-start))
-#+end_src
+#+END_SRC
 
 
