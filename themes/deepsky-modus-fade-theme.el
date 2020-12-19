@@ -537,6 +537,32 @@
  '(show-paren-match-expression ((((class color) (min-colors 89)) :inherit modus-theme-special-calm)))
  '(show-paren-mismatch ((((class color) (min-colors 89)) :inherit modus-theme-intense-red)))
  '(skewer-error-face ((((class color) (min-colors 89)) :foreground "#ff8059" :underline t)))
+
+;;; SLY REPL colors.
+ '(sly-mrepl-prompt-face ((((class color) (min-colors 89)) :foreground "#Ffa500")))
+ '(sly-mrepl-output-face ((((class color) (min-colors 89)) :forground "steelblue")))
+
+ '(sly-warning-face ((((class color) (min-colors 89)) :forground "coral")))
+;;; SLIME stuff
+ '(slime-error-face ((t (:underline "red"))))
+ '(slime-highlight-edits-face ((t (:background "dimgray"))))
+ '(slime-highlight-face ((t (:foreground "yellow" :background "steelblue" :underline nil))))
+ '(slime-inspector-action-face ((t (:bold t :weight bold :foreground "#8b2252"))))
+ '(slime-inspector-label-face ((t (:foreground "#00ff00"))))
+ '(slime-inspector-topline-face ((t (nil))))
+ '(slime-inspector-type-face ((t (nil))))
+ '(slime-inspector-value-face ((t (:foreground "#ffaa00"))))
+ '(slime-note-face ((t (:underline "light goldenrod"))))
+ '(slime-reader-conditional-face ((t (:foreground "#00ffff"))))
+ '(slime-repl-input-face ((t (:bold t :weight bold))))
+ '(slime-repl-inputed-output-face ((t (:foreground "springgreen"))))
+ '(slime-repl-output-face ((t (:foreground "steelblue"))))
+ '(slime-repl-output-mouseover-face ((t (:foreground "springgreen" :box (:line-width 1 :color "black" :style released-button)))))
+ '(slime-repl-prompt-face ((t (:foreground "Orange"))))
+ '(slime-repl-result-face ((t (:foreground "#63b8ff"))))
+ '(slime-style-warning-face ((t (:underline "gold"))))
+ '(slime-warning-face ((t (:underline "coral"))))
+ 
  '(spaceline-evil-emacs ((((class color) (min-colors 89)) :inherit modus-theme-active-magenta)))
  '(spaceline-evil-insert ((((class color) (min-colors 89)) :inherit modus-theme-active-green)))
  '(spaceline-evil-motion ((((class color) (min-colors 89)) :inherit modus-theme-active-blue)))
