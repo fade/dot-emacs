@@ -7,10 +7,6 @@
 
 (custom-theme-set-faces
  'deepsky-2
- '(default ((t (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 110 :width normal)
-               ((class color) (min-colors 16777216))
-               (:foreground "#fff" :background "#120F14"))
-            (((class color) (min-colors 88)) (:foreground "#fff" :background "#000")) (((class color) (min-colors 16)) (:foreground "#fff" :background "#000")) (((class color) (min-colors 8)) (:foreground "#fff" :background "#000"))))
  '(cursor ((t (:foreground "#ffffff" :background "#d96e26"))))
  '(fixed-pitch ((t (:family "Monospace"))))
  '(variable-pitch ((t (:family "Sans Serif"))))
@@ -42,11 +38,11 @@
  '(fringe ((((class color) (min-colors 88)) (:background "#111111" :foreground "#506080")) (t (:background "#201520" :Foreground "#506080"))))
  '(header-line ((t (:box nil :foreground "grey90" :background "grey20"))))
  '(tooltip ((t (:foreground "#FFFFFF" :background "#5f5e8a"))))
- '(mode-line ((((class color) (min-colors 88)) (:background "#222222" :foreground "#8c86e4")) (t (:background "#2b283d" :box nil :foreground "#8c86e4"))))
+ '(mode-line ((t (:background "#222222" :foreground "#8c86e4" :box nil))))
  '(mode-line-buffer-id ((t (:weight bold :box nil))))
  '(mode-line-emphasis ((t (:weight bold))))
  '(mode-line-highlight ((t (:box nil (t (:inherit (highlight)))))))
- '(mode-line-inactive ((((class color) (min-colors 88)) (:background "#111111" :foreground "#000000")) (t (:weight light :box nil :background "#202339" :foreground "#000000" :inherit (mode-line)))))
+ '(mode-line-inactive ((t (:background "#111111" :foreground "slate blue" :box nil))))
  '(isearch ((((class color) (min-colors 88) (background light)) (:foreground "white" :background "#5533AA")) (((class color) (min-colors 88) (background dark)) (:foreground "white" :background "#5533AA")) (t (:inverse-video t))))
  '(isearch-fail ((((class color) (min-colors 88) (background light)) (:foreground "#000000" :background "#ffaaaa")) (((class color) (min-colors 88) (background dark)) (:foreground "#000000" :background "#880000")) (((class color grayscale)) (:foreground "#888888")) (t (:inverse-video t))))
  '(lazy-highlight ((((class color) (min-colors 88) (background light)) (:foreground "white" :background "#331144")) (((class color) (min-colors 88) (background dark)) (:foreground "#CCCCCC" :background "#331144"))))
@@ -55,7 +51,6 @@
  '(query-replace ((t (:inherit (isearch)))))
  '(error ((t (:foreground "#cc3333"))))
  '(warning ((t (:foreground "#d96e26"))))
- '(cua-rectangle ((t (:background "#514b6c"))))
  '(diff-added ((t (:background "#033003"))))
  '(diff-changed ((t (:background "#661279"))))
  '(diff-refine-added ((t (:background "#035003"))))
@@ -64,6 +59,7 @@
  '(diff-file-header ((t (:background "#362145"))))
  '(diff-context ((t (:foreground "#E0E4CC"))))
  '(diff-hunk-header ((t (:background "#242130"))))
- '(compilation-info ((t (:foreground "#a09aF0")))))
+ '(compilation-info ((t (:foreground "#a09aF0"))))
+ '(default ((t (:slant normal :weight normal :height 110 :width normal :foundry "ENVY" :family "Envy Code R")))))
 
 (provide-theme 'deepsky-2)
