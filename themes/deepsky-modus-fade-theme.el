@@ -16,7 +16,9 @@
 
 (custom-theme-set-faces
  'deepsky-modus-fade
- '(default ((((class color) (min-colors 89)) :background "#000000" :foreground "#ffffff")))
+ '(default
+    ((t (:family "Envy Code R" :foundry "ENVY" :slant normal :weight normal :height 120 :width normal
+                 :foreground "white" :background "black"))))
  '(cursor ((((class color) (min-colors 89)) :background "#ffffff")))
  '(fixed-pitch ((t (:family "Monospace"))))
  '(variable-pitch ((((type w32)) (:foundry "outline" :family "Arial")) (t (:family "Sans Serif"))))
@@ -53,7 +55,7 @@
  '(mode-line-buffer-id ((((class color) (min-colors 89)) :inherit bold)))
  '(mode-line-emphasis ((((class color) (min-colors 89)) :inherit bold :foreground "#34cfff")))
  '(mode-line-highlight ((((class color) (min-colors 89)) :inherit modus-theme-active-blue :box (:line-width -1 :style pressed-button))))
- '(mode-line-inactive ((((class color) (min-colors 89)) :foreground "#bfc0c4" :background "#1e1e1e" :box "#3c3c3c")))
+ '(mode-line-inactive ((((class color) (min-colors 89)) :foreground "#bfc0c4" :background "#2f4f4f" :box "#3c3c3c")))
  '(isearch ((((class color) (min-colors 89)) :inherit (modus-theme-intense-green bold))))
  '(isearch-fail ((((class color) (min-colors 89)) :inherit modus-theme-refine-red)))
  '(lazy-highlight ((((class color) (min-colors 89)) :inherit modus-theme-refine-cyan)))
@@ -540,13 +542,13 @@
 
 ;;; SLY REPL colors.
  '(sly-mrepl-prompt-face ((((class color) (min-colors 89)) :foreground "#Ffa500")))
- '(sly-mrepl-output-face ((((class color) (min-colors 89)) :forground "steelblue")))
+ '(sly-mrepl-output-face ((((class color) (min-colors 89)) :forground "SteelBlue")))
 
  '(sly-warning-face ((((class color) (min-colors 89)) :forground "coral")))
 ;;; SLIME stuff
  '(slime-error-face ((t (:underline "red"))))
  '(slime-highlight-edits-face ((t (:background "dimgray"))))
- '(slime-highlight-face ((t (:foreground "yellow" :background "steelblue" :underline nil))))
+ '(slime-highlight-face ((t (:foreground "yellow" :background "SteelBlue" :underline nil))))
  '(slime-inspector-action-face ((t (:bold t :weight bold :foreground "#8b2252"))))
  '(slime-inspector-label-face ((t (:foreground "#00ff00"))))
  '(slime-inspector-topline-face ((t (nil))))
@@ -556,7 +558,7 @@
  '(slime-reader-conditional-face ((t (:foreground "#00ffff"))))
  '(slime-repl-input-face ((t (:bold t :weight bold))))
  '(slime-repl-inputed-output-face ((t (:foreground "springgreen"))))
- '(slime-repl-output-face ((t (:foreground "steelblue"))))
+ '(slime-repl-output-face ((t (:foreground "SteelBlue"))))
  '(slime-repl-output-mouseover-face ((t (:foreground "springgreen" :box (:line-width 1 :color "black" :style released-button)))))
  '(slime-repl-prompt-face ((t (:foreground "Orange"))))
  '(slime-repl-result-face ((t (:foreground "#63b8ff"))))
