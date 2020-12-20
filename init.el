@@ -31,6 +31,32 @@
 (require 'bind-key)
 (setq use-package-verbose t)
 
+;; sometimes when I visit an org file, org-mode does not start. moving
+;; mode installation here, to test whether it is a load-time phasing
+;; issue.
+
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
+(use-package org
+  :hook (org-mode . efs/org-mode-setup)
+  ;; :ensure t
+  :ensure org-plus-contrib
+  :custom
+  (org-ellipsis " ▾")
+  (org-agenda-start-with-log-mode t)
+  (org-log-done 'time)
+  (org-log-into-drawer t)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+        (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+  :config
+  (progn (eval-after-load "org"
+           '(require 'ox-md nil t))
+         (setq org-support-shift-select 'always)))
+
 ;;; themes need finding.
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes/" user-emacs-directory))

@@ -1,4 +1,4 @@
-#+STARTUP: overview
+#+Startup: overview
 #+TITLE: Emacs Configuration
 #+AUTHOR: Brian O'Reilly
 #+EMAIL: <fade@deepsky.com>
@@ -35,11 +35,6 @@ Obviously, you'll want to change this to match your personal credentials.
 ** Emacs' startup screen is naf
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
-#+END_SRC
-** Modus these are exemplars of theme packaging
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package modus-vivendi-theme
-  ;;   :ensure t)
 #+END_SRC
 ** Testing the themes from Doom emacs
 
@@ -188,34 +183,12 @@ It goes without saying that I also use it to manage my Emacs config.
 
 Although Org mode ships with Emacs, the latest version can be installed externally. The configuration here follows the [[http://orgmode.org/elpa.html][Org mode ELPA installation instructions]].
 
-#+BEGIN_SRC emacs-lisp
+Org mode is currently being installed right after use-package is initialised in =init.el=.
 
-  (defun efs/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (visual-line-mode 1))
 
-  (use-package org
-    :hook (org-mode . efs/org-mode-setup)
-    ;; :ensure t
-    :ensure org-plus-contrib
-    :custom
-    (org-ellipsis " ▾")
-    (org-agenda-start-with-log-mode t)
-    (org-log-done 'time)
-    (org-log-into-drawer t)
-    (org-todo-keywords
-     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
-    :config
-    (progn (eval-after-load "org"
-             '(require 'ox-md nil t))
-           (setq org-support-shift-select 'always)))
-
-#+END_SRC
 
 On Org mode version 9 I wasn't able to execute source blocks out of
-the box. [[https://emacs.stackexchange.com/a/28604][Others have ran into the same issue too]]. The solution is to
+the box. [[https://emacs.stackexchange.com/a/28604][Others have run into the same issue too]]. The solution is to
 remove the .elc files from the package directory:
 
 #+BEGIN_SRC sh :var ORG_DIR=(let* ((org-v (cadr (split-string (org-version nil t) "@"))) (len (length org-v))) (substring org-v 1 (- len 2)))
