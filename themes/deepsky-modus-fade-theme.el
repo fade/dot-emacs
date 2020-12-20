@@ -51,7 +51,7 @@
  '(fringe ((((class color) (min-colors 89)) :background "#000000" :foreground "#ffffff")))
  '(header-line ((((class color) (min-colors 89)) :background "#212121" :foreground "#dddddd")))
  '(tooltip ((((class color) (min-colors 89)) :background "#203448" :foreground "#ffffff")))
- '(mode-line ((((class color) (min-colors 89)) :foreground "#f4f4f4" :background "#323232" :box "#a8a8a8")))
+ '(mode-line ((((class color) (min-colors 89)) :foreground "#f4f4f4" :background "#473c8b" :box "#a8a8a8")))
  '(mode-line-buffer-id ((((class color) (min-colors 89)) :inherit bold)))
  '(mode-line-emphasis ((((class color) (min-colors 89)) :inherit bold :foreground "#34cfff")))
  '(mode-line-highlight ((((class color) (min-colors 89)) :inherit modus-theme-active-blue :box (:line-width -1 :style pressed-button))))
