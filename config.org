@@ -185,8 +185,6 @@ Although Org mode ships with Emacs, the latest version can be installed external
 
 Org mode is currently being installed right after use-package is initialised in =init.el=.
 
-
-
 On Org mode version 9 I wasn't able to execute source blocks out of
 the box. [[https://emacs.stackexchange.com/a/28604][Others have run into the same issue too]]. The solution is to
 remove the .elc files from the package directory:
@@ -303,7 +301,16 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 
   (use-package org-roam
     :ensure t
-    :after org)
+    :after org
+    :config
+    (setq
+     org-roam-directory (expand-file-name "Roam/" site-org-files))
+    (setq
+     org-roam-dailies-directory (expand-file-name "Dailies/" org-roam-directory))
+    ;; New capture template
+    (setq org-roam-dailies-capture-templates
+          '(("d" "daily" entry #'org-roam-capture--get-point
+             "* %?\n"))))
 
   (use-package company-org-roam
     :ensure t
@@ -1020,6 +1027,13 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
   (setq recentf-max-saved-items 200))
 #+END_SRC
 
+* SparQL mode
+most relevantly, sparql is used to define queries to the WikiData knowledge database. 
+#+begin_src emacs-lisp
+  (use-package sparql-mode
+    :ensure t)
+#+end_src
+
 * PDF Tools
 This really is the best PDF management system I've ever used.
 
@@ -1588,15 +1602,15 @@ around so much.
 
 ** w3m for webby reading
 #+BEGIN_SRC emacs-lisp
-(use-package w3m
-  :ensure t
-  :defer t
-  :config
-  (progn
-    (setq browse-url-browser-function 'w3m-browse-url)
-    (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-    (global-set-key "\C-xm" 'browse-url-at-point)
-    (setq w3m-use-cookies t)))
+  ;; (use-package w3m
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :config
+  ;;   (progn
+  ;;     (setq browse-url-browser-function 'w3m-browse-url)
+  ;;     (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+  ;;     (global-set-key "\C-xm" 'browse-url-at-point)
+  ;;     (setq w3m-use-cookies t)))
 #+END_SRC
 ** Yasnippet
 Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]

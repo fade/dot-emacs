@@ -31,3 +31,4 @@ assets/
 /*.out
 /*.tex
 /*.toc
+/org-roam.db
