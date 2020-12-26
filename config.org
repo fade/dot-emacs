@@ -173,6 +173,7 @@ lot cooler than you may think.
     (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
+
 * Org mode
 
 Org mode is one of the killer applications that run inside Emacs. It turns plain text into data that can be used for computation. Often, that computation takes the form of making lists and organising your life, but it can be anything you can conceive that is ultimately computable. 
