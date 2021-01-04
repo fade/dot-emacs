@@ -9,20 +9,17 @@
                          ("ELPA"  . "http://tromey.com/elpa/")
 			 ("gnu"   . "http://elpa.gnu.org/packages/")))
 
-;; (when (boundp 'package-pinned-packages)
-;;   (setq package-pinned-packages
-;;         '((org-plus-contrib . "org"))))
-
 (package-initialize)
 
 ;;; Bootstrap use-package
 
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
-(unless (package-installed-p 'use-package)
-  (progn
+(if (package-installed-p 'use-package)
     (package-refresh-contents)
-    (package-install 'use-package)))
+    (progn
+      (package-refresh-contents)
+      (package-install 'use-package)))
 
 
 ;; From use-package README

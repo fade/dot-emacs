@@ -121,6 +121,7 @@
      (Base . 10)
      (Syntax . ANSI-Common-Lisp)
      (eval sh-set-shell "zsh")))
+ '(send-mail-function 'mailclient-send-it)
  '(show-paren-mode t)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(spaceline-all-the-icons-separator-type 'wave)
