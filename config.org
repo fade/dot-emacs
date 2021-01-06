@@ -1043,7 +1043,7 @@ This really is the best PDF management system I've ever used.
   (use-package pdf-tools
     :ensure t
     :config
-    (pdf-tools-install)
+    ;; (pdf-tools-install)
     (setq-default pdf-view-display-size 'fit-width)
     (setq pdf-annot-activate-created-annotations t))
 #+END_SRC
@@ -1127,7 +1127,7 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
     :config
     ;; this setting avoids mbsync problems
     (setq mu4e-change-filenames-when-moving t)
-  
+
     ;; update every 10 minutes
     (setq mu4e-update-interval (* 10 60))
     (setq mu4e-get-mail-command "mbsync -a")
@@ -1137,6 +1137,13 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
     (setq mu4e-sent-folder "/[Gmail].Sent Mail")
     (setq mu4e-refile-folder "/[Gmail].All Mail")
     (setq mu4e-trash-folder "/[Gmail].Trash")
+
+    (setq mu4e-headers-fields
+     '((:human-date . 25)
+       (:flags . 6)
+       (:from . 22)
+       (:to . 22)
+       (:thread-subject . nil)))
 
     (setq mu4e-maildir-shortcuts
      '(("/Inbox"               . ?i)

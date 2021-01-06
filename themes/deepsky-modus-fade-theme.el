@@ -535,7 +535,7 @@
  '(sesman-buffer-face ((((class color) (min-colors 89)) :foreground "#feacd0")))
  '(sesman-directory-face ((((class color) (min-colors 89)) :inherit bold :foreground "#2fafff")))
  '(sesman-project-face ((((class color) (min-colors 89)) :inherit bold :foreground "#b6a0ff")))
- '(show-paren-match ((((class color) (min-colors 89)) :background "#5f362f" :foreground "#ffffff")))
+ '(show-paren-match ((((class color) (min-colors 89)) :background "Magenta" :foreground "#ffffff")))
  '(show-paren-match-expression ((((class color) (min-colors 89)) :inherit modus-theme-special-calm)))
  '(show-paren-mismatch ((((class color) (min-colors 89)) :inherit modus-theme-intense-red)))
  '(skewer-error-face ((((class color) (min-colors 89)) :foreground "#ff8059" :underline t)))
