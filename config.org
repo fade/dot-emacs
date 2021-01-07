@@ -1208,18 +1208,6 @@ your cursor will be briefly highlighted now.
 
 These are the packages that are neither built into Emacs nor required to achieve the base configuration state. feel free to add or remove as many or as few of these as you want; they generally reflect my own biases and developmental requirements, so it is unlikely that this list will be perfectly harmonic with your own needs.
 
-** Ag -- The Silver Searcher.
-
-#+BEGIN_SRC emacs-lisp
-(use-package ag
-  :commands ag
-  :ensure t
-  :config
-  (setq ag-highlight-search t
-        ag-reuse-window nil
-        ag-reuse-buffers t))
-#+END_SRC
-
 ** Ace Jump Mode
 
 A quick way to jump around text in buffers.
@@ -1246,6 +1234,18 @@ buffer navigation, but applies it to windows. The default keys are
     :config
     (ace-window-display-mode)
     :bind ("s-o" . ace-window))
+#+END_SRC
+
+** Ag -- The Silver Searcher.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ag
+  :commands ag
+  :ensure t
+  :config
+  (setq ag-highlight-search t
+        ag-reuse-window nil
+        ag-reuse-buffers t))
 #+END_SRC
 
 ** Android mode
@@ -1312,6 +1312,29 @@ This package displays function signatures in the mode line.
       (define-key company-active-map (kbd "SPC") #'company-abort))))
 #+END_SRC
 
+** Crux
+
+Collection of Ridiculously Useful eXtensions
+
+#+BEGIN_SRC emacs-lisp
+(use-package crux
+  :ensure t
+  :bind (("C-c o o" . crux-open-with)
+         ("C-c u" . crux-view-url)))
+#+END_SRC
+** Emmet
+
+According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
+
+#+BEGIN_SRC emacs-lisp
+(use-package emmet-mode
+  :ensure t
+  :commands emmet-mode
+  :config
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook 'emmet-mode))
+#+END_SRC
+
 ** flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
@@ -1331,12 +1354,12 @@ This package displays function signatures in the mode line.
   :after flycheck)
 #+END_SRC
    
-** Undotree
+** Gists
+
 #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
+(use-package gist
   :ensure t
-  :config
-  (global-undo-tree-mode))
+  :commands gist-list)
 #+END_SRC
 
 ** Helm
@@ -1402,6 +1425,21 @@ This package gives richer help information, and makes interrogating emacs more f
     (global-set-key (kbd "C-h C") #'helpful-command))
 #+END_SRC
 
+** LaTeX Extra
+
+#+BEGIN_SRC emacs-lisp
+(use-package latex-extra
+  :defer t
+  :ensure t)
+#+END_SRC
+
+** LaTeX Preview Mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package latex-preview-pane
+  :ensure t
+  :defer t)
+#+END_SRC
 ** Magit
 
 A great interface for git projects. It's much more pleasant to use
@@ -1447,14 +1485,6 @@ No more juggling windows after commiting. It's magit bliss.
     (interactive)
     (kill-buffer)
     (jump-to-register :magit-fullscreen))
-#+END_SRC
-
-** Gists
-
-#+BEGIN_SRC emacs-lisp
-(use-package gist
-  :ensure t
-  :commands gist-list)
 #+END_SRC
 
 ** Markdown mode
@@ -1511,6 +1541,15 @@ Project navigation and management library for Emacs.
   (setq projectile-switch-project-action 'projectile-dired))
 #+END_SRC
 
+** Quickrun
+
+#+BEGIN_SRC emacs-lisp
+(use-package quickrun
+  :defer 10
+  :ensure t
+  :bind ("H-q" . quickrun))
+#+END_SRC
+
 ** Restclient
 
 See [[http://emacsrocks.com/e15.html][Emacs Rocks! Episode 15]] to learn how restclient can help out with
@@ -1523,112 +1562,6 @@ string to keep things portable.
 (use-package restclient
   :ensure t
   :mode ("\\.restclient\\'" . restclient-mode))
-#+END_SRC
-
-** Smartscan
-
-#+BEGIN_QUOTE
-Quickly jumps between other symbols found at point in Emacs.
-#+END_QUOTE
-http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
-
-
-#+BEGIN_SRC emacs-lisp
-  (use-package smartscan
-    :ensure t
-    :config (global-smartscan-mode 1)
-    :bind (("s-n" . smartscan-symbol-go-forward)
-           ("s-p" . smartscan-symbol-go-backward)))
-#+END_SRC
-
-** Skewer mode
-
-Live coding for HTML/CSS/JavaScript.
-
-#+BEGIN_SRC emacs-lisp
-(use-package skewer-mode
-  :commands skewer-mode
-  :ensure t
-  :config (skewer-setup))
-#+END_SRC
-
-** Smoothscrolling
-
-This makes it so ~C-n~-ing and ~C-p~-ing won't make the buffer jump
-around so much.
-
-#+BEGIN_SRC emacs-lisp
-(use-package smooth-scrolling
-  :ensure t)
-#+END_SRC
-
-** w3m for webby reading
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package w3m
-  ;;   :ensure t
-  ;;   :defer t
-  ;;   :config
-  ;;   (progn
-  ;;     (setq browse-url-browser-function 'w3m-browse-url)
-  ;;     (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-  ;;     (global-set-key "\C-xm" 'browse-url-at-point)
-  ;;     (setq w3m-use-cookies t)))
-#+END_SRC
-** Yasnippet
-Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
-and have also modified them and added my own.
-
-It takes a few seconds to load and I don't need them immediately when
-Emacs starts up, so we can defer loading yasnippet until there's some
-idle time.
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :ensure t
-    :config
-    (use-package yasnippet-snippets
-      :ensure t)
-    (use-package common-lisp-snippets
-      :ensure t)
-    ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-    (yas-reload-all)
-    (yas-global-mode))
-#+END_SRC
-
-** Emmet
-
-According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
-
-#+BEGIN_SRC emacs-lisp
-(use-package emmet-mode
-  :ensure t
-  :commands emmet-mode
-  :config
-  (add-hook 'html-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook 'emmet-mode))
-#+END_SRC
-
-** Zoom-frm
-
-=zoom-frm= is a nice package that allows you to resize the text of
-entire Emacs frames (this includes text in the buffer, mode line, and
-minibuffer). The =zoom-in/out= command acts similar to the
-=text-scale-adjust= command---you can chain zooming in, out, or
-resetting to the default size once the command has been initially
-called.
-
-Changing the =frame-zoom-font-difference= essentially enables a
-"presentation mode" when calling =toggle-zoom-frame=.
-
-This mode is not available in elpa/melpa, so use-package will obviously not work in this case. If you are giving a lot of presentations with emacs, it is very useful, and you can still find the system at [[https://www.emacswiki.org/emacs/zoom-frm.el][Emacs WIKI zoom-frm.el]]. Include it from init.el.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  ;; (use-package zoom-frm 
-  ;;   :ensure t
-  ;;   :bind (("C-M-=" . zoom-in/out)
-  ;;          ("H-z"   . toggle-zoom-frame)
-  ;;          ("s-<f1>" . toggle-zoom-frame))
-  ;;   :config
-  ;;   (setq frame-zoom-font-difference 10))
 #+END_SRC
 
 ** Scratch
@@ -1661,13 +1594,56 @@ I'm constantly looking for tools that make starting projects faster, and more co
     (skeletor-project-directory "~/SourceCode/lisp/"))
 #+END_SRC
 
-** Quickrun
+** Skewer mode
+
+Live coding for HTML/CSS/JavaScript.
 
 #+BEGIN_SRC emacs-lisp
-(use-package quickrun
-  :defer 10
+(use-package skewer-mode
+  :commands skewer-mode
   :ensure t
-  :bind ("H-q" . quickrun))
+  :config (skewer-setup))
+#+END_SRC
+
+** Smartscan
+
+#+BEGIN_QUOTE
+Quickly jumps between other symbols found at point in Emacs.
+#+END_QUOTE
+http://www.masteringemacs.org/article/smart-scan-jump-symbols-buffer
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartscan
+    :ensure t
+    :config (global-smartscan-mode 1)
+    :bind (("s-n" . smartscan-symbol-go-forward)
+           ("s-p" . smartscan-symbol-go-backward)))
+#+END_SRC
+
+** Smoothscrolling
+
+This makes it so ~C-n~-ing and ~C-p~-ing won't make the buffer jump
+around so much.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smooth-scrolling
+  :ensure t)
+#+END_SRC
+
+** Undo Tree
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t)
+#+END_SRC
+
+** Undotree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
 #+END_SRC
 
 ** Visible mode
@@ -1684,6 +1660,18 @@ while still being in org mode.
          ("s-<f2>" . visible-mode)))
 #+END_SRC
 
+** w3m for webby reading
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package w3m
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :config
+  ;;   (progn
+  ;;     (setq browse-url-browser-function 'w3m-browse-url)
+  ;;     (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+  ;;     (global-set-key "\C-xm" 'browse-url-at-point)
+  ;;     (setq w3m-use-cookies t)))
+#+END_SRC
 ** XQuery mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1691,38 +1679,50 @@ while still being in org mode.
   :ensure t
   :defer t)
 #+END_SRC
-** LaTeX Extra
+** Yasnippet
+Yeah, snippets! I start with snippets from [[https://github.com/AndreaCrotti/yasnippet-snippets][Andrea Crotti's collection]]
+and have also modified them and added my own.
 
+It takes a few seconds to load and I don't need them immediately when
+Emacs starts up, so we can defer loading yasnippet until there's some
+idle time.
 #+BEGIN_SRC emacs-lisp
-(use-package latex-extra
-  :defer t
-  :ensure t)
+  (use-package yasnippet
+    :ensure t
+    :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (use-package common-lisp-snippets
+      :ensure t)
+    ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+    (yas-reload-all)
+    (yas-global-mode))
 #+END_SRC
 
-** LaTeX Preview Mode
+** Zoom-frm
 
-#+BEGIN_SRC emacs-lisp
-(use-package latex-preview-pane
-  :ensure t
-  :defer t)
+=zoom-frm= is a nice package that allows you to resize the text of
+entire Emacs frames (this includes text in the buffer, mode line, and
+minibuffer). The =zoom-in/out= command acts similar to the
+=text-scale-adjust= command---you can chain zooming in, out, or
+resetting to the default size once the command has been initially
+called.
+
+Changing the =frame-zoom-font-difference= essentially enables a
+"presentation mode" when calling =toggle-zoom-frame=.
+
+This mode is not available in elpa/melpa, so use-package will obviously not work in this case. If you are giving a lot of presentations with emacs, it is very useful, and you can still find the system at [[https://www.emacswiki.org/emacs/zoom-frm.el][Emacs WIKI zoom-frm.el]]. Include it from init.el.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; (use-package zoom-frm 
+  ;;   :ensure t
+  ;;   :bind (("C-M-=" . zoom-in/out)
+  ;;          ("H-z"   . toggle-zoom-frame)
+  ;;          ("s-<f1>" . toggle-zoom-frame))
+  ;;   :config
+  ;;   (setq frame-zoom-font-difference 10))
 #+END_SRC
-** Undo Tree
 
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :ensure t)
-#+END_SRC
-
-** Crux
-
-Collection of Ridiculously Useful eXtensions
-
-#+BEGIN_SRC emacs-lisp
-(use-package crux
-  :ensure t
-  :bind (("C-c o o" . crux-open-with)
-         ("C-c u" . crux-view-url)))
-#+END_SRC
 
 
 * Computer-specific settings
