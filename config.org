@@ -260,6 +260,13 @@ speed keys in Org mode]].
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+END_SRC
 
+** Org Tables .. Extended functionality
+This package is useful when you have a lot of data in various org tables in a given document, and you want to drop it into a table that synthesizes various pieces of data from the other tables, with or without additional processing.
+#+begin_src emacs-lisp
+  (use-package orgtbl-aggregate
+    :ensure t
+    :after org)
+#+end_src
 ** Org capture
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-c c" 'org-capture)
