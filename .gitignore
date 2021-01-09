@@ -32,3 +32,5 @@ assets/
 /*.tex
 /*.toc
 /org-roam.db
+/themes/deepsky-modus-fade-theme-backup
+/.org-id-locations
