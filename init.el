@@ -1,5 +1,5 @@
 ;;
-;; (setq gc-cons-threshold 400000000)
+(setq gc-cons-threshold 400000000)
 
 ;;; Set up package
 (require 'package)
@@ -13,13 +13,19 @@
 
 ;;; Bootstrap use-package
 
-;; Install use-package if it's not already installed.
-;; use-package is used to configure the rest of the packages.
+;; Install use-package if it's not already installed. use-package is
+;; used to configure the rest of the packages. This delays startup as
+;; the system pauses to reach out over the internet, which is
+;; intensely annoying, but not as annoying as when you are
+;; initialising a new system and the config fails to load because it
+;; can't find critical dependencies in the package system... I need to
+;; find a way to amortize this. :(
+
 (if (package-installed-p 'use-package)
     (package-refresh-contents)
-    (progn
-      (package-refresh-contents)
-      (package-install 'use-package)))
+  (progn
+    (package-refresh-contents)
+    (package-install 'use-package)))
 
 
 ;; From use-package README

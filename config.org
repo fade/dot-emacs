@@ -990,10 +990,10 @@ interstitial space where work goes to die.
 
 ** swiper and why is the default search so lame
    
-   I like me some searching, the default search is very meh. In emacs,
-you mostly use search to get around your buffer, much like with avy,
-but sometimes it doesn't hurt to search for entire words or modes,
-swiper makes sure this is more efficient.
+   Searching! the default search is very meh. In emacs, you mostly use
+search to get around your buffer, much like with avy, but sometimes it
+doesn't hurt to search for entire words or modes, swiper makes sure
+this is more efficient.
 
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
@@ -1119,38 +1119,38 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
 
 * Mail with mu4e
 #+begin_src emacs-lisp
-  (use-package mu4e
-    :ensure nil
-    :defer 600
-    :load-path "/usr/share/emacs/site-lisp/mu4e/"
+  ;; (use-package mu4e
+  ;;   :ensure nil
+  ;;   :defer 120
+  ;;   :load-path "/usr/share/emacs/site-lisp/mu4e/"
 
-    :config
-    ;; this setting avoids mbsync problems
-    (setq mu4e-change-filenames-when-moving t)
+  ;;   :config
+  ;;   ;; this setting avoids mbsync problems
+  ;;   (setq mu4e-change-filenames-when-moving t)
 
-    ;; update every 10 minutes
-    (setq mu4e-update-interval (* 10 60))
-    (setq mu4e-get-mail-command "mbsync -a")
-    (setq mu4e-maildir "~/GMail/")
+  ;;   ;; update every 10 minutes
+  ;;   (setq mu4e-update-interval (* 10 60))
+  ;;   (setq mu4e-get-mail-command "mbsync -a")
+  ;;   (setq mu4e-maildir "~/Mail/GMail/")
 
-    (setq mu4e-drafts-folder "/[Gmail].Drafts")
-    (setq mu4e-sent-folder "/[Gmail].Sent Mail")
-    (setq mu4e-refile-folder "/[Gmail].All Mail")
-    (setq mu4e-trash-folder "/[Gmail].Trash")
+  ;;   (setq mu4e-drafts-folder "/[Gmail].Drafts")
+  ;;   (setq mu4e-sent-folder "/[Gmail].Sent Mail")
+  ;;   (setq mu4e-refile-folder "/[Gmail].All Mail")
+  ;;   (setq mu4e-trash-folder "/[Gmail].Trash")
 
-    (setq mu4e-headers-fields
-     '((:human-date . 25)
-       (:flags . 6)
-       (:from . 22)
-       (:to . 22)
-       (:thread-subject . nil)))
+  ;;   (setq mu4e-headers-fields
+  ;;    '((:human-date . 25)
+  ;;      (:flags . 6)
+  ;;      (:from . 22)
+  ;;      (:to . 22)
+  ;;      (:thread-subject . nil)))
 
-    (setq mu4e-maildir-shortcuts
-     '(("/Inbox"               . ?i)
-       ("/[Gmail].Sent Mail"   . ?s)
-       ("/[Gmail].Trash"       . ?t)
-       ("/[Gmail].Drafts"      . ?d)
-       ("/[Gmail].All Mail"    . ?a))))
+  ;;   (setq mu4e-maildir-shortcuts
+  ;;    '(("/Inbox"               . ?i)
+  ;;      ("/[Gmail].Sent Mail"   . ?s)
+  ;;      ("/[Gmail].Trash"       . ?t)
+  ;;      ("/[Gmail].Drafts"      . ?d)
+  ;;      ("/[Gmail].All Mail"    . ?a))))
 #+end_src
 
 * Minor conveniences
