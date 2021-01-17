@@ -267,6 +267,7 @@ This package is useful when you have a lot of data in various org tables in a gi
     :ensure t
     :after org)
 #+end_src
+
 ** Org capture
 #+BEGIN_SRC emacs-lisp
 (bind-key "C-c c" 'org-capture)
@@ -1297,7 +1298,7 @@ This package displays function signatures in the mode line.
   :config
   (progn
     ;; less than this and it disrupts typing when you aren't interested in completion.
-    (setq company-idle-delay 0.3)
+    (setq company-idle-delay 0.4)
     (setq company-minimize-prefix-length 2)
     ;; company completion everywhere.
     (add-hook 'after-init-hook 'global-company-mode)
