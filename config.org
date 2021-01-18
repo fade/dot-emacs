@@ -173,6 +173,332 @@ lot cooler than you may think.
     (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
+* Modeline
+  
+The modeline is the heart of emacs, it offers information at all
+times, it's persistent and verbose enough to gain a full understanding
+of modes and states you are in.
+
+One modeline-related setting that is missing and is instead placed at
+the bottom is =diminish=.
+
+** All the icons!
+   
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
+#+END_SRC
+   
+** Spaceline!
+   I may not use spacemacs, since I do not like evil-mode and find
+   spacemacs incredibly bloated and slow, however it would be stupid not
+   to acknowledge the best parts about it, the theme and their modified
+   powerline setup.
+
+   This enables spaceline, it looks better and works very well with my
+   theme of choice.
+
+   #+BEGIN_SRC emacs-lisp
+     (when window-system
+         (progn
+           (use-package spaceline
+             :ensure t
+             :config
+             ;; (mis)using use-package here to put config in an envelope.
+             (use-package spaceline-config
+               :config
+               (setq spaceline-buffer-encoding-abbrev-p t)
+               (setq spaceline-line-column-p t)
+               (setq spaceline-line-p t)
+
+               (spaceline-toggle-flycheck-info-off)
+               (spaceline-toggle-flycheck-error-off)
+               (spaceline-toggle-flycheck-warning-off)
+               (spaceline-toggle-version-control-on)
+
+               (spaceline-spacemacs-theme)))
+
+           (use-package spaceline-all-the-icons
+             :ensure t
+             :after spaceline
+             :config
+             (spaceline-all-the-icons-theme))))
+
+   #+END_SRC
+   
+** No separator!
+ #+BEGIN_SRC emacs-lisp
+ (setq powerline-default-separator nil)
+ #+END_SRC
+
+** Cursor position
+
+   Show the current line and column for your cursor. We are not going to
+have =relative-linum-mode= in every major mode, so this is useful.
+
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+#+END_SRC
+
+*** Enabling the mode
+This turns on the clock globally.
+#+BEGIN_SRC emacs-lisp
+  (display-time-mode 1)
+#+END_SRC
+
+** System monitor
+#+BEGIN_SRC emacs-lisp
+(use-package symon
+  :ensure t
+  :bind
+  ("s-h" . symon-mode))
+#+END_SRC   
+* Font
+And here's how we tell Emacs which font we want.
+
+#+BEGIN_SRC emacs-lisp
+
+  (if window-system
+      (progn
+        (set-face-attribute 'default nil :font "Envy Code R" :height 140)
+        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
+        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
+
+#+END_SRC
+* Which Key
+[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
+
+  #+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+  #+END_SRC
+* Sane defaults
+  
+Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package diminish
+  :ensure t)
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; These functions are useful. Activate them. This use of #'put is
+  ;; strange, but this feature uses symbol properties.
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'narrow-to-region 'disabled nil)
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; Answering just 'y' or 'n' will do
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; Keep all backup and auto-save files in one directory
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+  ;; UTF-8 please
+  (setq locale-coding-system 'utf-8) ; pretty
+  (set-terminal-coding-system 'utf-8) ; pretty
+  (set-keyboard-coding-system 'utf-8) ; pretty
+  (set-selection-coding-system 'utf-8) ; please
+  (prefer-coding-system 'utf-8) ; with sugar on top
+
+  ;; tabs never in code. 
+  (setq-default indent-tabs-mode nil)
+  (setq-default indicate-empty-lines t)
+
+  ;; Don't count two spaces after a period as the end of a sentence.
+  ;; Just one space is needed.
+  (setq sentence-end-double-space nil)
+
+  ;; delete the region when typing, as is conventional these days.
+  (delete-selection-mode t)
+
+  (show-paren-mode t)
+
+  (column-number-mode t)
+
+  (global-visual-line-mode)
+  (diminish 'visual-line-mode)
+
+  (setq uniquify-buffer-name-style 'forward)
+
+  ;; -i gets alias definitions from .bash_profile
+  (setq shell-command-switch "-ic")
+
+  ;; Don't beep at me
+  (setq visible-bell t)
+#+END_SRC
+
+The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
+[[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or
+the symbol at point as the default value for occur.
+
+#+BEGIN_SRC emacs-lisp
+(defun occur-dwim ()
+  "Call `occur' with a sane default."
+  (interactive)
+  (push (if (region-active-p)
+            (buffer-substring-no-properties
+             (region-beginning)
+             (region-end))
+          (thing-at-point 'symbol))
+        regexp-history)
+  (call-interactively 'occur))
+
+(bind-key "M-s o" 'occur-dwim)
+#+END_SRC
+
+Here we make page-break characters look pretty, instead of appearing
+as =^L= in Emacs. [[https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/][Here's an informative article called "Using
+Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
+
+#+BEGIN_SRC emacs-lisp
+;; (use-package page-break-lines
+;;   :ensure t)
+#+END_SRC
+
+in dired mode, it is useful to mark a bunch of files and then open
+them all in separate buffers. Function implementation taken from Stack
+Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map "F" 'my-dired-find-file)
+     (defun my-dired-find-file (&optional arg)
+       "Open each of the marked files, or the file under the
+point, or when prefix arg, the next N files. "
+       (interactive "P")
+       (let* ((fn-list (dired-get-marked-files nil arg)))
+         (mapc 'find-file fn-list)))))
+#+END_SRC
+* Mac customizations
+
+There are configurations to make when running Emacs on macOS (hence the
+"darwin" system-type check).
+
+#+BEGIN_SRC emacs-lisp
+(when (string-equal system-type "darwin")
+  ;; delete files by moving them to the trash
+  (setq delete-by-moving-to-trash t)
+  (setq trash-directory "~/.Trash")
+
+  ;; Don't make new frames when opening a new file with Emacs
+  (setq ns-pop-up-frames nil)
+
+  ;; set the Fn key as the hyper key
+  (setq ns-function-modifier 'hyper)
+
+  ;; Use Command-` to switch between Emacs windows (not frames)
+  (bind-key "s-`" 'other-window)
+  
+  ;; Use Command-Shift-` to switch Emacs frames in reverse
+  (bind-key "s-~" (lambda() () (interactive) (other-window -1)))
+
+  ;; Because of the keybindings above, set one for `other-frame'
+  (bind-key "s-1" 'other-frame)
+
+  ;; Fullscreen!
+  (setq ns-use-native-fullscreen nil) ; Not Lion style
+  (bind-key "<s-return>" 'toggle-frame-fullscreen)
+
+  ;; buffer switching
+  (bind-key "s-{" 'previous-buffer)
+  (bind-key "s-}" 'next-buffer)
+
+  ;; Compiling
+  (bind-key "H-c" 'compile)
+  (bind-key "H-r" 'recompile)
+  (bind-key "H-s" (defun save-and-recompile () (interactive) (save-buffer) (recompile)))
+
+  ;; disable the key that minimizes emacs to the dock because I don't
+  ;; minimize my windows
+  ;; (global-unset-key (kbd "C-z"))
+
+  (defun open-dir-in-finder ()
+    "Open a new Finder window to the path of the current buffer"
+    (interactive)
+    (start-process "mai-open-dir-process" nil "open" "."))
+  (bind-key "C-c o f" 'open-dir-in-finder)
+
+  (defun open-dir-in-iterm ()
+    "Open the current directory of the buffer in iTerm."
+    (interactive)
+    (let* ((iterm-app-path "/Applications/iTerm.app")
+           (iterm-brew-path "/opt/homebrew-cask/Caskroom/iterm2/1.0.0/iTerm.app")
+           (iterm-path (if (file-directory-p iterm-app-path)
+                           iterm-app-path
+                         iterm-brew-path)))
+      (start-process "mai-open-dir-process" nil "open" "-a" iterm-path ".")))
+  (bind-key "C-c o t" 'open-dir-in-iterm)
+
+  ;; Not going to use these commands
+  (put 'ns-print-buffer 'disabled t)
+  (put 'suspend-frame 'disabled t))
+#+END_SRC
+
+~exec-path-from-shell~ makes the command-line path with Emacs's shell
+match the same one on macOS.
+
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :ensure t
+  :init
+  (exec-path-from-shell-initialize))
+#+END_SRC
+
+** El Capitan fixes
+
+[[http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/][El Capitan Fixes]]
+
+#+BEGIN_SRC emacs-lisp
+  (cond
+   ((string-equal system-type "darwin")
+    (let* ((cmd "sw_vers -productVersion")
+           (macos-version (string-to-number
+                           (cadr (split-string
+                                  (shell-command-to-string cmd)
+                                  "\\."))))
+           (elcapitan-version 11))
+      (when (>= macos-version elcapitan-version)
+        (setq visible-bell nil)
+        (setq ring-bell-function 'ignore)
+
+        ;; El Capitan full screen animation is quick and delightful (enough to start using it).
+        (setq ns-use-native-fullscreen t))))
+   ;; other system specific things in separate test subclauses
+   ((string-equal system-type "gnu/linux")
+    (progn
+      (message "Gnu Linux System!")))
+   ((string-equal system-type "windows-nt")
+    (progn
+      (message "Oh dear... you're using Windows. :("))))
+#+END_SRC
+* Hydra
+Hail Hydra!
+
+#+begin_src emacs-lisp
+  (use-package hydra
+    :ensure t)
+#+end_src
 
 * Org mode
 
@@ -561,331 +887,6 @@ exporting to html sometimes (always?) requires htmlize
 #+END_SRC
 
 
-
-* Modeline
-  
-The modeline is the heart of emacs, it offers information at all
-times, it's persistent and verbose enough to gain a full understanding
-of modes and states you are in.
-
-One modeline-related setting that is missing and is instead placed at
-the bottom is =diminish=.
-
-** All the icons!
-   
-#+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons
-    :ensure t)
-#+END_SRC
-   
-** Spaceline!
-   I may not use spacemacs, since I do not like evil-mode and find
-   spacemacs incredibly bloated and slow, however it would be stupid not
-   to acknowledge the best parts about it, the theme and their modified
-   powerline setup.
-
-   This enables spaceline, it looks better and works very well with my
-   theme of choice.
-
-   #+BEGIN_SRC emacs-lisp
-     (when window-system
-         (progn
-           (use-package spaceline
-             :ensure t
-             :config
-             ;; (mis)using use-package here to put config in an envelope.
-             (use-package spaceline-config
-               :config
-               (setq spaceline-buffer-encoding-abbrev-p t)
-               (setq spaceline-line-column-p t)
-               (setq spaceline-line-p t)
-
-               (spaceline-toggle-flycheck-info-off)
-               (spaceline-toggle-flycheck-error-off)
-               (spaceline-toggle-flycheck-warning-off)
-               (spaceline-toggle-version-control-on)
-
-               (spaceline-spacemacs-theme)))
-
-           (use-package spaceline-all-the-icons
-             :ensure t
-             :after spaceline
-             :config
-             (spaceline-all-the-icons-theme))))
-
-   #+END_SRC
-   
-** No separator!
- #+BEGIN_SRC emacs-lisp
- (setq powerline-default-separator nil)
- #+END_SRC
-
-** Cursor position
-
-   Show the current line and column for your cursor. We are not going to
-have =relative-linum-mode= in every major mode, so this is useful.
-
-#+BEGIN_SRC emacs-lisp
-  (setq line-number-mode t)
-  (setq column-number-mode t)
-#+END_SRC
-
-** Clock
-If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
-*** Time format
-#+BEGIN_SRC emacs-lisp
-  (setq display-time-24hr-format t)
-  (setq display-time-format "%H:%M - %d %B %Y")
-#+END_SRC
-
-*** Enabling the mode
-This turns on the clock globally.
-#+BEGIN_SRC emacs-lisp
-  (display-time-mode 1)
-#+END_SRC
-
-** System monitor
-#+BEGIN_SRC emacs-lisp
-(use-package symon
-  :ensure t
-  :bind
-  ("s-h" . symon-mode))
-#+END_SRC   
-
-* Font
-And here's how we tell Emacs which font we want.
-
-#+BEGIN_SRC emacs-lisp
-
-  (if window-system
-      (progn
-        (set-face-attribute 'default nil :font "Envy Code R" :height 140)
-        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-12")
-        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)))
-
-#+END_SRC
-
-* Which Key
-[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
-
-  #+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
-  #+END_SRC
-
-* Sane defaults
-  
-Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
-
-#+BEGIN_SRC emacs-lisp
-
-(use-package diminish
-  :ensure t)
-
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  ;; These functions are useful. Activate them. This use of #'put is
-  ;; strange, but this feature uses symbol properties.
-  (put 'downcase-region 'disabled nil)
-  (put 'upcase-region 'disabled nil)
-  (put 'narrow-to-region 'disabled nil)
-  (put 'dired-find-alternate-file 'disabled nil)
-
-  ;; Answering just 'y' or 'n' will do
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  ;; Keep all backup and auto-save files in one directory
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
-  ;; UTF-8 please
-  (setq locale-coding-system 'utf-8) ; pretty
-  (set-terminal-coding-system 'utf-8) ; pretty
-  (set-keyboard-coding-system 'utf-8) ; pretty
-  (set-selection-coding-system 'utf-8) ; please
-  (prefer-coding-system 'utf-8) ; with sugar on top
-
-  ;; tabs never in code. 
-  (setq-default indent-tabs-mode nil)
-  (setq-default indicate-empty-lines t)
-
-  ;; Don't count two spaces after a period as the end of a sentence.
-  ;; Just one space is needed.
-  (setq sentence-end-double-space nil)
-
-  ;; delete the region when typing, as is conventional these days.
-  (delete-selection-mode t)
-
-  (show-paren-mode t)
-
-  (column-number-mode t)
-
-  (global-visual-line-mode)
-  (diminish 'visual-line-mode)
-
-  (setq uniquify-buffer-name-style 'forward)
-
-  ;; -i gets alias definitions from .bash_profile
-  (setq shell-command-switch "-ic")
-
-  ;; Don't beep at me
-  (setq visible-bell t)
-#+END_SRC
-
-The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
-[[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or
-the symbol at point as the default value for occur.
-
-#+BEGIN_SRC emacs-lisp
-(defun occur-dwim ()
-  "Call `occur' with a sane default."
-  (interactive)
-  (push (if (region-active-p)
-            (buffer-substring-no-properties
-             (region-beginning)
-             (region-end))
-          (thing-at-point 'symbol))
-        regexp-history)
-  (call-interactively 'occur))
-
-(bind-key "M-s o" 'occur-dwim)
-#+END_SRC
-
-Here we make page-break characters look pretty, instead of appearing
-as =^L= in Emacs. [[https://ericjmritz.wordpress.com/2015/08/29/using-page-breaks-in-gnu-emacs/][Here's an informative article called "Using
-Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
-
-#+BEGIN_SRC emacs-lisp
-;; (use-package page-break-lines
-;;   :ensure t)
-#+END_SRC
-
-in dired mode, it is useful to mark a bunch of files and then open
-them all in separate buffers. Function implementation taken from Stack
-Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load "dired"
-  '(progn
-     (define-key dired-mode-map "F" 'my-dired-find-file)
-     (defun my-dired-find-file (&optional arg)
-       "Open each of the marked files, or the file under the
-point, or when prefix arg, the next N files. "
-       (interactive "P")
-       (let* ((fn-list (dired-get-marked-files nil arg)))
-         (mapc 'find-file fn-list)))))
-#+END_SRC
-
-* Mac customizations
-
-There are configurations to make when running Emacs on macOS (hence the
-"darwin" system-type check).
-
-#+BEGIN_SRC emacs-lisp
-(when (string-equal system-type "darwin")
-  ;; delete files by moving them to the trash
-  (setq delete-by-moving-to-trash t)
-  (setq trash-directory "~/.Trash")
-
-  ;; Don't make new frames when opening a new file with Emacs
-  (setq ns-pop-up-frames nil)
-
-  ;; set the Fn key as the hyper key
-  (setq ns-function-modifier 'hyper)
-
-  ;; Use Command-` to switch between Emacs windows (not frames)
-  (bind-key "s-`" 'other-window)
-  
-  ;; Use Command-Shift-` to switch Emacs frames in reverse
-  (bind-key "s-~" (lambda() () (interactive) (other-window -1)))
-
-  ;; Because of the keybindings above, set one for `other-frame'
-  (bind-key "s-1" 'other-frame)
-
-  ;; Fullscreen!
-  (setq ns-use-native-fullscreen nil) ; Not Lion style
-  (bind-key "<s-return>" 'toggle-frame-fullscreen)
-
-  ;; buffer switching
-  (bind-key "s-{" 'previous-buffer)
-  (bind-key "s-}" 'next-buffer)
-
-  ;; Compiling
-  (bind-key "H-c" 'compile)
-  (bind-key "H-r" 'recompile)
-  (bind-key "H-s" (defun save-and-recompile () (interactive) (save-buffer) (recompile)))
-
-  ;; disable the key that minimizes emacs to the dock because I don't
-  ;; minimize my windows
-  ;; (global-unset-key (kbd "C-z"))
-
-  (defun open-dir-in-finder ()
-    "Open a new Finder window to the path of the current buffer"
-    (interactive)
-    (start-process "mai-open-dir-process" nil "open" "."))
-  (bind-key "C-c o f" 'open-dir-in-finder)
-
-  (defun open-dir-in-iterm ()
-    "Open the current directory of the buffer in iTerm."
-    (interactive)
-    (let* ((iterm-app-path "/Applications/iTerm.app")
-           (iterm-brew-path "/opt/homebrew-cask/Caskroom/iterm2/1.0.0/iTerm.app")
-           (iterm-path (if (file-directory-p iterm-app-path)
-                           iterm-app-path
-                         iterm-brew-path)))
-      (start-process "mai-open-dir-process" nil "open" "-a" iterm-path ".")))
-  (bind-key "C-c o t" 'open-dir-in-iterm)
-
-  ;; Not going to use these commands
-  (put 'ns-print-buffer 'disabled t)
-  (put 'suspend-frame 'disabled t))
-#+END_SRC
-
-~exec-path-from-shell~ makes the command-line path with Emacs's shell
-match the same one on macOS.
-
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :ensure t
-  :init
-  (exec-path-from-shell-initialize))
-#+END_SRC
-
-** El Capitan fixes
-
-[[http://stuff-things.net/2015/10/05/emacs-visible-bell-work-around-on-os-x-el-capitan/][El Capitan Fixes]]
-
-#+BEGIN_SRC emacs-lisp
-  (cond
-   ((string-equal system-type "darwin")
-    (let* ((cmd "sw_vers -productVersion")
-           (macos-version (string-to-number
-                           (cadr (split-string
-                                  (shell-command-to-string cmd)
-                                  "\\."))))
-           (elcapitan-version 11))
-      (when (>= macos-version elcapitan-version)
-        (setq visible-bell nil)
-        (setq ring-bell-function 'ignore)
-
-        ;; El Capitan full screen animation is quick and delightful (enough to start using it).
-        (setq ns-use-native-fullscreen t))))
-   ;; other system specific things in separate test subclauses
-   ((string-equal system-type "gnu/linux")
-    (progn
-      (message "Gnu Linux System!")))
-   ((string-equal system-type "windows-nt")
-    (progn
-      (message "Oh dear... you're using Windows. :("))))
-#+END_SRC
-
 * Projectile
 Projectile is an awesome project manager, mostly because it recognizes
 directories with a =.git= directory as projects and helps you manage
@@ -1062,7 +1063,7 @@ This really is the best PDF management system I've ever used.
   (use-package tramp
     :ensure t
     :config
-    ;; tramp hangs when remote has weird prompt. Check in for this terminal type.
+    ;; tramp hangs when remote has 'weird' prompt. Check in for this terminal type.
     (setf tramp-terminal-type "tramp")
     ;; (add-to-list 'tramp-connection-properties
     ;;              (list (regexp-quote "/ssh:fade@deepsky.com:")
@@ -1267,7 +1268,6 @@ buffer navigation, but applies it to windows. The default keys are
    :PROPERTIES:
    :GitHub:   https://github.com/mooz/c-eldoc
    :END:
-
 This package displays function signatures in the mode line.
 
 #+BEGIN_SRC emacs-lisp
