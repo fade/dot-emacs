@@ -149,7 +149,7 @@ between foreground and background is >= 7:1)."
  '(font-lock-comment-delimiter-face ((t (:foreground "Cyan3"))))
  '(font-lock-comment-face ((t (:foreground "Cyan2"))))
  '(font-lock-constant-face ((t (:foreground "#00ff00"))))
- '(font-lock-doc-face ((t (:foreground "#Ffffe0"))))
+ '(font-lock-doc-face ((t (:foreground "#Ffff00"))))
  '(font-lock-function-name-face ((t (:foreground "SteelBlue"))))
  '(font-lock-keyword-face ((t (:foreground "Cyan3"))))
  '(font-lock-negation-char-face ((t (nil))))

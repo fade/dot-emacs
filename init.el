@@ -1,5 +1,5 @@
 ;;
-(setq gc-cons-threshold 400000000)
+;; (setq gc-cons-threshold 400000000)
 
 ;;; Set up package
 (require 'package)

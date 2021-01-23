@@ -1287,41 +1287,47 @@ This package displays function signatures in the mode line.
 
 ** Company
 #+BEGIN_SRC emacs-lisp
-(use-package company
-  :ensure nil
-  :diminish company-mode
-  ;; :bind (:map company-mode-map
-  ;;             (("C-n" . company-select-next)
-  ;;              ("C-p" . company-select-previous)
-  ;;              ("C-d" . company-show-doc-buffer)
-  ;;              ("M-." . company-show-location)))
-  :config
-  (progn
-    ;; less than this and it disrupts typing when you aren't interested in completion.
-    (setq company-idle-delay 0.4)
-    (setq company-minimize-prefix-length 2)
-    ;; company completion everywhere.
-    (add-hook 'after-init-hook 'global-company-mode)
-    (require 'color)
-    
-    (let ((bg (face-attribute 'default :background)))
-      (custom-set-faces
-       `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-       `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-       `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-       `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-       `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
-    
-    (with-eval-after-load 'company
-      (define-key company-active-map (kbd "M-n") nil)
-      (define-key company-active-map (kbd "M-p") nil)
-      (define-key company-active-map (kbd "C-n") #'company-select-next)
-      (define-key company-active-map (kbd "C-p") #'company-select-previous)
-      (define-key company-active-map (kbd "SPC") #'company-abort))))
+  (use-package company
+    :ensure nil
+    :diminish company-mode
+    ;; :bind (:map company-mode-map
+    ;;             (("C-n" . company-select-next)
+    ;;              ("C-p" . company-select-previous)
+    ;;              ("C-d" . company-show-doc-buffer)
+    ;;              ("M-." . company-show-location)))
+    :config
+    (progn
+      ;; less than this and it disrupts typing when you aren't interested in completion.
+      (setq company-idle-delay 0.4)
+      (setq company-minimize-prefix-length 2)
+      ;; company completion everywhere.
+      (add-hook 'after-init-hook 'global-company-mode)
+      (require 'color)
+
+      (let ((bg (face-attribute 'default :background)))
+        (custom-set-faces
+         `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+         `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+         `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+         `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+         `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+      (with-eval-after-load 'company
+        (define-key company-active-map (kbd "M-n") nil)
+        (define-key company-active-map (kbd "M-p") nil)
+        (define-key company-active-map (kbd "C-n") #'company-select-next)
+        (define-key company-active-map (kbd "C-p") #'company-select-previous)
+        (define-key company-active-map (kbd "SPC") #'company-abort))))
+
+  (use-package company-quickhelp
+    :after (company)
+    :hook (company-mode . company-quickhelp-mode)
+    :config
+    (setq company-quickhelp-delay 0.5)
+    :ensure t)
 #+END_SRC
 
 ** Crux
-
 Collection of Ridiculously Useful eXtensions
 
 #+BEGIN_SRC emacs-lisp
@@ -1331,7 +1337,6 @@ Collection of Ridiculously Useful eXtensions
          ("C-c u" . crux-view-url)))
 #+END_SRC
 ** Emmet
-
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
 
 #+BEGIN_SRC emacs-lisp
@@ -1373,36 +1378,38 @@ According to [[http://emmet.io/][their website]], "Emmet — the essential toolk
 ** Helm
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :init (progn
-          (use-package helm-config)
-          (setq helm-locate-command "mdfind -interpret -name %s %s"
-                helm-ff-newfile-prompt-p nil
-                helm-M-x-fuzzy-match t)
-          (helm-mode))
+  (use-package helm
+    :ensure t
+    :diminish helm-mode
+    :init (progn
+            (use-package helm-config)
+            (setq helm-locate-command "mdfind -interpret -name %s %s"
+                  helm-ff-newfile-prompt-p nil
+                  helm-M-x-fuzzy-match t)
+            (helm-mode 1))
   
-  :bind ((:map helm-map
-               ("<tab>" . helm-execute-persistent-action)
-               ("C-c h" . helm-command-prefix)
-               ("C-x b" . helm-mini)
-               ("C-x C-b" . 'helm-buffers-list)
-               ("C-`" . helm-resume)))
-  :bind*   (("M-x" . helm-M-x)
-            ("C-x C-f" . helm-find-files))) 
+    :bind ((:map helm-map
+                 ("<tab>" . helm-execute-persistent-action)
+                 ("C-c h" . helm-command-prefix)
+                 ("C-x b" . helm-mini)
+                 ("C-x C-b" . 'helm-buffers-list)
+                 ("C-`" . helm-resume)))
+    :bind*   (("M-x" . helm-M-x)
+              ("C-x C-f" . helm-find-files))
+    :config
+    (helm-autoresize-mode 1)) 
 
-(use-package helm-ag
-  :defer 10
-  :ensure t
-  :after helm
-  :bind ("C-c M-s" . helm-do-ag)
-  :config
-  (custom-set-variables
-   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-   '(helm-ag-command-option "--all-text")
-   '(helm-ag-insert-at-point 'symbol)
-   '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
+  (use-package helm-ag
+    :defer 10
+    :ensure t
+    :after helm
+    :bind ("C-c M-s" . helm-do-ag)
+    :config
+    (custom-set-variables
+     '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+     '(helm-ag-command-option "--all-text")
+     '(helm-ag-insert-at-point 'symbol)
+     '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
   
 #+END_SRC
 
