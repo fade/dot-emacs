@@ -145,7 +145,7 @@ between foreground and background is >= 7:1)."
  ;; '(font-lock-variable-name-face ((((class color) (min-colors 89)) :foreground "#00d3d0")))
  ;; '(font-lock-warning-face ((((class color) (min-colors 89)) :inherit modus-theme-bold :foreground "#dbbe5f")))
  
- '(font-lock-builtin-face ((t (:foreground "#ffaa00"))))
+ '(font-lock-builtin-face ((t (:foreground "#Ffa500"))))
  '(font-lock-comment-delimiter-face ((t (:foreground "Cyan3"))))
  '(font-lock-comment-face ((t (:foreground "Cyan2"))))
  '(font-lock-constant-face ((t (:foreground "#00ff00"))))
