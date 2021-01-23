@@ -97,7 +97,6 @@ between foreground and background is >= 7:1)."
 (defface deepsky-theme-slant nil nil)
 (defface deepsky-theme-variable-pitch nil nil)
 
-
 (custom-theme-set-variables
  'deepsky-modus-fade
  '(ansi-color-faces-vector [default bold shadow italic underline success warning error])
