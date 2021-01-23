@@ -24,8 +24,8 @@
 between foreground and background is >= 7:1)."
   :group 'faces
   :prefix "deepsky-theme-"
-  :link '(url-link :tag "GitLab" "https://gitlab.com/protesilaos/deepsky-themes")
-  :tag "Modus Vivendi")
+  :link '(url-link :tag "GitHub" "https://github.com/fade/deepsky-modus-theme.git")
+  :tag "DeepSky Modus Mashup")
 
 (defface deepsky-theme-subtle-red nil nil)
 (defface deepsky-theme-subtle-green nil nil)
