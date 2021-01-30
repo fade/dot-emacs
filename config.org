@@ -1298,8 +1298,8 @@ This package displays function signatures in the mode line.
     :config
     (progn
       ;; less than this and it disrupts typing when you aren't interested in completion.
-      (setq company-idle-delay 0.4)
-      (setq company-minimize-prefix-length 2)
+      (setq company-idle-delay 0.9)
+      (setq company-minimize-prefix-length 3)
       ;; company completion everywhere.
       (add-hook 'after-init-hook 'global-company-mode)
       (require 'color)
@@ -1323,7 +1323,7 @@ This package displays function signatures in the mode line.
     :after (company)
     :hook (company-mode . company-quickhelp-mode)
     :config
-    (setq company-quickhelp-delay 0.5)
+    (setq company-quickhelp-delay 0.8)
     :ensure t)
 #+END_SRC
 
