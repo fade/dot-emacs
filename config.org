@@ -2051,13 +2051,6 @@ Integrates with IPython.
   ;;   :defer t
   ;;   :ensure t)
 
-  (use-package jedi
-    :ensure t)
-
-  (use-package company-jedi
-    :after jedi
-    :ensure t)
-
   (use-package elpy
     :ensure t
     :config
@@ -2065,6 +2058,13 @@ Integrates with IPython.
     (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "-i --simple-prompt")
     (elpy-enable))
+
+  (use-package jedi
+    :ensure t)
+
+  (use-package company-jedi
+    :after jedi
+    :ensure t)
 
   (use-package jinja2-mode
     :ensure t)
