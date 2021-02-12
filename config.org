@@ -1319,12 +1319,16 @@ This package displays function signatures in the mode line.
         (define-key company-active-map (kbd "C-p") #'company-select-previous)
         (define-key company-active-map (kbd "SPC") #'company-abort))))
 
+  ;; (use-package company-box
+  ;;   :after company)
+
   (use-package company-quickhelp
     :after (company)
     :hook (company-mode . company-quickhelp-mode)
     :config
-    (setq company-quickhelp-delay 0.8)
+    (setq company-quickhelp-delay 1.0)
     :ensure t)
+
 #+END_SRC
 
 ** Crux
@@ -1336,6 +1340,26 @@ Collection of Ridiculously Useful eXtensions
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
 #+END_SRC
+
+** Docker
+#+begin_src emacs-lisp
+  (use-package docker
+    :defer t
+    :ensure t)
+
+  (use-package docker-cli
+    :after docker)
+
+  (use-package docker-compose
+    :after docker)
+
+  (use-package docker-tramp
+    :after docker)
+
+  (use-package dockerfile-mode
+    :after docker)
+
+#+end_src
 ** Emmet
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
 
