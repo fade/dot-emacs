@@ -1358,7 +1358,6 @@ Collection of Ridiculously Useful eXtensions
 
   (use-package dockerfile-mode
     :after docker)
-
 #+end_src
 ** Emmet
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."

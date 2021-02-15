@@ -21,18 +21,17 @@
 ;; can't find critical dependencies in the package system... I need to
 ;; find a way to amortize this. :(
 
-(if (package-installed-p 'use-package)
-    (package-refresh-contents)
+(unless (package-installed-p 'use-package)
   (progn
     (package-refresh-contents)
     (package-install 'use-package)))
-
 
 ;; From use-package README
 (eval-when-compile
   (require 'use-package))
 (require 'bind-key)
 (setq use-package-verbose t)
+
 
 ;; sometimes when I visit an org file, org-mode does not start. moving
 ;; mode installation here, to test whether it is a load-time phasing
