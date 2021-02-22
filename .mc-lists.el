@@ -53,4 +53,5 @@
         mouse-select-window
         paredit-forward-delete
         sly-interactive-eval
+        undo-tree-visualize
         ))
