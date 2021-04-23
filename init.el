@@ -1,5 +1,4 @@
-;;
-;; (setq gc-cons-threshold 400000000)
+(setq gc-cons-threshold 400000000)
 
 ;;; Set up package
 (require 'package)
@@ -124,6 +123,18 @@
 ;;; Load the config contained in our Org-mode file, which contains the
 ;;; meat of this config..
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+;;; reinstall all installed packages, when emacs changes version
+
+(defun package-reinstall-all-activated-packages ()
+  "Refresh and reinstall all activated packages."
+  (interactive)
+  (package-refresh-contents)
+  (dolist (package-name package-activated-list)
+    (when (package-installed-p package-name)
+      (unless (ignore-errors                   ;some packages may fail to install
+                (package-reinstall package-name))
+        (warn "Package %s failed to reinstall" package-name)))))
 
 (provide 'init)
 ;;; init.el ends here
