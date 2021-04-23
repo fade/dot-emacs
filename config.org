@@ -1173,11 +1173,10 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
 #+end_src
 
 * Minor conveniences
-Emacs is at it's best when it just does things for you, shows you the
-way, guides you so to speak. This can be best achieved using a number
-of small extensions. While on their own they might not be particularly
-impressive. Together they create a nice environment for you to work
-in.
+Emacs is at it's best when it just does things for you, or shows you
+the way. This can best be achieved using a number of small extensions.
+While on their own they might not be particularly impressive. Together
+they create a nice environment for you to work in.
 
 ** Visiting the configuration
 Quickly edit =~/.emacs.d/config.org=
