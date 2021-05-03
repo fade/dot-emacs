@@ -2008,7 +2008,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
          (add-hook 'js2-mode-hook 'color-identifiers-mode))
   #+END_SRC
 
-    While editing JavaScript is baked into Emacs, it is quite important
+    While editing mode for JavaScript is baked into Emacs, it is quite important
   to have [[http://flycheck.readthedocs.org/][flycheck]] validate the source based on [[http://www.jshint.com/][jshint]], and [[https://github.com/eslint/eslint][eslint]].
   Let’s prefer =eslint=:
 
@@ -2103,8 +2103,7 @@ Integrates with IPython.
     :ensure t)
 
 #+END_SRC
-
-** Virtualenvwrapper
+*** Virtualenvwrapper
 #+BEGIN_SRC emacs-lisp
   (use-package virtualenvwrapper
     :ensure t
