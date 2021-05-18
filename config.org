@@ -291,10 +291,8 @@ And here's how we tell Emacs which font we want.
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+BEGIN_SRC emacs-lisp
-
 (use-package diminish
   :ensure t)
-
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -374,7 +372,7 @@ Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 ;;   :ensure t)
 #+END_SRC
 
-in dired mode, it is useful to mark a bunch of files and then open
+In dired mode, it is useful to mark a bunch of files and then open
 them all in separate buffers. Function implementation taken from Stack
 Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
 
@@ -880,6 +878,7 @@ exporting to html sometimes (always?) requires htmlize
 #+END_SRC
 
 * Hydra
+
 Hail Hydra!
 
 #+begin_src emacs-lisp
@@ -1049,7 +1048,9 @@ buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][M
 #+END_SRC
 
 * SparQL mode
+
 most relevantly, sparql is used to define queries to the WikiData knowledge database. 
+
 #+begin_src emacs-lisp
   (use-package sparql-mode
     :ensure t)
