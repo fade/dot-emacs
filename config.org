@@ -1229,17 +1229,32 @@ These are the packages that are neither built into Emacs nor required to achieve
 
 ** Ace Jump Mode
 
+Ace is generally deprecated for Avy, now.
+
 A quick way to jump around text in buffers.
 
 [[http://emacsrocks.com/e10.html][See Emacs Rocks Episode 10 for a screencast.]]
 
 #+BEGIN_SRC emacs-lisp
-(use-package ace-jump-mode
-  :ensure t
-  :diminish ace-jump-mode
-  :commands ace-jump-mode
-  :bind ("C-s-." . ace-jump-mode))
+  ;; (use-package ace-jump-mode
+  ;;   :ensure t
+  ;;   :diminish ace-jump-mode
+  ;;   :commands ace-jump-mode
+  ;;   :bind ("C-s-." . ace-jump-mode))
 #+END_SRC
+
+** Avy - a better Ace
+
+[[https://github.com/abo-abo/avy][Avy]] integrates with Ace window, and works like Ace Jump mode.
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :config (avy-setup-default)
+    :bind
+    ("C-s-." . avy-goto-word-or-subword-1)
+    ("M-s" . avy-goto-char))
+#+end_src
 
 ** Ace Window
 
