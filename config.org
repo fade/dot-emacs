@@ -2237,9 +2237,9 @@ Convenience bindings to use doc-view with the arrow keys.
 ** Emacsclient
 
 #+BEGIN_SRC emacs-lisp
-(use-package server
-  :config
-  (server-start))
+  (use-package server
+    :config
+    (server-mode t))
 #+END_SRC
 
 
