@@ -93,7 +93,8 @@
  '(rustic-ansi-faces
    ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
  '(safe-local-variable-values
-   '((Package . FSet)
+   '((Package . HUNCHENTOOT)
+     (Package . FSet)
      (eval cl-flet
            ((enhance-imenu-lisp
              (&rest keywords)
