@@ -1894,7 +1894,7 @@ Extempore is a scheme defined for live performance programming.
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
-    ;; :load-path "~/SourceCode/lisp/sly"
+    :load-path "~/SourceCode/lisp/sly"
     :defer t
     :commands sly
     :bind ("C-c M-o" . sly-mrepl-clear-repl)
@@ -1908,47 +1908,48 @@ Extempore is a scheme defined for live performance programming.
               (ecl ("/usr/local/bin/ecl"))
               (decl ("/usr/bin/ecl"))
               (clojure ("/usr/bin/Clojure"))))
-
+  
       (setq sly-kill-without-query-p t
             sly-net-coding-system 'utf-8-unix
             sly-complete-symbol*-fancy t
             common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
-
+  
     :config
     (progn
+      (require 'sly-autoloads)
       (setq inferior-lisp-program "/usr/local/bin/sbcl")))
-
+  
   (use-package sly-asdf
-    ;; :load-path "~/SourceCode/lisp/sly-asdf"
+    :load-path "~/SourceCode/lisp/sly-asdf"
     :ensure t
     :after sly)
-
+  
   (use-package sly-macrostep
     :ensure t
     :after sly)
-
+  
   (use-package sly-named-readtables
     :ensure t
     :after sly)
-
+  
   (use-package sly-repl-ansi-color
     :ensure t
     :after sly)
-
+  
   (use-package sly-quicklisp
     :ensure t
     :after sly)
-
+  
   ;; sly internally integrates company mode, so none of the following are necessary any more.
-
+  
   ;; (use-package ac-sly
   ;;   :ensure t
   ;;   :after sly)
-
+  
   ;; (use-package ac-helm
   ;;   :ensure t
   ;;   :after sly)
-
+  
   ;; (use-package helm-sly
   ;;   :ensure t
   ;;   :after sly
