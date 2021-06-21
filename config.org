@@ -1256,7 +1256,7 @@ A quick way to jump around text in buffers.
     :ensure t
     :config (avy-setup-default)
     :bind
-    ("C-s-." . avy-goto-word-or-subword-1)
+    ;; ("C-s-." . avy-goto-word-or-subword-1) <-- interferes with swiper.
     ("M-s" . avy-goto-char))
 #+end_src
 
