@@ -262,6 +262,7 @@ This turns on the clock globally.
   :bind
   ("s-h" . symon-mode))
 #+END_SRC   
+
 * Font
 And here's how we tell Emacs which font we want.
 
@@ -349,18 +350,21 @@ The following function for ~occur-dwim~ is taken from [[https://github.com/abo-a
 the symbol at point as the default value for occur.
 
 #+BEGIN_SRC emacs-lisp
-(defun occur-dwim ()
-  "Call `occur' with a sane default."
-  (interactive)
-  (push (if (region-active-p)
-            (buffer-substring-no-properties
-             (region-beginning)
-             (region-end))
-          (thing-at-point 'symbol))
-        regexp-history)
-  (call-interactively 'occur))
-
-(bind-key "M-s o" 'occur-dwim)
+  ;; in practice, I don't use this much. The keybinding has been given
+  ;; to another mode.
+  
+  (defun occur-dwim ()
+    "Call `occur' with a sane default."
+    (interactive)
+    (push (if (region-active-p)
+              (buffer-substring-no-properties
+               (region-beginning)
+               (region-end))
+            (thing-at-point 'symbol))
+          regexp-history)
+    (call-interactively 'occur))
+  
+  ;; (bind-key "M-s o" 'occur-dwim)
 #+END_SRC
 
 Here we make page-break characters look pretty, instead of appearing
