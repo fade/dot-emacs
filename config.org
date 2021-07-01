@@ -1911,7 +1911,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
               (clisp ("/usr/bin/clisp"))
               (ecl ("/usr/local/bin/ecl"))
               (decl ("/usr/bin/ecl"))
-              (clojure ("/usr/bin/Clojure"))))
+              (clojure ("/usr/bin/clojure"))))
   
       (setq sly-kill-without-query-p t
             sly-net-coding-system 'utf-8-unix
