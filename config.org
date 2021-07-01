@@ -1884,12 +1884,12 @@ Luckily, I can modify the way Emacs formats code with this configuration.
        :ensure t)
    #+END_SRC
 ** Extempore mode
-Extempore is a scheme defined for live performance programming.
+Extempore is a scheme defined for live performance programming. Leaving this stub here for now.
 #+BEGIN_SRC emacs-lisp
-  (use-package extempore-mode
-    :ensure t
-    :config
-    (setq extempore-path "/usr/bin/extempore"))
+  ;; (use-package extempore-mode
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq extempore-path "/usr/bin/extempore"))
 #+END_SRC
 
 ** Common Lisp
@@ -1988,9 +1988,6 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
       (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
       (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)))
 #+END_SRC
-
-#+RESULTS:
-: t
 
 ** Hashicorp Configuration Language
 #+BEGIN_SRC emacs-lisp
