@@ -1057,7 +1057,9 @@ most relevantly, sparql is used to define queries to the WikiData knowledge data
 
 #+begin_src emacs-lisp
   (use-package sparql-mode
-    :ensure t)
+    :ensure t
+    ;; :load-path "~/SourceCode/lisp/emacs_stuff/sparql-mode"
+    )
 #+end_src
 
 * PDF Tools
@@ -1626,9 +1628,10 @@ aren't constrainted within Emacs; there's the
 string to keep things portable.
 
 #+BEGIN_SRC emacs-lisp
-(use-package restclient
-  :ensure t
-  :mode ("\\.restclient\\'" . restclient-mode))
+  (use-package restclient
+    :ensure t
+    ;; :load-path "~/SourceCode/lisp/emacs_stuff/restclient.el"
+    :mode ("\\.restclient\\'" . restclient-mode))
 #+END_SRC
 
 ** Scratch
@@ -1898,7 +1901,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
-    :load-path "~/SourceCode/lisp/sly"
+    ;; :load-path "~/SourceCode/lisp/sly"
     :defer t
     :commands sly
     :bind ("C-c M-o" . sly-mrepl-clear-repl)
@@ -1924,7 +1927,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
       (setq inferior-lisp-program "/usr/local/bin/sbcl")))
   
   (use-package sly-asdf
-    :load-path "~/SourceCode/lisp/sly-asdf"
+    ;; :load-path "~/SourceCode/lisp/sly-asdf"
     :ensure t
     :after sly)
   
@@ -2168,6 +2171,7 @@ Integrates with IPython.
 #+BEGIN_SRC emacs-lisp
   (use-package ansible
     :ensure t
+    ;; :load-path "~/SourceCode/lisp/emacs_stuff/emacs-ansible"
     :defer t
     :config
     (use-package ansible-doc
