@@ -633,17 +633,28 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
   (use-package org-roam
     :ensure t
     :after org
+  
     :init
-    (setq org-roam-v2-ack t)
+    ;; (setq org-roam-v2-ack t)
+  
     :config
-    (setq
-     org-roam-directory (expand-file-name "Roam/" site-org-files))
-    (setq
-     org-roam-dailies-directory (expand-file-name "Dailies/" org-roam-directory))
+    (setf org-roam-directory (expand-file-name "Roam/" site-org-files))
+    (setf org-roam-dailies-directory (expand-file-name "Dailies/" org-roam-directory))
+  
     ;; New capture template
     (setq org-roam-dailies-capture-templates
           '(("d" "daily" entry #'org-roam-capture--get-point
-             "* %?\n"))))
+             "* %?\n")))
+    (org-roam-setup)
+  
+    :bind
+    (("C-c n l" . org-roam-buffer-toggle)
+     ("C-c n f" . org-roam-node-find)
+     ("C-c n i" . org-roam-node-insert)))
+  
+  
+  
+  
   
   ;; (use-package company-org-roam
   ;;   :ensure t
@@ -658,6 +669,8 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
     :after org-roam)
   
 #+END_SRC
+
+#+RESULTS:
 
 ** Org activation bindings
 
