@@ -210,20 +210,20 @@ the bottom is =diminish=.
                (setq spaceline-buffer-encoding-abbrev-p t)
                (setq spaceline-line-column-p t)
                (setq spaceline-line-p t)
-
+     
                (spaceline-toggle-flycheck-info-off)
                (spaceline-toggle-flycheck-error-off)
                (spaceline-toggle-flycheck-warning-off)
                (spaceline-toggle-version-control-on)
-
+     
                (spaceline-spacemacs-theme)))
-
+     
            (use-package spaceline-all-the-icons
              :ensure t
              :after spaceline
              :config
              (spaceline-all-the-icons-theme))))
-
+     
    #+END_SRC
    
 ** No separator!
@@ -634,7 +634,7 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
     :ensure t
     :after org
   
-    :init
+    ;; :init
     ;; (setq org-roam-v2-ack t)
   
     :config
@@ -652,21 +652,13 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
      ("C-c n f" . org-roam-node-find)
      ("C-c n i" . org-roam-node-insert)))
   
-  
-  
-  
-  
-  ;; (use-package company-org-roam
-  ;;   :ensure t
-  ;;   :after org)
-  
   (use-package  org-roam-bibtex
     :ensure t
     :after org-roam)
   
-  (use-package org-roam-server
-    :ensure t
-    :after org-roam)
+  ;; (use-package org-roam-server
+  ;;   :ensure t
+  ;;   :after org-roam)
   
 #+END_SRC
 
@@ -1934,7 +1926,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
-    ;; :load-path "~/SourceCode/lisp/sly"
+    :load-path "~/SourceCode/lisp/sly"
     :defer t
     :commands sly
     :bind ("C-c M-o" . sly-mrepl-clear-repl)
