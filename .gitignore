@@ -34,3 +34,4 @@ assets/
 /org-roam.db
 /themes/deepsky-modus-fade-theme-backup
 /.org-id-locations
+/eln-cache/
