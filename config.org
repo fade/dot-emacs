@@ -1107,10 +1107,9 @@ This really is the best PDF management system I've ever used.
     :config
     ;; tramp hangs when remote has 'weird' prompt. Check in for this terminal type.
     (setf tramp-terminal-type "tramp")
-    ;; (add-to-list 'tramp-connection-properties
-    ;;              (list (regexp-quote "/ssh:fade@deepsky.com:")
-    ;;                    "remote-shell" "/bin/sh"))
-    ) 
+    (add-to-list 'tramp-connection-properties
+                 (list (regexp-quote "/ssh:fade@deepsky.com:")
+                       "remote-shell" "/bin/sh"))) 
 #+END_SRC
 
 * Window
@@ -1548,18 +1547,12 @@ access magit.
     :config
     (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
   
-  
-  ;; magithub is being merged into the forge package, and as of now it
-  ;; is causing exceptions in the normal operations of magit, so I'm
-  ;; killing this include until I can research forge.
-  
-  ;; (use-package magithub
-  ;;   :ensure t
-  ;;   :after magit
-  ;;   :defer t
-  ;;   :config
-  ;;   (magithub-feature-autoinject t)
-  ;;   (setq magithub-clone-default-directory "~/SourceCode/lisp"))
+  (use-package forge
+    :ensure t
+    :defer t
+    :after magit
+    :config
+    (setq auth-source '("~/.authinfo")))
 #+END_SRC
 
 *** Fullscreen magit
@@ -1839,21 +1832,21 @@ the ".local" suffix.
 
 Not using this right now.
 #+BEGIN_SRC emacs-lisp
-;; (require 'subr-x) ;; #'string-trim
-;; (defvar fade/user-settings-dir nil
-;;   "The directory with user-specific Emacs settings for this
-;;   user.")
-
-;; ;; Settings for currently logged in user
-;; (setq fade/user-settings-dir
-;;       (concat user-emacs-directory
-;;               "users/"
-;;               (string-trim (shell-command-to-string "hostname -s"))))
-;; (add-to-list 'load-path fade/user-settings-dir)
-
-;; ;; Load settings specific for the current user
-;; (when (file-exists-p fade/user-settings-dir)
-;;   (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
+  ;; (require 'subr-x) ;; #'string-trim
+  ;; (defvar fade/user-settings-dir nil
+  ;;   "The directory with user-specific Emacs settings for this
+  ;;   user.")
+  
+  ;; ;; Settings for currently logged in user
+  ;; (setq fade/user-settings-dir
+  ;;       (concat user-emacs-directory
+  ;;               "users/"
+  ;;               (string-trim (shell-command-to-string "hostname -s"))))
+  ;; (add-to-list 'load-path fade/user-settings-dir)
+  
+  ;; ;; Load settings specific for the current user
+  ;; (when (file-exists-p fade/user-settings-dir)
+  ;;   (mapc 'load (directory-files fade/user-settings-dir nil "^[^#].*el$")))
 #+END_SRC
 
 * Languages
