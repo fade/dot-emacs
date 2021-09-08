@@ -176,6 +176,7 @@
      (340 . "#94BFF3")
      (360 . "#DC8CC3")))
  '(vc-annotate-very-old-color "#DC8CC3")
+ '(warning-suppress-types '((comp)))
  '(weechat-color-list
    '(unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))
  '(xterm-color-names
