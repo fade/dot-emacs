@@ -1245,11 +1245,14 @@ for your cursor. Unless you know its position, you can not move it
 efficiently. Every time you change buffers, the current position of
 your cursor will be briefly highlighted now.
 
+... it appears at the momeent that beacon confuses the sly repl, which
+we cannot abide. currently no time to chase this down.
+
 #+BEGIN_SRC emacs-lisp
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1))
+  ;; (use-package beacon
+  ;;   :ensure t
+  ;;   :config
+  ;;   (beacon-mode 1))
 #+END_SRC
 
 
