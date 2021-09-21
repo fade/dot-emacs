@@ -1251,10 +1251,10 @@ your cursor will be briefly highlighted now.
 we cannot abide. currently no time to chase this down.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package beacon
-  ;;   :ensure t
-  ;;   :config
-  ;;   (beacon-mode 1))
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1))
 #+END_SRC
 
 
