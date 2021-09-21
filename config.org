@@ -168,6 +168,7 @@ lot cooler than you may think.
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
     :ensure t
+    :diminish rainbow-mode
     ;; apply this mode to all programming modes.
     :init
     (add-hook 'prog-mode-hook 'rainbow-mode))
@@ -291,6 +292,7 @@ And here's how we tell Emacs which font we want.
   
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
+The diminish package appears to have been subsumed into the Crux package by Bodizar Bhatzov. 
 #+BEGIN_SRC emacs-lisp
 (use-package diminish
   :ensure t)
@@ -1431,21 +1433,22 @@ According to [[http://emmet.io/][their website]], "Emmet — the essential toolk
 
 ** flycheck
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-
-(use-package flycheck-cython
-  :ensure t
-  :after flycheck)
-
-(use-package flycheck-clojure
-  :ensure t
-  :init (flycheck-clojure-setup))
-
-(use-package flycheck-nim
-  :ensure t
-  :after flycheck)
+  (use-package flycheck
+    :ensure t
+    :diminish flycheck-mode
+    :init (global-flycheck-mode))
+  
+  (use-package flycheck-cython
+    :ensure t
+    :after flycheck)
+  
+  (use-package flycheck-clojure
+    :ensure t
+    :init (flycheck-clojure-setup))
+  
+  (use-package flycheck-nim
+    :ensure t
+    :after flycheck)
 #+END_SRC
    
 ** Gists
@@ -1728,18 +1731,12 @@ around so much.
 #+END_SRC
 
 ** Undo Tree
-
 #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :ensure t)
-#+END_SRC
-
-** Undotree
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :ensure t
-  :config
-  (global-undo-tree-mode))
+  (use-package undo-tree
+    :ensure t
+    :diminish undo-tree-mode
+    :config
+    (global-undo-tree-mode))
 #+END_SRC
 
 ** Visible mode
@@ -2003,6 +2000,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
     :ensure t
+    :diminish paredit-mode
     :config
     (progn
       (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
