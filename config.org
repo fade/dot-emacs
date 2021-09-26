@@ -637,7 +637,7 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
     :after org
   
     ;; :init
-    ;; (setq org-roam-v2-ack t)
+    (setq org-roam-v2-ack t)
   
     :config
     (setf org-roam-directory (expand-file-name "Roam/" site-org-files))
