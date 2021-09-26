@@ -652,7 +652,14 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
     :bind
     (("C-c n l" . org-roam-buffer-toggle)
      ("C-c n f" . org-roam-node-find)
-     ("C-c n i" . org-roam-node-insert)))
+     ("C-c n g" . org-roam-graph)
+     ("C-c n r" . org-roam-node-random)
+     (:map org-mode-map
+      ("C-c n i" . org-roam-node-insert)
+      ("C-c n o" . org-roam-get-create)
+      ("C-c n t" . org-roam-tag-add)
+      ("C-c n a" . org-roam-alias-add)
+      ("C-c n l" . org-roam-buffer-toggle))))
   
   (use-package  org-roam-bibtex
     :ensure t
