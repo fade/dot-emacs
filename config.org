@@ -633,10 +633,10 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 #+BEGIN_SRC emacs-lisp
   
   (use-package org-roam
-    :ensure t
-    :after org
   
-    ;; :init
+    :ensure t
+  
+    :init
     (setq org-roam-v2-ack t)
   
     :config
