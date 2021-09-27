@@ -1,3 +1,7 @@
+;;; init.el --- Base emacs config file -*- lexical-binding: t; -*-
+;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
+
+
 (setq gc-cons-threshold 400000000)
 
 ;;; Set up package
@@ -35,7 +39,6 @@
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
-  ;; :ensure t
   :ensure org-plus-contrib
   :custom
   (org-ellipsis " ▾")
