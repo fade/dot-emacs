@@ -1,7 +1,6 @@
 ;;; init.el --- Base emacs config file -*- lexical-binding: t; -*-
 ;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
 
-
 (setq gc-cons-threshold 400000000)
 
 ;;; Set up package
@@ -21,7 +20,9 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
+
 ;; From use-package README
+
 (eval-when-compile
   (require 'use-package))
 (require 'bind-key)
@@ -31,6 +32,8 @@
 ;; sometimes when I visit an org file, org-mode does not start. moving
 ;; mode installation here, to test whether it is a load-time phasing
 ;; issue. (it was, leave this as is.)
+
+(require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
 
 (defun efs/org-mode-setup ()
   (org-indent-mode)
@@ -51,7 +54,9 @@
   :config
   (progn (eval-after-load "org"
            '(require 'ox-md nil t))
-         (setq org-support-shift-select 'always)))
+         (setq org-support-shift-select 'always)
+         ;; rename org-roam buffers to their enclosed #+TITLE
+         (add-hook 'org-mode-hook 'fade/org-mode-rename-buffer)))
 
 ;;; themes need finding.
 (add-to-list 'custom-theme-load-path
