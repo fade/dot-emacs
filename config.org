@@ -1126,10 +1126,10 @@ This really is the best PDF management system I've ever used.
 Convenient keybindings to resize windows.
 
 #+BEGIN_SRC emacs-lisp
-;; (bind-key "s-C-<left>"  'shrink-window-horizontally)
-;; (bind-key "s-C-<right>" 'enlarge-window-horizontally)
-;; (bind-key "s-C-<down>"  'shrink-window)
-;; (bind-key "s-C-<up>"    'enlarge-window)
+  (bind-key "C-s-<left>"  'shrink-window-horizontally)
+  (bind-key "C-s-<right>" 'enlarge-window-horizontally)
+  (bind-key "C-s-<down>"  'shrink-window)
+  (bind-key "C-s-<up>"    'enlarge-window)
 #+END_SRC
 
 Whenever I split windows, I usually do so and also switch to the other
