@@ -42,7 +42,7 @@
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
-  :ensure org-plus-contrib
+  :ensure org
   :custom
   (org-ellipsis " ▾")
   (org-agenda-start-with-log-mode t)
@@ -58,7 +58,7 @@
          ;; rename org-roam buffers to their enclosed #+TITLE
          (add-hook 'org-mode-hook 'fade/org-mode-rename-buffer)))
 
-;;; themes need finding.
+;;; Themes need finding.
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes/" user-emacs-directory))
 
