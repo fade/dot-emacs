@@ -6,10 +6,9 @@
 ;;; Set up package
 (require 'package)
 
-(setq package-archives '(("org"   . "https://orgmode.org/elpa/")
-                         ("melpa" . "https://melpa.org/packages/")
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("ELPA"  . "http://tromey.com/elpa/")
-			 ("gnu"   . "http://elpa.gnu.org/packages/")))
+			 ("gnu"   . "http://elpa.gnu.org/packages/"))) ;;("org"   . "https://orgmode.org/elpa/")
 
 (package-initialize)
 
