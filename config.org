@@ -345,6 +345,12 @@ The diminish package appears to have been subsumed into the Crux package by Bodi
 
   ;; Don't beep at me
   (setq visible-bell t)
+
+  ;; when editing a script file, make sure it's executable when you save
+  ;; it.
+
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p)
 #+END_SRC
 
 The following function for ~occur-dwim~ is taken from [[https://github.com/abo-abo][Oleh Krehel]] from
