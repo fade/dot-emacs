@@ -38,11 +38,11 @@ Obviously, you'll want to change this to match your personal credentials.
 #+END_SRC
 ** Testing the themes from Doom emacs
 
+In practice, these are too muted for me, specifically, but somebody might like them.
+
    #+BEGIN_SRC emacs-lisp
-     ;; (use-package doom-themes
-     ;;   :ensure t
-     ;;   ;; :config (load-theme 'doom-dracula t)
-     ;;   )
+     (use-package doom-themes
+       :ensure t)
    #+END_SRC
 
    #+RESULTS:
