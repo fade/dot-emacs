@@ -1255,6 +1255,7 @@ changes said behaviour.
 #+END_SRC
 
 ** Beacon
+
 While changing buffers or workspaces, the first thing you do is look
 for your cursor. Unless you know its position, you can not move it
 efficiently. Every time you change buffers, the current position of
@@ -1269,6 +1270,7 @@ we cannot abide. currently no time to chase this down.
     :config
     (beacon-mode 1))
 #+END_SRC
+
 
 
 * ELPA packages
@@ -1464,6 +1466,13 @@ According to [[http://emmet.io/][their website]], "Emmet — the essential toolk
     :after flycheck)
 #+END_SRC
    
+** 0x0
+Make low friction pastes to 0x0, forex sharing code to IRC
+#+begin_src emacs-lisp
+    (use-package 0x0
+      :ensure t)
+#+end_src
+
 ** Gists
 
 #+BEGIN_SRC emacs-lisp
