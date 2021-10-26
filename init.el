@@ -33,6 +33,8 @@
 ;; mode installation here, to test whether it is a load-time phasing
 ;; issue. (it was, leave this as is.)
 
+;; I put 'org-spiffs in a subdir of emacs.d, which needs finding:
+(add-to-list 'load-path (expand-file-name "fade/" user-emacs-directory))
 (require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
 
 (defun efs/org-mode-setup ()
