@@ -1,4 +1,5 @@
-;;; init.el --- Base emacs config file -*- lexical-binding: t; -*-
+;;;-*- lexical-binding: t; -*-
+;;; init.el --- Base emacs config file 
 ;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
 
 (setq gc-cons-threshold 400000000)
