@@ -38,7 +38,7 @@ Obviously, you'll want to change this to match your personal credentials.
 #+END_SRC
 ** Testing the themes from Doom emacs
 
-In practice, these are too muted for me, specifically, but somebody might like them.
+In practice, these are too muted for me, specifically, but somebody else might like them.
 
    #+BEGIN_SRC emacs-lisp
      (use-package doom-themes
@@ -119,7 +119,8 @@ In practice, these are too muted for me, specifically, but somebody might like t
     (message "Loading DeepSky theme... ")
     (set-face-attribute `mode-line nil
                         :box nil)
-    (set-cursor-color "#Ffff00"))
+    (set-cursor-color "purple"))
+
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -200,33 +201,47 @@ the bottom is =diminish=.
    theme of choice.
 
    #+BEGIN_SRC emacs-lisp
-     (when window-system
-         (progn
-           (use-package spaceline
-             :ensure t
-             :config
-             ;; (mis)using use-package here to put config in an envelope.
-             (use-package spaceline-config
-               :config
-               (setq spaceline-buffer-encoding-abbrev-p t)
-               (setq spaceline-line-column-p t)
-               (setq spaceline-line-p t)
-     
-               (spaceline-toggle-flycheck-info-off)
-               (spaceline-toggle-flycheck-error-off)
-               (spaceline-toggle-flycheck-warning-off)
-               (spaceline-toggle-version-control-on)
-     
-               (spaceline-spacemacs-theme)))
-     
-           (use-package spaceline-all-the-icons
-             :ensure t
-             :after spaceline
-             :config
-             (spaceline-all-the-icons-theme))))
-     
+     ;; (when window-system
+     ;;     (progn
+     ;;       (use-package spaceline
+     ;;         :ensure t
+     ;;         :config
+     ;;         ;; (mis)using use-package here to put config in an envelope.
+     ;;         (use-package spaceline-config
+     ;;           :config
+     ;;           (setq spaceline-buffer-encoding-abbrev-p t)
+     ;;           (setq spaceline-line-column-p t)
+     ;;           (setq spaceline-line-p t)
+
+     ;;           (spaceline-toggle-flycheck-info-off)
+     ;;           (spaceline-toggle-flycheck-error-off)
+     ;;           (spaceline-toggle-flycheck-warning-off)
+     ;;           (spaceline-toggle-version-control-on)
+
+     ;;           (spaceline-spacemacs-theme)))
+
+     ;;       (use-package spaceline-all-the-icons
+     ;;         :ensure t
+     ;;         :after spaceline
+     ;;         :config
+     ;;         (spaceline-all-the-icons-theme))))
    #+END_SRC
    
+** Telephone Line
+#+begin_src emacs-lisp
+  ;; (use-package telephone-line
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setf telephone-line-primary-left-separator 'telephone-line-cubed-left
+  ;;         telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+  ;;         telephone-line-primary-right-separator 'telephone-line-cubed-right
+  ;;         telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+  ;;   (setf telephone-line-height 24
+  ;;         telephone-line-evil-use-short-tag t)
+  ;;   ;; actually use it.
+  ;;   (telephone-line-mode 1))
+
+#+end_src
 ** No separator!
  #+BEGIN_SRC emacs-lisp
  (setq powerline-default-separator nil)
@@ -271,10 +286,10 @@ And here's how we tell Emacs which font we want.
 
   (if window-system
       (progn
-        (set-face-attribute 'default nil :font "Envy Code R" :height 140)
-        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-13")
+        (set-face-attribute 'default nil :font "Envy Code R" :height 120)
+        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-11")
         ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 140 :weight 'regular)))
+        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)))
 
 #+END_SRC
 * Which Key
@@ -2041,9 +2056,24 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 
 ** Hashicorp Configuration Language
 #+BEGIN_SRC emacs-lisp
-(use-package hcl-mode
-  :defer t
-  :ensure t)
+  (use-package hcl-mode
+    :defer t
+    :ensure t)
+
+  (use-package terraform-mode
+    :defer t
+    :ensure t
+    :after hcl-mode
+    :config
+    (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
+    :custom
+    '(terraform-indent-level 2))
+
+  (use-package terraform-doc
+    :defer t
+    :ensure t
+    :after terraform-mode
+    )
 #+END_SRC
 
 ** JavaScript
