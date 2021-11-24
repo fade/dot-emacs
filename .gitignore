@@ -36,3 +36,4 @@ assets/
 /.org-id-locations
 /eln-cache/
 /elpy/
+/ac-comphist.dat
