@@ -119,7 +119,7 @@ In practice, these are too muted for me, specifically, but somebody else might l
     (message "Loading DeepSky theme... ")
     (set-face-attribute `mode-line nil
                         :box nil)
-    (set-cursor-color "purple"))
+    (set-cursor-color "yellow"))
 
 #+END_SRC
 
@@ -1660,9 +1660,7 @@ Workspaces in Emacs.
 ** Projectile
 [[http://batsov.com/projectile/][Projectile Home]]
 
-#+BEGIN_QUOTE
 Project navigation and management library for Emacs.
-#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
@@ -2200,7 +2198,9 @@ Integrates with IPython.
     (elpy-enable))
 
   (use-package jedi
-    :ensure t)
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup))
 
   (use-package company-jedi
     :after jedi
