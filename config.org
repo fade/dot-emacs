@@ -271,14 +271,6 @@ This turns on the clock globally.
   (display-time-mode 1)
 #+END_SRC
 
-** System monitor
-#+BEGIN_SRC emacs-lisp
-(use-package symon
-  :ensure t
-  :bind
-  ("s-h" . symon-mode))
-#+END_SRC   
-
 * Font
 And here's how we tell Emacs which font we want.
 
@@ -292,6 +284,7 @@ And here's how we tell Emacs which font we want.
         (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)))
 
 #+END_SRC
+
 * Which Key
 [[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
 
@@ -303,6 +296,7 @@ And here's how we tell Emacs which font we want.
   :config
   (setq which-key-idle-delay 1))
   #+END_SRC
+
 * Sane defaults
   
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
@@ -842,30 +836,39 @@ good column number to do that.
 
 ** Org babel languages
 
-#+BEGIN_SRC emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (C . t)
-   (calc . t)
-   (latex . t)
-   (java . t)
-   (ruby . t)
-   (lisp . t)
-   (scheme . t)
-   (shell . t)
-   (sqlite . t)
-   (js . t)))
-   
+#+begin_src emacs-lisp
+  (use-package ob-restclient
+    :ensure t
+    :after org)
+#+end_src
 
-(defun my-org-confirm-babel-evaluate (lang body)
-  "Do not confirm evaluation for these languages."
-  (not (or (string= lang "C")
-           (string= lang "java")
-           (string= lang "python")
-           (string= lang "emacs-lisp")
-           (string= lang "sqlite"))))
-(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (C . t)
+     (calc . t)
+     (latex . t)
+     (java . t)
+     (ruby . t)
+     (lisp . t)
+     (scheme . t)
+     (shell . t)
+     (sqlite . t)
+     (js . t)
+     (restclient . t)))
+
+
+  (defun my-org-confirm-babel-evaluate (lang body)
+    "Do not confirm evaluation for these languages."
+    (not (or (string= lang "C")
+             (string= lang "java")
+             (string= lang "python")
+             (string= lang "emacs-lisp")
+             (string= lang "sqlite")
+             (string= lang "resclient"))))
+
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 #+END_SRC
 
 ** Org babel/source blocks
@@ -1195,7 +1198,7 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
 #+END_SRC
 
 #+RESULTS:
-| dired-extra-startup | all-the-icons-dired-mode | auto-revert-mode |
+| all-the-icons-dired-mode | auto-revert-mode |
 
 * Mail with mu4e
 #+begin_src emacs-lisp
@@ -1501,14 +1504,14 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
-    :diminish helm-mode
+    ;; :diminish helm-mode
     :init (progn
             (use-package helm-config)
             (setq helm-locate-command "mdfind -interpret -name %s %s"
                   helm-ff-newfile-prompt-p nil
                   helm-M-x-fuzzy-match t)
             (helm-mode 1))
-  
+
     :bind ((:map helm-map
                  ("<tab>" . helm-execute-persistent-action)
                  ("C-c h" . helm-command-prefix)
@@ -1531,7 +1534,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
      '(helm-ag-command-option "--all-text")
      '(helm-ag-insert-at-point 'symbol)
      '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
-  
+
 #+END_SRC
 
 ** Helpful
@@ -1973,49 +1976,49 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
               (ecl ("/usr/local/bin/ecl"))
               (decl ("/usr/bin/ecl"))
               (clojure ("/usr/bin/clojure"))))
-  
+
       (setq sly-kill-without-query-p t
             sly-net-coding-system 'utf-8-unix
             sly-complete-symbol*-fancy t
             common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
-  
+
     :config
     ;; (progn
     ;;   (require 'sly-autoloads)
     ;;   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
     )
-  
+
   (use-package sly-asdf
     ;; :load-path "~/SourceCode/lisp/sly-asdf"
     :ensure t
     :after sly)
-  
+
   (use-package sly-macrostep
     :ensure t
     :after sly)
-  
+
   (use-package sly-named-readtables
     :ensure t
     :after sly)
-  
+
   (use-package sly-repl-ansi-color
     :ensure t
     :after sly)
-  
+
   (use-package sly-quicklisp
     :ensure t
     :after sly)
-  
+
   ;; sly internally integrates company mode, so none of the following are necessary any more.
-  
+
   ;; (use-package ac-sly
   ;;   :ensure t
   ;;   :after sly)
-  
+
   ;; (use-package ac-helm
   ;;   :ensure t
   ;;   :after sly)
-  
+
   ;; (use-package helm-sly
   ;;   :ensure t
   ;;   :after sly
@@ -2180,37 +2183,42 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 #+END_SRC
 
 ** Python
-
-Integrates with IPython.
+Integrates with IPython., using elpy jedi, and virtualenvwrapper.
 
 #+BEGIN_SRC emacs-lisp
-
-  ;; (use-package ein
-  ;;   :defer t
-  ;;   :ensure t)
 
   (use-package elpy
     :ensure t
     :config
     (setq elpy-rpc-backend "jedi")
     (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --simple-prompt")
+          python-shell-interpreter-args "-i --simple-prompt")
     (elpy-enable))
 
   (use-package jedi
     :ensure t
     :init
-    (add-hook 'python-mode-hook 'jedi:setup))
+    (add-hook 'python-mode-hook 'jedi:setup)
+    :config
+    (local-set-key (kbd "M-.") 'jedi:goto-definition)
+    (local-set-key (kbd "M-,") 'jedi:goto-definition-pop-marker)
+    (local-set-key (kbd "M-?") 'jedi:show-doc)
+    (local-set-key (kbd "M-/") 'jedi:get-in-function-call)
+    (setq jedi:complete-on-dot t))
 
   (use-package company-jedi
     :after jedi
-    :ensure t)
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-jedi))
 
   (use-package jinja2-mode
     :ensure t)
 
 #+END_SRC
+
 *** Virtualenvwrapper
+
 #+BEGIN_SRC emacs-lisp
   (use-package virtualenvwrapper
     :ensure t
@@ -2219,8 +2227,10 @@ Integrates with IPython.
     (setq venv-location "~/.virtualenvs"))
 #+END_SRC
 
+
 ** Racket
    Not using Racket much any more. When I do, drracket is sufficient.
+   
 #+BEGIN_SRC emacs-lisp
 ;; (use-package racket-mode
 ;;   :ensure t
