@@ -68,44 +68,44 @@ In practice, these are too muted for me, specifically, but somebody else might l
 
 #+BEGIN_SRC emacs-lisp
 
-;; if this is set here, it is overwritten by the colour theme.
-;; (set-cursor-color "yellow")
+  ;; if this is set here, it is overwritten by the colour theme.
+  ;; (set-cursor-color "yellow")
 
-;; (when (display-graphic-p) 
-;;   (progn
-;;     (defvar blink-cursor-colors (list
-;;                                  "dark slate blue"
-;;                                  "medium slate blue"
-;;                                  "light slate blue"
-;;                                  "steel blue"
-;;                                  "royal blue"
-;;                                  "light blue"
-;;                                  "cyan"
-;;                                  "cyan1"
-;;                                  "cyan2"
-;;                                  "cyan3"
-;;                                  "cyan4"
-;;                                  "spring green"
-;;                                  "yellow"
-;;                                  "orange"
-;;                                  "red"
-;;                                  "hot pink")
-;;       "On each blink the cursor will cycle to the next color in this list.")
+  ;; (when (display-graphic-p) 
+  ;;   (progn
+  ;;     (defvar blink-cursor-colors (list
+  ;;                                  "dark slate blue"
+  ;;                                  "medium slate blue"
+  ;;                                  "light slate blue"
+  ;;                                  "steel blue"
+  ;;                                  "royal blue"
+  ;;                                  "light blue"
+  ;;                                  "cyan"
+  ;;                                  "cyan1"
+  ;;                                  "cyan2"
+  ;;                                  "cyan3"
+  ;;                                  "cyan4"
+  ;;                                  "spring green"
+  ;;                                  "yellow"
+  ;;                                  "orange"
+  ;;                                  "red"
+  ;;                                  "hot pink")
+  ;;       "On each blink the cursor will cycle to the next color in this list.")
     
-;;     (setq blink-cursor-count 0)
-;;     (setq blink-cursor-interval 0.3)
-;;     (defun blink-cursor-timer-function ()
-;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
-;;      Warning: overwrites original version in `frame.el'.
+  ;;     (setq blink-cursor-count 0)
+  ;;     (setq blink-cursor-interval 0.3)
+  ;;     (defun blink-cursor-timer-function ()
+  ;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
+  ;;      Warning: overwrites original version in `frame.el'.
 
-;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+  ;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
 
-;;       (when (not (internal-show-cursor-p))
-;;         (when (>= blink-cursor-count (length blink-cursor-colors))
-;;           (setq blink-cursor-count 0))
-;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
-;;       (internal-show-cursor nil (not (internal-show-cursor-p)))))
+  ;;       (when (not (internal-show-cursor-p))
+  ;;         (when (>= blink-cursor-count (length blink-cursor-colors))
+  ;;           (setq blink-cursor-count 0))
+  ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+  ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
+  ;;       (internal-show-cursor nil (not (internal-show-cursor-p))))))
 #+END_SRC
 
 ** DeepSky Theme
@@ -119,6 +119,7 @@ In practice, these are too muted for me, specifically, but somebody else might l
     (message "Loading DeepSky theme... ")
     (set-face-attribute `mode-line nil
                         :box nil)
+    ;; (set-cursor-color "#EED202")
     (set-cursor-color "yellow"))
 
 #+END_SRC
@@ -408,6 +409,7 @@ point, or when prefix arg, the next N files. "
        (let* ((fn-list (dired-get-marked-files nil arg)))
          (mapc 'find-file fn-list)))))
 #+END_SRC
+
 * Mac customizations
 
 There are configurations to make when running Emacs on macOS (hence the

@@ -47,6 +47,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        dired-next-line
         dired-unmark-backward
         markdown-exdent-or-delete
         mouse-drag-vertical-line
