@@ -28,14 +28,18 @@ Obviously, you'll want to change this to match your personal credentials.
 
 * Theme
 ** Autothemer
+
 #+BEGIN_SRC emacs-lisp
   (use-package autothemer
     :ensure t)
 #+END_SRC
+
 ** Emacs' startup screen is naf
+
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
+
 ** Testing the themes from Doom emacs
 
 In practice, these are too muted for me, specifically, but somebody else might like them.
@@ -106,6 +110,7 @@ In practice, these are too muted for me, specifically, but somebody else might l
   ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
   ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
   ;;       (internal-show-cursor nil (not (internal-show-cursor-p))))))
+
 #+END_SRC
 
 ** DeepSky Theme
@@ -113,6 +118,7 @@ In practice, these are too muted for me, specifically, but somebody else might l
    others.
 
 #+BEGIN_SRC emacs-lisp
+
   (progn
     ;; on the terminal, the theme situation needs more attention.
     (load-theme 'deepsky-modus-fade t)
@@ -533,6 +539,8 @@ remove the .elc files from the package directory:
 #+BEGIN_SRC sh :var ORG_DIR=(let* ((org-v (cadr (split-string (org-version nil t) "@"))) (len (length org-v))) (substring org-v 1 (- len 2)))
 rm ${ORG_DIR}/*.elc
 #+END_SRC
+
+#+RESULTS:
 
 ** Better Font Faces
 
