@@ -1,5 +1,8 @@
 ;;; init.el --- Base emacs config file -*- lexical-binding: t; -*-
+;;; Commentary:
 ;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
+
+;;; Code:
 
 ;;; Set up package
 (require 'package)
@@ -49,7 +52,7 @@
   (org-log-into-drawer t)
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-        (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+     (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
   :config
   (progn (eval-after-load "org"
            '(require 'ox-md nil t))

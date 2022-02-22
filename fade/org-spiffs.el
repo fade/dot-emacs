@@ -1,5 +1,6 @@
 ;;;-*- lexical-binding: t; -*-
-;;; init.el --- Base emacs config file 
+;;; init.el --- Base emacs config file
+;;; Commentary:
 ;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
 ;;; Code:
 
@@ -10,7 +11,7 @@
 ;;; for interactive functions only. recast in terms of #'goto-char
 
 (cl-defun fade/org-global-prop (name)
-  "Given a property like 'AUTHOR', 'TITLE', &etc. return the associated value."
+  "Given a property NAME like 'AUTHOR', 'TITLE', &etc. return the associated value."
   (save-excursion
     (outline-show-all)
     (goto-char (point-min))
