@@ -45,8 +45,8 @@ Obviously, you'll want to change this to match your personal credentials.
 In practice, these are too muted for me, specifically, but somebody else might like them.
 
    #+BEGIN_SRC emacs-lisp
-     (use-package doom-themes
-       :ensure t)
+     ;; (use-package doom-themes
+     ;;   :ensure t)
    #+END_SRC
 
    #+RESULTS:
@@ -125,32 +125,34 @@ In practice, these are too muted for me, specifically, but somebody else might l
     (message "Loading DeepSky theme... ")
     (set-face-attribute `mode-line nil
                         :box nil)
-    ;; (set-cursor-color "#EED202")
     (set-cursor-color "yellow"))
 
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(defun switch-theme (theme)
-  "Disables any currently active themes and loads THEME."
-  ;; This interactive call is taken from `load-theme'
-  (interactive
-   (list
-    (intern (completing-read "Load custom theme: "
-                             (mapc 'symbol-name
-                                   (custom-available-themes))))))
-  (let ((enabled-themes custom-enabled-themes))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme theme t)))
+  (defun switch-theme (theme)
+    "Disables any currently active themes and loads THEME."
+    ;; This interactive call is taken from `load-theme'
+    (interactive
+     (list
+      (intern (completing-read "Load custom theme: "
+                               (mapc 'symbol-name
+                                     (custom-available-themes))))))
+    (let ((enabled-themes custom-enabled-themes))
+      (mapc #'disable-theme custom-enabled-themes)
+      (load-theme theme t)))
 
-(defun disable-active-themes ()
-  "Disables any currently active themes listed in `custom-enabled-themes'."
-  (interactive)
-  (mapc #'disable-theme custom-enabled-themes))
+  (defun disable-active-themes ()
+    "Disables any currently active themes listed in `custom-enabled-themes'."
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes))
 
-(bind-key "s-<f12>" 'switch-theme)
-(bind-key "s-<f11>" 'disable-active-themes)
+  (bind-key "s-<f12>" 'switch-theme)
+  (bind-key "s-<f11>" 'disable-active-themes)
 #+END_SRC
+
+#+RESULTS:
+: disable-active-themes
 
 ** Highlight line containing the point
 
@@ -1101,12 +1103,12 @@ version control software which can change the files from beneath the
 buffers in emacs. source: [[http://whattheemacsd.com/sane-defaults.el-01.html][Magnar Sveen]]
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'dired-mode-hook 'auto-revert-mode)
-(global-auto-revert-mode t)
+  (add-hook 'dired-mode-hook 'auto-revert-mode)
+  (global-auto-revert-mode t)
 
-;; Also auto refresh dired, but be quiet about it
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-verbose nil)
+  ;; Also auto refresh dired, but be quiet about it
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
 #+END_SRC
 
 * Recentf
@@ -1293,10 +1295,10 @@ your cursor will be briefly highlighted now.
 we cannot abide. currently no time to chase this down.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package beacon
-    :ensure t
-    :config
-    (beacon-mode 1))
+  ;; (use-package beacon
+  ;;   :ensure t
+  ;;   :config
+  ;;   (beacon-mode 0))
 #+END_SRC
 
 
