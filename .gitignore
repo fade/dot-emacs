@@ -37,3 +37,4 @@ assets/
 /eln-cache/
 /elpy/
 /ac-comphist.dat
+/*.sqlite
