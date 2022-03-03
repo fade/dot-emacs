@@ -1282,6 +1282,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 #+END_SRC
 
 ** Completion
+
 #+begin_src emacs-lisp
   (use-package vertico
     :ensure t
@@ -2306,10 +2307,13 @@ And here's how we tell Emacs which font we want.
 
   (if window-system
       (progn
+        (add-to-list 'default-frame-alist '(font . "Envy Code R"))
+        ;; (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)
         (set-face-attribute 'default nil :font "Envy Code R" :height 120)
-        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-11")
-        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)))
+        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-11")))
+
+  ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+
 
 #+END_SRC
 
