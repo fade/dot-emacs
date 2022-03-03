@@ -26,288 +26,19 @@ Obviously, you'll want to change this to match your personal credentials.
       user-mail-address "fade@deepsky.com")
 #+END_SRC
 
-* Theme
-** Autothemer
-
-#+BEGIN_SRC emacs-lisp
-  (use-package autothemer
-    :ensure t)
-#+END_SRC
-
-** Emacs' startup screen is naf
-
-#+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-#+END_SRC
-
-** Testing the themes from Doom emacs
-
-In practice, these are too muted for me, specifically, but somebody else might like them.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; (use-package doom-themes
-     ;;   :ensure t)
-   #+END_SRC
-
-   #+RESULTS:
-
-** Colours On Terminal
-   custom colour themes generally enhance my experience of writing
-   inside emacs, but when that theme is applied to an instance running
-   inside a terminal, the effect is really just terrible. This mode
-   kind of approximates the effect of a graphical emacs frame, in a
-   text console.
-   
-#+BEGIN_SRC emacs-lisp
-(use-package color-theme-approximate
-  :ensure t
-  :config
-  (unless (display-graphic-p)
-    (autoload 'color-theme-approximate-on "color-theme-approximate")
-    (color-theme-approximate-on)))
-#+END_SRC
-
-** Cursor tomfoolery
-   A fun hack that is in practice unusable.
-
-#+BEGIN_SRC emacs-lisp
-
-  ;; if this is set here, it is overwritten by the colour theme.
-  ;; (set-cursor-color "yellow")
-
-  ;; (when (display-graphic-p) 
-  ;;   (progn
-  ;;     (defvar blink-cursor-colors (list
-  ;;                                  "dark slate blue"
-  ;;                                  "medium slate blue"
-  ;;                                  "light slate blue"
-  ;;                                  "steel blue"
-  ;;                                  "royal blue"
-  ;;                                  "light blue"
-  ;;                                  "cyan"
-  ;;                                  "cyan1"
-  ;;                                  "cyan2"
-  ;;                                  "cyan3"
-  ;;                                  "cyan4"
-  ;;                                  "spring green"
-  ;;                                  "yellow"
-  ;;                                  "orange"
-  ;;                                  "red"
-  ;;                                  "hot pink")
-  ;;       "On each blink the cursor will cycle to the next color in this list.")
-    
-  ;;     (setq blink-cursor-count 0)
-  ;;     (setq blink-cursor-interval 0.3)
-  ;;     (defun blink-cursor-timer-function ()
-  ;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
-  ;;      Warning: overwrites original version in `frame.el'.
-
-  ;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
-
-  ;;       (when (not (internal-show-cursor-p))
-  ;;         (when (>= blink-cursor-count (length blink-cursor-colors))
-  ;;           (setq blink-cursor-count 0))
-  ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-  ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
-  ;;       (internal-show-cursor nil (not (internal-show-cursor-p))))))
-
-#+END_SRC
-
-** DeepSky Theme
-   Load the appropriate theme, and a utility for arbitrarily loading
-   others.
-
-#+BEGIN_SRC emacs-lisp
-
-  (progn
-    ;; on the terminal, the theme situation needs more attention.
-    (load-theme 'deepsky-modus-fade t)
-    (message "Loading DeepSky theme... ")
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-cursor-color "yellow"))
-
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defun switch-theme (theme)
-    "Disables any currently active themes and loads THEME."
-    ;; This interactive call is taken from `load-theme'
-    (interactive
-     (list
-      (intern (completing-read "Load custom theme: "
-                               (mapc 'symbol-name
-                                     (custom-available-themes))))))
-    (let ((enabled-themes custom-enabled-themes))
-      (mapc #'disable-theme custom-enabled-themes)
-      (load-theme theme t)))
-
-  (defun disable-active-themes ()
-    "Disables any currently active themes listed in `custom-enabled-themes'."
-    (interactive)
-    (mapc #'disable-theme custom-enabled-themes))
-
-  (bind-key "s-<f12>" 'switch-theme)
-  (bind-key "s-<f11>" 'disable-active-themes)
-#+END_SRC
-
-#+RESULTS:
-: disable-active-themes
-
-** Highlight line containing the point
-
-#+BEGIN_SRC emacs-lisp
-  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
-
-  ;; (defadvice hl-line-mode (after
-  ;;                          dino-advise-hl-line-mode
-  ;;                          activate compile)
-  ;;   (set-face-attribute 'hl-line nil
-  ;;                       :inherit nil
-  ;;                       :background (face-background 'highlight))
-  ;;   (set-face-background hl-line-face "1f1f1f"))
-#+END_SRC
-
-** Rainbow
-   
-Mostly useful if you are into web development or game development.
-Every time emacs encounters a hexadecimal code that resembles a color,
-it will automatically highlight it in the appropriate color. This is a
-lot cooler than you may think.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-mode
-    :ensure t
-    :diminish rainbow-mode
-    ;; apply this mode to all programming modes.
-    :init
-    (add-hook 'prog-mode-hook 'rainbow-mode))
-#+END_SRC
-
-* Modeline
-  
-The modeline is the heart of emacs, it offers information at all
-times, it's persistent and verbose enough to gain a full understanding
-of modes and states you are in.
-
-One modeline-related setting that is missing and is instead placed at
-the bottom is =diminish=.
-
-** All the icons!
-   
-#+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons
-    :ensure t)
-#+END_SRC
-   
-** Spaceline!
-   I may not use spacemacs, since I do not like evil-mode and find
-   spacemacs incredibly bloated and slow, however it would be stupid not
-   to acknowledge the best parts about it, the theme and their modified
-   powerline setup.
-
-   This enables spaceline, it looks better and works very well with my
-   theme of choice.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; (when window-system
-     ;;     (progn
-     ;;       (use-package spaceline
-     ;;         :ensure t
-     ;;         :config
-     ;;         ;; (mis)using use-package here to put config in an envelope.
-     ;;         (use-package spaceline-config
-     ;;           :config
-     ;;           (setq spaceline-buffer-encoding-abbrev-p t)
-     ;;           (setq spaceline-line-column-p t)
-     ;;           (setq spaceline-line-p t)
-
-     ;;           (spaceline-toggle-flycheck-info-off)
-     ;;           (spaceline-toggle-flycheck-error-off)
-     ;;           (spaceline-toggle-flycheck-warning-off)
-     ;;           (spaceline-toggle-version-control-on)
-
-     ;;           (spaceline-spacemacs-theme)))
-
-     ;;       (use-package spaceline-all-the-icons
-     ;;         :ensure t
-     ;;         :after spaceline
-     ;;         :config
-     ;;         (spaceline-all-the-icons-theme))))
-   #+END_SRC
-   
-** Telephone Line
-#+begin_src emacs-lisp
-  ;; (use-package telephone-line
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setf telephone-line-primary-left-separator 'telephone-line-cubed-left
-  ;;         telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
-  ;;         telephone-line-primary-right-separator 'telephone-line-cubed-right
-  ;;         telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
-  ;;   (setf telephone-line-height 24
-  ;;         telephone-line-evil-use-short-tag t)
-  ;;   ;; actually use it.
-  ;;   (telephone-line-mode 1))
-
-#+end_src
-** No separator!
- #+BEGIN_SRC emacs-lisp
- (setq powerline-default-separator nil)
- #+END_SRC
-
-** Cursor position
-
-   Show the current line and column for your cursor. We are not going to
-have =relative-linum-mode= in every major mode, so this is useful.
-
-#+BEGIN_SRC emacs-lisp
-  (setq line-number-mode t)
-  (setq column-number-mode t)
-#+END_SRC
-
-** Clock
-If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
-*** Time format
-#+BEGIN_SRC emacs-lisp
-  (setq display-time-24hr-format t)
-  (setq display-time-format "%H:%M - %d %B %Y")
-#+END_SRC
-
-*** Enabling the mode
-This turns on the clock globally.
-#+BEGIN_SRC emacs-lisp
-  (display-time-mode 1)
-#+END_SRC
-
-* Font
-And here's how we tell Emacs which font we want.
-
-#+BEGIN_SRC emacs-lisp
-
-  (if window-system
-      (progn
-        (set-face-attribute 'default nil :font "Envy Code R" :height 120)
-        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-11")
-        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
-        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)))
-
-#+END_SRC
-
 * Which Key
 [[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
 
   #+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
+    (use-package which-key
+      :ensure t
+      :init (which-key-mode)
+      :diminish which-key-mode
+      :config
+      (setq which-key-idle-delay 1))
   #+END_SRC
 
 * Sane defaults
-  
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnar Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 The diminish package appears to have been subsumed into the Crux package by Bodizar Bhatzov. 
@@ -730,12 +461,13 @@ Set up some global key bindings that integrate with Org Mode features.
 Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode-setup= configuration function at the top of this file.
 
 #+BEGIN_SRC emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :after org
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (use-package org-bullets
+    :ensure t
+    :after org
+      :hook (org-mode . org-bullets-mode)
+      :custom
+    
+      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+END_SRC
 
 ** Org tags
@@ -1514,40 +1246,70 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 ** Helm
 
 #+BEGIN_SRC emacs-lisp
-  (use-package helm
-    :ensure t
-    ;; :diminish helm-mode
-    :init (progn
-            (use-package helm-config)
-            (setq helm-locate-command "mdfind -interpret -name %s %s"
-                  helm-ff-newfile-prompt-p nil
-                  helm-M-x-fuzzy-match t)
-            (helm-mode 1))
+  ;; (use-package helm
+  ;;   :ensure t
+  ;;   ;; :diminish helm-mode
+  ;;   :init (progn
+  ;;           (use-package helm-config)
+  ;;           (setq helm-locate-command "mdfind -interpret -name %s %s"
+  ;;                 helm-ff-newfile-prompt-p nil
+  ;;                 helm-M-x-fuzzy-match t)
+  ;;           (helm-mode 1))
 
-    :bind ((:map helm-map
-                 ("<tab>" . helm-execute-persistent-action)
-                 ("C-c h" . helm-command-prefix)
-                 ("C-x b" . helm-mini)
-                 ("C-x C-b" . 'helm-buffers-list)
-                 ("C-`" . helm-resume)))
-    :bind*   (("M-x" . helm-M-x)
-              ("C-x C-f" . helm-find-files))
-    :config
-    (helm-autoresize-mode 1)) 
+  ;;   :bind ((:map helm-map
+  ;;                ("<tab>" . helm-execute-persistent-action)
+  ;;                ("C-c h" . helm-command-prefix)
+  ;;                ("C-x b" . helm-mini)
+  ;;                ("C-x C-b" . 'helm-buffers-list)
+  ;;                ("C-`" . helm-resume)))
+  ;;   :bind   (("M-x" . helm-M-x)
+  ;;             ("C-x C-f" . helm-find-files))
+  ;;   :config
+  ;;   (helm-autoresize-mode 1))
 
-  (use-package helm-ag
-    :defer 10
-    :ensure t
-    :after helm
-    :bind ("C-c M-s" . helm-do-ag)
-    :config
-    (custom-set-variables
-     '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-     '(helm-ag-command-option "--all-text")
-     '(helm-ag-insert-at-point 'symbol)
-     '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
+  ;; (use-package helm-ag
+  ;;   :defer 10
+  ;;   :ensure t
+  ;;   :after helm
+  ;;   :bind ("C-c M-s" . helm-do-ag)
+  ;;   :config
+  ;;   (custom-set-variables
+  ;;    '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+  ;;    '(helm-ag-command-option "--all-text")
+  ;;    '(helm-ag-insert-at-point 'symbol)
+  ;;    '(helm-ag-ignore-buffer-patterrns '("\\.txt\\'" "\\.mkd\\'"))))
 
 #+END_SRC
+
+** Completion
+#+begin_src emacs-lisp
+  (use-package vertico
+    :ensure t
+    :config (vertico-mode 1)
+    :custom (vertico-cycle t))
+
+  (use-package consult
+    :ensure t)
+
+  (use-package orderless
+    :ensure t
+    :custom 
+    (completion-styles '(orderless))
+    (completion-category-overrides '((file (styles . (partial-completion)))))
+    (setq completion-category-defaults nil))
+
+
+  (use-package marginalia
+    :ensure t
+    :config 
+    (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+    (marginalia-mode 1))
+
+  (use-package embark
+    :ensure t)
+
+
+#+end_src
 
 ** Helpful
 This package gives richer help information, and makes interrogating emacs more fruitful.
@@ -2050,7 +1812,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
     :ensure t
-    :diminish paredit-mode
+    ;; :diminish paredit-mode
     :config
     (progn
       (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
@@ -2298,7 +2060,258 @@ Integrates with IPython., using elpy jedi, and virtualenvwrapper.
   :ensure t)
 #+END_SRC
 
+* Highlight line containing the point
 
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+
+  ;; (defadvice hl-line-mode (after
+  ;;                          dino-advise-hl-line-mode
+  ;;                          activate compile)
+  ;;   (set-face-attribute 'hl-line nil
+  ;;                       :inherit nil
+  ;;                       :background (face-background 'highlight))
+  ;;   (set-face-background hl-line-face "1f1f1f"))
+#+END_SRC
+* Rainbow
+   
+Mostly useful if you are into web development or game development.
+Every time emacs encounters a hexadecimal code that resembles a color,
+it will automatically highlight it in the appropriate color. This is a
+lot cooler than you may think.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :diminish rainbow-mode
+    ;; apply this mode to all programming modes.
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-mode))
+#+END_SRC
+* Modeline
+  
+The modeline is the heart of emacs, it offers information at all
+times, it's persistent and verbose enough to gain a full understanding
+of modes and states you are in.
+
+One modeline-related setting that is missing and is instead placed at
+the bottom is =diminish=.
+
+** All the icons!
+   
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
+#+END_SRC
+   
+** Spaceline!
+   I may not use spacemacs, since I do not like evil-mode and find
+   spacemacs incredibly bloated and slow, however it would be stupid not
+   to acknowledge the best parts about it, the theme and their modified
+   powerline setup.
+
+   This enables spaceline, it looks better and works very well with my
+   theme of choice.
+
+   #+BEGIN_SRC emacs-lisp :tangle no
+     ;; (when window-system
+     ;;     (progn
+     ;;       (use-package spaceline
+     ;;         :ensure t
+     ;;         :config
+     ;;         ;; (mis)using use-package here to put config in an envelope.
+     ;;         (use-package spaceline-config
+     ;;           :config
+     ;;           (setq spaceline-buffer-encoding-abbrev-p t)
+     ;;           (setq spaceline-line-column-p t)
+     ;;           (setq spaceline-line-p t)
+
+     ;;           (spaceline-toggle-flycheck-info-off)
+     ;;           (spaceline-toggle-flycheck-error-off)
+     ;;           (spaceline-toggle-flycheck-warning-off)
+     ;;           (spaceline-toggle-version-control-on)
+
+     ;;           (spaceline-spacemacs-theme)))
+
+     ;;       (use-package spaceline-all-the-icons
+     ;;         :ensure t
+     ;;         :after spaceline
+     ;;         :config
+     ;;         (spaceline-all-the-icons-theme))))
+   #+END_SRC
+   
+** Telephone Line
+#+begin_src emacs-lisp :tangle no
+
+  ;; (use-package telephone-line
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setf telephone-line-primary-left-separator 'telephone-line-cubed-left
+  ;;         telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+  ;;         telephone-line-primary-right-separator 'telephone-line-cubed-right
+  ;;         telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+  ;;   (setf telephone-line-height 24
+  ;;         telephone-line-evil-use-short-tag t)
+  ;;   ;; actually use it.
+  ;;   (telephone-line-mode 1))
+
+#+end_src
+
+** No separator!
+
+ #+BEGIN_SRC emacs-lisp
+ (setq powerline-default-separator nil)
+ #+END_SRC
+
+** Cursor position
+
+   Show the current line and column for your cursor. We are not going to
+have =relative-linum-mode= in every major mode, so this is useful.
+
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+  (display-time-mode 1)
+#+END_SRC
+
+* Theme
+** Autothemer
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; (use-package autothemer
+  ;;   :ensure t)
+#+END_SRC
+
+** Emacs' startup screen is naf
+
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
+
+** Colours On Terminal
+   custom colour themes generally enhance my experience of writing
+   inside emacs, but when that theme is applied to an instance running
+   inside a terminal, the effect is really just terrible. This mode
+   kind of approximates the effect of a graphical emacs frame, in a
+   text console.
+   
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme-approximate
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+    (autoload 'color-theme-approximate-on "color-theme-approximate")
+    (color-theme-approximate-on)))
+#+END_SRC
+
+** Cursor tomfoolery
+   A fun hack that is in practice unusable.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+
+  ;; if this is set here, it is overwritten by the colour theme.
+  ;; (set-cursor-color "yellow")
+
+  ;; (when (display-graphic-p) 
+  ;;   (progn
+  ;;     (defvar blink-cursor-colors (list
+  ;;                                  "dark slate blue"
+  ;;                                  "medium slate blue"
+  ;;                                  "light slate blue"
+  ;;                                  "steel blue"
+  ;;                                  "royal blue"
+  ;;                                  "light blue"
+  ;;                                  "cyan"
+  ;;                                  "cyan1"
+  ;;                                  "cyan2"
+  ;;                                  "cyan3"
+  ;;                                  "cyan4"
+  ;;                                  "spring green"
+  ;;                                  "yellow"
+  ;;                                  "orange"
+  ;;                                  "red"
+  ;;                                  "hot pink")
+  ;;       "On each blink the cursor will cycle to the next color in this list.")
+    
+  ;;     (setq blink-cursor-count 0)
+  ;;     (setq blink-cursor-interval 0.3)
+  ;;     (defun blink-cursor-timer-function ()
+  ;;       "Zarza wrote this cyberpunk variant of timer `blink-cursor-timer'. 
+  ;;      Warning: overwrites original version in `frame.el'.
+
+  ;;      This one changes the cursor color on each blink. Define colors in `blink-cursor-colors'."
+
+  ;;       (when (not (internal-show-cursor-p))
+  ;;         (when (>= blink-cursor-count (length blink-cursor-colors))
+  ;;           (setq blink-cursor-count 0))
+  ;;         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
+  ;;         (setq blink-cursor-count (+ 1 blink-cursor-count)))
+  ;;       (internal-show-cursor nil (not (internal-show-cursor-p))))))
+
+#+END_SRC
+
+** DeepSky Theme
+
+   Load the appropriate theme, and a utility for arbitrarily loading
+   others.
+
+#+BEGIN_SRC emacs-lisp
+
+  (progn
+    ;; on the terminal, the theme situation needs more attention.
+    (message "Loading DeepSky theme... ")
+    (load-theme 'deepsky-modus-fade t)
+    (message "Configuring mode-line appearance...")
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (message "Setting cursor colour...")
+    (set-cursor-color "yellow"))
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun switch-theme (theme)
+    "Disables any currently active themes and loads THEME."
+    ;; This interactive call is taken from `load-theme'
+    (interactive
+     (list
+      (intern (completing-read "Load custom theme: "
+                               (mapc 'symbol-name
+                                     (custom-available-themes))))))
+    (let ((enabled-themes custom-enabled-themes))
+      (mapc #'disable-theme custom-enabled-themes)
+      (load-theme theme t)))
+
+  (defun disable-active-themes ()
+    "Disables any currently active themes listed in `custom-enabled-themes'."
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes))
+
+  (bind-key "s-<f12>" 'switch-theme)
+  (bind-key "s-<f11>" 'disable-active-themes)
+#+END_SRC
+
+* Font
+And here's how we tell Emacs which font we want.
+
+#+BEGIN_SRC emacs-lisp
+
+  (if window-system
+      (progn
+        (set-face-attribute 'default nil :font "Envy Code R" :height 120)
+        (set-face-attribute 'fixed-pitch nil :font "Envy Code R-11")
+        ;; (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+        (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'regular)))
+
+#+END_SRC
 
 * Misc
 ** Display Time

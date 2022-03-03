@@ -33,15 +33,6 @@
 ;; mode installation here, to test whether it is a load-time phasing
 ;; issue. (it was, leave this as is.)
 
-;; I put 'org-spiffs in a subdir of emacs.d, which needs finding:
-(add-to-list 'load-path (expand-file-name "fade/" user-emacs-directory))
-(require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
-
-(defun efs/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (visual-line-mode 1))
-
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :ensure org
@@ -59,6 +50,15 @@
          (setq org-support-shift-select 'always)
          ;; rename org-roam buffers to their enclosed #+TITLE
          (add-hook 'org-mode-hook 'fade/org-mode-rename-buffer)))
+
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
+;; I put 'org-spiffs in a subdir of emacs.d, which needs finding:
+(add-to-list 'load-path (expand-file-name "fade/" user-emacs-directory))
+(require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
 
 ;;; Themes need finding.
 (add-to-list 'custom-theme-load-path
