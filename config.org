@@ -1296,9 +1296,13 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :init
     (savehist-mode))
 
+  ;; completion selection (narrowing) enhancements.
   (use-package consult
-    :ensure t)
+    :ensure t
+    :bind
+    ("s-s o" . consult-outline))
 
+  ;; this is a completion style, which defines how we match against input.
   (use-package orderless
     :ensure t
     :custom 
@@ -1306,7 +1310,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     (completion-category-overrides '((file (styles . (partial-completion)))))
     (setq completion-category-defaults nil))
 
-
+  ;; metadata around completion selections
   (use-package marginalia
     :ensure t
     :custom 
@@ -1314,9 +1318,11 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :init
     (marginalia-mode 1))
 
+  ;; actions within completion selections
   (use-package embark
-    :ensure t)
-
+    :ensure t
+    ;; this bind might clobber the sly mrepl shortcut command.
+    :bind ("C-," . embark-act))
 
 #+end_src
 
