@@ -1286,8 +1286,15 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 #+begin_src emacs-lisp
   (use-package vertico
     :ensure t
-    :config (vertico-mode 1)
-    :custom (vertico-cycle t))
+    :init
+    (vertico-mode 1)
+    :custom
+    (vertico-cycle t))
+
+  ;; this will put most recent items at the top of any given vertico selection.
+  (use-package savehist
+    :init
+    (savehist-mode))
 
   (use-package consult
     :ensure t)
@@ -1302,8 +1309,9 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 
   (use-package marginalia
     :ensure t
-    :config 
+    :custom 
     (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+    :init
     (marginalia-mode 1))
 
   (use-package embark
@@ -1733,7 +1741,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
 
 ** Common Lisp
 *** SLY
-    Jury is in. Sly is superior to Slime.
+    The jury has returned. Sly is superior to Slime.
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
@@ -1783,25 +1791,6 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
   (use-package sly-quicklisp
     :ensure t
     :after sly)
-
-  ;; sly internally integrates company mode, so none of the following are necessary any more.
-
-  ;; (use-package ac-sly
-  ;;   :ensure t
-  ;;   :after sly)
-
-  ;; (use-package ac-helm
-  ;;   :ensure t
-  ;;   :after sly)
-
-  ;; (use-package helm-sly
-  ;;   :ensure t
-  ;;   :after sly
-  ;;   :config
-  ;;   (progn
-  ;;     (global-helm-sly-mode t)
-  ;;     (add-hook 'sly-mrepl-hook #'helm-sly-disable-internal-completion)
-  ;;     (setq helm-completion-in-region-fuzzy-match t)))
 #+END_SRC
 
 #+RESULTS:
