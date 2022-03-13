@@ -38,3 +38,4 @@ assets/
 /elpy/
 /ac-comphist.dat
 /*.sqlite
+*.~undo-tree~

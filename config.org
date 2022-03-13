@@ -1222,6 +1222,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 ** Completion
 
 #+begin_src emacs-lisp
+  ;; vertico is the base for our Helm exodus.
   (use-package vertico
     :ensure t
     :init
@@ -1232,6 +1233,15 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     (vertico-cycle t)
     :config
     (vertico-mode))
+
+  (use-package vertico-directory
+    :after vertico
+    :bind (:map vertico-map
+                ("RET" . vertico-directory-enter)
+                ("DEL" . vertico-directory-delete-char)
+                ("M-DEL" . vertico-directory-delete-word))
+    ;; tidy shadowed file names
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
   ;; this will put most recent items at the top of any given vertico selection.
   (use-package savehist
