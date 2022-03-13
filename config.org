@@ -682,9 +682,6 @@ Hail Hydra!
 
 #+end_src
 
-#+RESULTS:
-: hydra-zoom/body
-
 * Projectile
 Projectile is an awesome project manager, mostly because it recognizes
 directories with a =.git= directory as projects and helps you manage
@@ -707,13 +704,16 @@ This makes sure that everything can be a project.
 
 * Perspectives
 My emacs session tends to build up an enormous buffer list over time,
-which is (barely) manageable with the use of Helm. What I'd like to do
-is associate specific groups of buffers with a 'workspace' in emacs,
-so that when I switch to that workspace, only the associated buffers
+which is (barely) manageable with the use of Helm. I have stopped
+using Helm, so this might still be a good idea. What I'd like to do is
+associate specific groups of buffers with a 'workspace' in emacs, so
+that when I switch to that workspace, only the associated buffers
 appear in the buffer list. Apparently [[https://github.com/nex3/perspective-el][perspective.el]] can provide this
-functionality. Including here on a provisional basis.
+functionality. Including here on a provisional basis. In practice I
+have not made this a part of my workflow, yet, so I'm not going to
+generate the package clause when this file is tangled.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package perspective
     :ensure t
     ;; :bind
@@ -814,12 +814,9 @@ interstitial space where work goes to die.
 
 ** swiper and why is the default search so lame
    
-   Searching! the default search is very meh. In emacs, you mostly use
-search to get around your buffer, much like with avy, but sometimes it
-doesn't hurt to search for entire words or modes, swiper makes sure
-this is more efficient.
+Also revisiting this in our retooling around orderless, consult, marginalia, and embark.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package swiper
     :ensure t
     :bind ("C-s" . 'swiper))
@@ -945,7 +942,7 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
 | all-the-icons-dired-mode | auto-revert-mode |
 
 * Mail with mu4e
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   ;; (use-package mu4e
   ;;   :ensure nil
   ;;   :defer 120
@@ -1027,33 +1024,15 @@ your cursor will be briefly highlighted now.
 we cannot abide. currently no time to chase this down.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package beacon
-  ;;   :ensure t
-  ;;   :config
-  ;;   (beacon-mode 0))
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 0))
 #+END_SRC
-
-
 
 * ELPA packages
 
 These are the packages that are neither built into Emacs nor required to achieve the base configuration state. feel free to add or remove as many or as few of these as you want; they generally reflect my own biases and developmental requirements, so it is unlikely that this list will be perfectly harmonic with your own needs.
-
-** Ace Jump Mode
-
-Ace is generally deprecated for Avy, now.
-
-A quick way to jump around text in buffers.
-
-[[http://emacsrocks.com/e10.html][See Emacs Rocks Episode 10 for a screencast.]]
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package ace-jump-mode
-  ;;   :ensure t
-  ;;   :diminish ace-jump-mode
-  ;;   :commands ace-jump-mode
-  ;;   :bind ("C-s-." . ace-jump-mode))
-#+END_SRC
 
 ** Avy - a better Ace
 
@@ -1064,9 +1043,13 @@ A quick way to jump around text in buffers.
     :ensure t
     :config (avy-setup-default)
     :bind
-    ;; ("C-s-." . avy-goto-word-or-subword-1) <-- interferes with swiper.
-    ("M-s s" . avy-goto-char))
+    ("C-s-." . avy-goto-word-or-subword-1) ; <-- interferes with swiper.
+    ;; ("M-s s" . avy-goto-char)
+    )
 #+end_src
+
+#+RESULTS:
+: avy-goto-word-or-subword-1
 
 ** Ace Window
 
@@ -1122,52 +1105,7 @@ This package displays function signatures in the mode line.
   :ensure t)
 #+END_SRC
 
-** Company
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure nil
-    :diminish company-mode
-    ;; :bind (:map company-mode-map
-    ;;             (("C-n" . company-select-next)
-    ;;              ("C-p" . company-select-previous)
-    ;;              ("C-d" . company-show-doc-buffer)
-    ;;              ("M-." . company-show-location)))
-    :config
-    (progn
-      ;; less than this and it disrupts typing when you aren't interested in completion.
-      (setq company-idle-delay 0.9)
-      (setq company-minimize-prefix-length 3)
-      ;; company completion everywhere.
-      (add-hook 'after-init-hook 'global-company-mode)
-      (require 'color)
-
-      (let ((bg (face-attribute 'default :background)))
-        (custom-set-faces
-         `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-         `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-         `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-         `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-         `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
-
-      (with-eval-after-load 'company
-        (define-key company-active-map (kbd "M-n") nil)
-        (define-key company-active-map (kbd "M-p") nil)
-        (define-key company-active-map (kbd "C-n") #'company-select-next)
-        (define-key company-active-map (kbd "C-p") #'company-select-previous)
-        (define-key company-active-map (kbd "SPC") #'company-abort))))
-
-  ;; (use-package company-box
-  ;;   :after company)
-
-  (use-package company-quickhelp
-    :after (company)
-    :hook (company-mode . company-quickhelp-mode)
-    :config
-    (setq company-quickhelp-delay 1.0)
-    :ensure t)
-
-#+END_SRC
-
+*
 ** Crux
 Collection of Ridiculously Useful eXtensions
 
@@ -1289,7 +1227,11 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :init
     (vertico-mode 1)
     :custom
-    (vertico-cycle t))
+    (vertico-count 13)
+    (vertico-resize t)
+    (vertico-cycle t)
+    :config
+    (vertico-mode))
 
   ;; this will put most recent items at the top of any given vertico selection.
   (use-package savehist
@@ -1300,12 +1242,13 @@ Make low friction pastes to 0x0, forex sharing code to IRC
   (use-package consult
     :ensure t
     :bind
-    ("s-s o" . consult-outline))
+    ("s-s o" . consult-outline)
+    ("C-s" . consult-line))
 
   ;; this is a completion style, which defines how we match against input.
   (use-package orderless
     :ensure t
-    :custom 
+    :custom
     (completion-styles '(orderless))
     (completion-category-overrides '((file (styles . (partial-completion)))))
     (setq completion-category-defaults nil))
@@ -1322,9 +1265,56 @@ Make low friction pastes to 0x0, forex sharing code to IRC
   (use-package embark
     :ensure t
     ;; this bind might clobber the sly mrepl shortcut command.
-    :bind ("C-," . embark-act))
+    :bind ("C-." . embark-act))
 
 #+end_src
+
+*** Company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure nil
+    :diminish company-mode
+    ;; :bind (:map company-mode-map
+    ;;             (("C-n" . company-select-next)
+    ;;              ("C-p" . company-select-previous)
+    ;;              ("C-d" . company-show-doc-buffer)
+    ;;              ("M-." . company-show-location)))
+    :config
+    (progn
+      ;; less than this and it disrupts typing when you aren't interested in completion.
+      (setq company-idle-delay 0.9)
+      (setq company-minimize-prefix-length 3)
+      ;; company completion everywhere.
+      (add-hook 'after-init-hook 'global-company-mode)
+      (require 'color)
+
+      (let ((bg (face-attribute 'default :background)))
+        (custom-set-faces
+         `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+         `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+         `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+         `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+         `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+      (with-eval-after-load 'company
+        (define-key company-active-map (kbd "M-n") nil)
+        (define-key company-active-map (kbd "M-p") nil)
+        (define-key company-active-map (kbd "C-n") #'company-select-next)
+        (define-key company-active-map (kbd "C-p") #'company-select-previous)
+        (define-key company-active-map (kbd "SPC") #'company-abort))))
+
+  ;; (use-package company-box
+  ;;   :after company)
+
+  (use-package company-quickhelp
+    :after (company)
+    :hook (company-mode . company-quickhelp-mode)
+    :config
+    (setq company-quickhelp-delay 1.0)
+    :ensure t)
+
+#+END_SRC
+
 
 ** Helpful
 This package gives richer help information, and makes interrogating emacs more fruitful.
@@ -1772,10 +1762,8 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
             common-lisp-hyperspec "~/SourceCode/lisp/HyperSpec"))
 
     :config
-    ;; (progn
-    ;;   (require 'sly-autoloads)
-    ;;   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
-    )
+    (progn
+      (require 'sly-autoloads)))
 
   (use-package sly-asdf
     ;; :load-path "~/SourceCode/lisp/sly-asdf"
