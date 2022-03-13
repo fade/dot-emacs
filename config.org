@@ -1224,7 +1224,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 #+begin_src emacs-lisp
   ;; vertico is the base for our Helm exodus.
   (use-package vertico
-    :ensure t
+    :straight t
     :init
     (vertico-mode 1)
     :custom
@@ -1234,30 +1234,32 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :config
     (vertico-mode))
 
-  (use-package vertico-directory
-    :after vertico
-    :bind (:map vertico-map
-                ("RET" . vertico-directory-enter)
-                ("DEL" . vertico-directory-delete-char)
-                ("M-DEL" . vertico-directory-delete-word))
-    ;; tidy shadowed file names
-    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+  ;; (use-package vertico-directory
+  ;;   :straight t
+  ;;   :after vertico
+  ;;   :bind (:map vertico-map
+  ;;               ("RET" . vertico-directory-enter)
+  ;;               ("DEL" . vertico-directory-delete-char)
+  ;;               ("M-DEL" . vertico-directory-delete-word))
+  ;;   ;; tidy shadowed file names
+  ;;   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
   ;; this will put most recent items at the top of any given vertico selection.
   (use-package savehist
+    :straight t
     :init
     (savehist-mode))
 
   ;; completion selection (narrowing) enhancements.
   (use-package consult
-    :ensure t
+    :straight t
     :bind
     ("s-s o" . consult-outline)
     ("C-s" . consult-line))
 
   ;; this is a completion style, which defines how we match against input.
   (use-package orderless
-    :ensure t
+    :straight t
     :custom
     (completion-styles '(orderless))
     (completion-category-overrides '((file (styles . (partial-completion)))))
@@ -1265,7 +1267,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 
   ;; metadata around completion selections
   (use-package marginalia
-    :ensure t
+    :straight t
     :custom 
     (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
@@ -1273,7 +1275,7 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 
   ;; actions within completion selections
   (use-package embark
-    :ensure t
+    :straight t
     ;; this bind might clobber the sly mrepl shortcut command.
     :bind ("C-." . embark-act))
 
