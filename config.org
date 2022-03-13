@@ -1234,16 +1234,6 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :config
     (vertico-mode))
 
-  ;; (use-package vertico-directory
-  ;;   :straight t
-  ;;   :after vertico
-  ;;   :bind (:map vertico-map
-  ;;               ("RET" . vertico-directory-enter)
-  ;;               ("DEL" . vertico-directory-delete-char)
-  ;;               ("M-DEL" . vertico-directory-delete-word))
-  ;;   ;; tidy shadowed file names
-  ;;   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
-
   ;; this will put most recent items at the top of any given vertico selection.
   (use-package savehist
     :straight t
@@ -1753,7 +1743,8 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
-    :load-path "~/SourceCode/lisp/sly"
+    ;; :load-path "~/SourceCode/lisp/sly"
+    :straight t
     :defer t
     :commands sly
     :bind ("C-c M-o" . sly-mrepl-clear-repl)
@@ -1779,23 +1770,23 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
 
   (use-package sly-asdf
     ;; :load-path "~/SourceCode/lisp/sly-asdf"
-    :ensure t
+    :straight t
     :after sly)
 
   (use-package sly-macrostep
-    :ensure t
+    :straight t
     :after sly)
 
   (use-package sly-named-readtables
-    :ensure t
+    :straight t
     :after sly)
 
   (use-package sly-repl-ansi-color
-    :ensure t
+    :straight t
     :after sly)
 
   (use-package sly-quicklisp
-    :ensure t
+    :straight t
     :after sly)
 #+END_SRC
 

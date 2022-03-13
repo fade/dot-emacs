@@ -39,3 +39,4 @@ assets/
 /ac-comphist.dat
 /*.sqlite
 *.~undo-tree~
+/straight/

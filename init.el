@@ -46,6 +46,9 @@
 (require 'bind-key)
 (setq use-package-verbose t)
 
+;; sue the straight sources for use-pacakge by default
+;; (use-package straight
+;;   :custom (straight-use-package-by-default t))
 
 ;; sometimes when I visit an org file, org-mode does not start. moving
 ;; mode installation here, to test whether it is a load-time phasing
