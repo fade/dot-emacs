@@ -106,7 +106,7 @@ The following function for ~occur-dwim~ is taken from [[https://github.com/abo-a
 [[http://oremacs.com/2015/01/26/occur-dwim/][his blog post at (or emacs irrelevant)]]. It takes the current region or
 the symbol at point as the default value for occur.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; in practice, I don't use this much. The keybinding has been given
   ;; to another mode.
   
@@ -129,24 +129,26 @@ as =^L= in Emacs. [[https://ericjmritz.wordpress.com/2015/08/29/using-page-break
 Page-Breaks in GNU Emacs" by Eric J. M. Ritz.]]
 
 #+BEGIN_SRC emacs-lisp
-;; (use-package page-break-lines
-;;   :ensure t)
+  (use-package page-break-lines
+    :straight t)
 #+END_SRC
+
+** Mark multiple files in dired and act upon them.
 
 In dired mode, it is useful to mark a bunch of files and then open
 them all in separate buffers. Function implementation taken from Stack
 Overflow, here: [[https://stackoverflow.com/questions/1110118/in-emacs-dired-how-to-find-visit-multiple-files][In Emacs dired, how to find/visit multiple files?]]
 
 #+BEGIN_SRC emacs-lisp
-(eval-after-load "dired"
-  '(progn
-     (define-key dired-mode-map "F" 'my-dired-find-file)
-     (defun my-dired-find-file (&optional arg)
-       "Open each of the marked files, or the file under the
-point, or when prefix arg, the next N files. "
-       (interactive "P")
-       (let* ((fn-list (dired-get-marked-files nil arg)))
-         (mapc 'find-file fn-list)))))
+  (eval-after-load "dired"
+    '(progn
+       (define-key dired-mode-map "F" 'my-dired-find-file)
+       (defun my-dired-find-file (&optional arg)
+         "Open each of the marked files, or the file under the
+          point, or when prefix arg, the next N files. "
+         (interactive "P")
+         (let* ((fn-list (dired-get-marked-files nil arg)))
+           (mapc 'find-file fn-list)))))
 #+END_SRC
 
 * Mac customizations
