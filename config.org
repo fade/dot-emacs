@@ -981,8 +981,8 @@ the way. This can best be achieved using a number of small extensions.
 While on their own they might not be particularly impressive. Together
 they create a nice environment for you to work in.
 
-** Visiting the configuration
-Quickly edit =~/.emacs.d/config.org=
+** visiting the configuration
+Quickly edit =~/.emacs.d/config.org=. The Emacs way being the Emacs way, this specific keybinding turns out to be one of the most useful quality of life changes in this config, which is odd, considering the triviality of the feature.
 
 #+BEGIN_SRC emacs-lisp
   (defun config-visit ()
@@ -2089,7 +2089,7 @@ the bottom is =diminish=.
    
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
-    :ensure t)
+    :straight t)
 #+END_SRC
    
 ** Spaceline!
