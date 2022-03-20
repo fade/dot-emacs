@@ -1038,16 +1038,12 @@ These are the packages that are neither built into Emacs nor required to achieve
 
 #+begin_src emacs-lisp
   (use-package avy
-    :ensure t
+    :straight t
     :config (avy-setup-default)
     :bind
-    ("C-s-." . avy-goto-word-or-subword-1) ; <-- interferes with swiper.
-    ;; ("M-s s" . avy-goto-char)
-    )
+    ;; ("M-s-." . avy-goto-word-or-subword-1)
+    ("M-s s" . avy-goto-char))
 #+end_src
-
-#+RESULTS:
-: avy-goto-word-or-subword-1
 
 ** Ace Window
 
@@ -1082,6 +1078,7 @@ buffer navigation, but applies it to windows. The default keys are
   :ensure t
   :defer t)
 #+END_SRC
+
 ** C-Eldoc
    :PROPERTIES:
    :GitHub:   https://github.com/mooz/c-eldoc
