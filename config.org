@@ -1554,10 +1554,12 @@ around so much.
 ** Undo Tree
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
-    :ensure t
+    :straight t
     :diminish undo-tree-mode
     :config
-    (global-undo-tree-mode))
+    (global-undo-tree-mode)
+    :custom
+    (undo-tree-auto-save-history nil))
 #+END_SRC
 
 ** Visible mode
@@ -1575,7 +1577,7 @@ while still being in org mode.
 #+END_SRC
 
 ** w3m for webby reading
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; (use-package w3m
   ;;   :ensure t
   ;;   :defer t
@@ -1602,15 +1604,19 @@ Emacs starts up, so we can defer loading yasnippet until there's some
 idle time.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-    :ensure t
+    :straight t
     :config
-    (use-package yasnippet-snippets
-      :ensure t)
-    (use-package common-lisp-snippets
-      :ensure t)
     ;; (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
     (yas-reload-all)
     (yas-global-mode))
+
+  (use-package yasnippet-snippets
+      :straight t
+      :after yasnippet)
+
+  (use-package common-lisp-snippets
+      :straight t
+      :after yasnippet)
 #+END_SRC
 
 ** Zoom-frm
@@ -1636,8 +1642,6 @@ This mode is not available in elpa/melpa, so use-package will obviously not work
   ;;   :config
   ;;   (setq frame-zoom-font-difference 10))
 #+END_SRC
-
-
 
 * Computer-specific settings
 
@@ -1674,8 +1678,7 @@ Not using this right now.
 ** Generically useful programming utilities
    #+BEGIN_SRC emacs-lisp
      (use-package yatemplate
-       :defer t
-       :ensure t)   
+       :straight t)   
    #+END_SRC
 ** C/Java
 
@@ -1721,7 +1724,7 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 ** Rust
 #+BEGIN_SRC emacs-lisp
 (use-package rust-mode
-  :ensure t
+  :straight t
   :defer t)
 #+END_SRC
 
@@ -1800,7 +1803,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
-    :ensure t
+    :straight t
     ;; :diminish paredit-mode
     :config
     (progn
