@@ -771,6 +771,7 @@ Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.or
       (bind-key "f" #'eww-lnum-follow eww-mode-map)
       (bind-key "U" #'eww-lnum-universal eww-mode-map))
 
+  (require 'ffap)
   (defun browse-last-url-in-brower ()
     (interactive)
     (save-excursion
