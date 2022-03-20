@@ -1023,9 +1023,9 @@ we cannot abide. currently no time to chase this down.
 
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
-    :ensure t
+    :straight t
     :config
-    (beacon-mode 0))
+    (beacon-mode 1))
 #+END_SRC
 
 * ELPA packages
