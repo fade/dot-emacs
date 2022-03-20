@@ -347,7 +347,7 @@ speed keys in Org mode]].
 This package is useful when you have a lot of data in various org tables in a given document, and you want to drop it into a table that synthesizes various pieces of data from the other tables, with or without additional processing.
 #+begin_src emacs-lisp
   (use-package orgtbl-aggregate
-    :ensure t
+    :straight t
     :after org)
 #+end_src
 
@@ -452,7 +452,7 @@ Set up some global key bindings that integrate with Org Mode features.
 
 (use-package visual-fill-column
   :after org
-  :ensure t
+  :straight t
   :hook (org-mode . efs/org-mode-visual-fill))
 #+END_SRC
 
@@ -461,7 +461,7 @@ Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :ensure t
+    :straight t
     :after org
       :hook (org-mode . org-bullets-mode)
       :custom
@@ -545,7 +545,7 @@ good column number to do that.
 
 #+BEGIN_SRC emacs-lisp
   (use-package doct
-    :ensure t)
+    :straight t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -581,7 +581,7 @@ good column number to do that.
 
 #+begin_src emacs-lisp
   (use-package ob-restclient
-    :ensure t
+    :straight t
     :after org)
 #+end_src
 
@@ -644,7 +644,7 @@ Pandoc converts between a huge number of different file formats.
 (use-package ox-pandoc
   :no-require t
   :defer 10
-  :ensure t)
+  :straight t)
 #+END_SRC
 
 *** LaTeX exporting
@@ -662,7 +662,7 @@ exporting to html sometimes (always?) requires htmlize
 
 #+BEGIN_SRC emacs-lisp
 (use-package htmlize
-  :ensure t)
+  :straight t)
 #+END_SRC
 
 * Hydra
@@ -671,7 +671,7 @@ Hail Hydra!
 
 #+begin_src emacs-lisp
   (use-package hydra
-    :ensure t)
+    :straight t)
 
   (defhydra hydra-zoom (global-map "<f2>")
     "zoom"
@@ -690,7 +690,7 @@ them accordingly.
 This makes sure that everything can be a project.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :ensure t
+    :straight t
     :init
     ;;(projectile-mode 1)
     )
@@ -714,7 +714,7 @@ generate the package clause when this file is tangled.
 
 #+begin_src emacs-lisp :tangle no
   (use-package perspective
-    :ensure t
+    :straight t
     ;; :bind
     ;; ("C-x C-b" . persp-list-buffers)   ; or use a nicer switcher, see below
     :config
