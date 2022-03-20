@@ -391,24 +391,21 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
 
 ** Org Roam
 #+BEGIN_SRC emacs-lisp
-  
+
   (use-package org-roam
-  
-    :ensure t
-  
+    :straight t
     :init
     (setq org-roam-v2-ack t)
-  
     :config
     (setf org-roam-directory (expand-file-name "Roam/" site-org-files))
     (setf org-roam-dailies-directory (expand-file-name "Dailies/" org-roam-directory))
-  
+
     ;; New capture template
     (setq org-roam-dailies-capture-templates
           '(("d" "daily" entry #'org-roam-capture--get-point
              "* %?\n")))
     (org-roam-setup)
-  
+
     :bind
     (("C-c n l" . org-roam-buffer-toggle)
      ("C-c n f" . org-roam-node-find)
@@ -420,15 +417,15 @@ Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a
       ("C-c n t" . org-roam-tag-add)
       ("C-c n a" . org-roam-alias-add)
       ("C-c n l" . org-roam-buffer-toggle))))
-  
+
   (use-package  org-roam-bibtex
-    :ensure t
+    :straight t
     :after org-roam)
-  
+
   ;; (use-package org-roam-server
   ;;   :ensure t
   ;;   :after org-roam)
-  
+
 #+END_SRC
 
 #+RESULTS:
@@ -1656,7 +1653,7 @@ hostname for the computer without any "domain information," such as
 the ".local" suffix.
 
 Not using this right now.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   ;; (require 'subr-x) ;; #'string-trim
   ;; (defvar fade/user-settings-dir nil
   ;;   "The directory with user-specific Emacs settings for this
