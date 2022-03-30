@@ -777,7 +777,8 @@ Taken, with thanks, from [[https://github.com/dakrone/eos/blob/master/eos-web.or
     (save-excursion
       (ffap-next-url t t)))
 
-  (global-set-key (kbd "C-c u") 'browse-last-url-in-brower)
+  ;; (global-set-key (kbd "C-c u") 'browse-last-url-in-brower)
+
 #+END_SRC
 
 * Dashboard
@@ -1039,7 +1040,11 @@ These are the packages that are neither built into Emacs nor required to achieve
 #+begin_src emacs-lisp
   (use-package avy
     :straight t
-    :config (avy-setup-default)
+    :config 
+    (avy-setup-default)
+    (set-face-attribute 'avy-lead-face-0 nil :background "blue" :foreground "yellow")
+    (set-face-attribute 'avy-lead-face-1 nil :background "purple4" :foreground "goldenrod")
+    (set-face-attribute 'avy-lead-face-1 nil :background "SlateBlue4" :foreground "light goldenrod")
     :bind
     ;; ("M-s-." . avy-goto-word-or-subword-1)
     ("M-s s" . avy-goto-char))
@@ -1100,13 +1105,12 @@ This package displays function signatures in the mode line.
   :ensure t)
 #+END_SRC
 
-*
 ** Crux
 Collection of Ridiculously Useful eXtensions
 
 #+BEGIN_SRC emacs-lisp
 (use-package crux
-  :ensure t
+  :straight t
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
 #+END_SRC
@@ -1363,14 +1367,14 @@ access magit.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
+    :straight t
     :defer t
     :bind ("C-c g" . magit-status)
     :config
     (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
-  
+
   (use-package forge
-    :ensure t
+    :straight t
     :defer t
     :after magit
     :config
@@ -1814,6 +1818,15 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
       (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)))
 #+END_SRC
 
+
+** Shen
+#+begin_src emacs-lisp
+  (use-package shen-mode
+    :straight t
+    :ensure t)
+#+end_src
+
+
 ** Hashicorp Configuration Language
 #+BEGIN_SRC emacs-lisp
   (use-package hcl-mode
@@ -1966,7 +1979,7 @@ Integrates with IPython., using elpy jedi, and virtualenvwrapper.
     (setq jedi:complete-on-dot t))
 
   (use-package company-jedi
-    :after jedi
+    :ensure jedi
     :ensure t
     :config
     (add-to-list 'company-backends 'company-jedi))
@@ -1985,7 +1998,6 @@ Integrates with IPython., using elpy jedi, and virtualenvwrapper.
     :config
     (setq venv-location "~/.virtualenvs"))
 #+END_SRC
-
 
 ** Racket
    Not using Racket much any more. When I do, drracket is sufficient.
@@ -2154,8 +2166,8 @@ the bottom is =diminish=.
 have =relative-linum-mode= in every major mode, so this is useful.
 
 #+BEGIN_SRC emacs-lisp
-  (setq line-number-mode t)
-  (setq column-number-mode t)
+  ;; (setq line-number-mode t)
+  ;; (setq column-number-mode t)
 #+END_SRC
 
 ** Clock
