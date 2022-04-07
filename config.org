@@ -1244,7 +1244,10 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     :straight t
     :bind
     ("s-s o" . consult-outline)
-    ("C-s" . consult-line))
+    ("C-s" . consult-line)
+    ("s-s s" . consult-ripgrep))
+
+
 
   ;; this is a completion style, which defines how we match against input.
   (use-package orderless
