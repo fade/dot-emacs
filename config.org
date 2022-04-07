@@ -1099,10 +1099,10 @@ This package displays function signatures in the mode line.
 
 ** Clojure
 
-#+BEGIN_SRC emacs-lisp
-(use-package clojure-mode
-  :defer t
-  :ensure t)
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; (use-package clojure-mode
+  ;;   :defer t
+  ;;   :ensure t)
 #+END_SRC
 
 ** Crux
@@ -1814,8 +1814,9 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
       ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
       (add-hook 'sly-mrepl-mode-hook        #'enable-paredit-mode)
       ;; (add-hook 'slime-mode-hook            #'enable-paredit-mode)
-      (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
-      (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)))
+      ;; (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
+      ;; (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
+      ))
 #+END_SRC
 
 
