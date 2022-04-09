@@ -465,7 +465,6 @@ Makes it all look a bit nicer, I hate looking at asterisks.  Also, see =org-mode
     :after org
       :hook (org-mode . org-bullets-mode)
       :custom
-    
       (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+END_SRC
 
@@ -636,7 +635,6 @@ consistent as it doesn't pad source blocks with leading spaces.
 #+END_SRC
 
 ** Org exporting
-
 *** Pandoc exporter
 Pandoc converts between a huge number of different file formats. 
 
@@ -858,7 +856,7 @@ most relevantly, sparql is used to define queries to the WikiData knowledge data
 
 #+begin_src emacs-lisp
   (use-package sparql-mode
-    :ensure t
+    :straight t
     ;; :load-path "~/SourceCode/lisp/emacs_stuff/sparql-mode"
     )
 #+end_src
