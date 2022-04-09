@@ -640,9 +640,21 @@ between foreground and background is >= 7:1)."
  '(skewer-error-face ((((class color) (min-colors 89)) :foreground "#ff8059" :underline t)))
 
 ;;; SLY REPL colors.
+ '(sly-error-face ((t (:underline "red"))))
+ '(sly-highlight-edits-face ((t (:background "dimgray"))))
+ '(sly-highlight-face ((t (:foreground "yellow" :background "SteelBlue" :underline nil))))
+ '(sly-inspector-action-face ((t (:bold t :weight bold :foreground "#8b2252"))))
+ '(sly-inspector-label-face ((t (:foreground "#00ff00"))))
+ '(sly-inspector-topline-face ((t (nil))))
+ '(sly-inspector-type-face ((t (nil))))
+ '(sly-inspector-value-face ((t (:foreground "#ffaa00"))))
+ '(sly-note-face ((t (:underline "light goldenrod"))))
+ '(sly-reader-conditional-face ((t (:foreground "#00ffff"))))
+ '(sly-mrepl-input-face ((t (:bold t :weight bold))))
+ '(sly-mrepl-inputed-output-face ((t (:foreground "springgreen")))) 
  '(sly-mrepl-prompt-face ((((class color) (min-colors 89)) :foreground "#Ffa500")))
  '(sly-mrepl-output-face ((((class color) (min-colors 89)) :forground "SteelBlue")))
-
+ '(sly-style-warning-face ((t (:underline "gold"))))
  '(sly-warning-face ((((class color) (min-colors 89)) :forground "coral")))
 
 ;;; SLIME stuff
