@@ -2062,15 +2062,15 @@ Integrates with IPython., using elpy jedi, and virtualenvwrapper.
 * Highlight line containing the point
 
 #+BEGIN_SRC emacs-lisp :tangle no
-  ;; (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+  (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
 
-  ;; (defadvice hl-line-mode (after
-  ;;                          dino-advise-hl-line-mode
-  ;;                          activate compile)
-  ;;   (set-face-attribute 'hl-line nil
-  ;;                       :inherit nil
-  ;;                       :background (face-background 'highlight))
-  ;;   (set-face-background hl-line-face "1f1f1f"))
+  (defadvice hl-line-mode (after
+                           dino-advise-hl-line-mode
+                           activate compile)
+    (set-face-attribute 'hl-line nil
+                        :inherit nil
+                        :background (face-background 'highlight))
+    (set-face-background hl-line-face "#191970"))
 #+END_SRC
 * Rainbow
    
