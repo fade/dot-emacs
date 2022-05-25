@@ -4,5 +4,8 @@
 ;; we have a lot of RAM. Let's use it.
 ;; (setq gc-cons-threshold 400000000)
 
+;; debugging various modes in emacs requires some special features.
+;; (setf debug-on-error t)
+
 ;; moving over to straight, because we're tracking emacs early release test tags.
 (setq package-enable-at-startup nil)

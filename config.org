@@ -32,9 +32,9 @@ Obviously, you'll want to change this to match your personal credentials.
   #+BEGIN_SRC emacs-lisp
     (use-package which-key
       :ensure t
-      :init (which-key-mode)
       :diminish which-key-mode
       :config
+      (which-key-mode)
       (setq which-key-idle-delay 1))
   #+END_SRC
 
@@ -663,6 +663,7 @@ exporting to html sometimes (always?) requires htmlize
   :straight t)
 #+END_SRC
 
+
 * Hydra
 
 Hail Hydra!
@@ -1244,8 +1245,6 @@ Make low friction pastes to 0x0, forex sharing code to IRC
     ("s-s o" . consult-outline)
     ("C-s" . consult-line)
     ("s-s s" . consult-ripgrep))
-
-
 
   ;; this is a completion style, which defines how we match against input.
   (use-package orderless
