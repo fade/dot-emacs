@@ -797,6 +797,11 @@ change the numbers to suit your liking, I find 5 to be enough.
 #+END_SRC
 
 * The terminal
+** VTerm works for ncurses programs
+#+begin_src emacs-lisp
+  (use-package vterm
+    :straight t)
+#+end_src
 ** Default shell should be zsh
 Don't ask me what shell I want to use. In general this is a solved problem..
 #+BEGIN_SRC emacs-lisp
