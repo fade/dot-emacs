@@ -275,8 +275,6 @@ remove the .elc files from the package directory:
 rm ${ORG_DIR}/*.elc
 #+END_SRC
 
-#+RESULTS:
-
 ** Better Font Faces
 
 The =efs/org-font-setup= function configures various text faces to tweak the sizes of headings and use variable width fonts in most cases so that it looks more like we're editing a document in =org-mode=.  We switch back to fixed width (monospace) fonts for code blocks and tables so that they display correctly.
@@ -1118,19 +1116,22 @@ Collection of Ridiculously Useful eXtensions
 #+begin_src emacs-lisp
   (use-package docker
     :defer t
-    :ensure t)
+    :straight t)
 
   (use-package docker-cli
-    :after docker)
+    :straight t)
 
-  (use-package docker-compose
-    :after docker)
+  (use-package docker-api
+    :straight t)
+
+  (use-package docker-compose-mode
+    :straight t)
 
   (use-package docker-tramp
-    :after docker)
+    :straight t)
 
   (use-package dockerfile-mode
-    :after docker)
+    :straight t)
 #+end_src
 ** Emmet
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
@@ -1416,7 +1417,7 @@ No more juggling windows after commiting. It's magit bliss.
 
 ** Multiple cursors
 
-We'll also need to ~(require 'multiple-cusors)~ because of [[https://github.com/magnars/multiple-cursors.el/issues/105][an autoload issue]].
+We'll also need to =(require 'multiple-cusors)= because of [[https://github.com/magnars/multiple-cursors.el/issues/105][an autoload issue]].
 
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
