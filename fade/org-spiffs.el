@@ -22,7 +22,6 @@
           (setq end (point))
           (string-trim (buffer-substring-no-properties start end))))))
 
-
 ;; that properties function can be used specifically in org files to
 ;; do various things, like renaming the (convoluted, unfriendly)
 ;; buffer names of org-roam notes. to whit:

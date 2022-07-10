@@ -82,6 +82,9 @@
 (add-to-list 'load-path (expand-file-name "fade/" user-emacs-directory))
 (require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
 
+(require 'sraight-spiffs nil t) ;; when I manually update straight
+                                ;; packages, do all the steps at once.
+
 ;;; Themes need finding.
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes/" user-emacs-directory))
