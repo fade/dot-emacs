@@ -272,7 +272,9 @@ the box. [[https://emacs.stackexchange.com/a/28604][Others have run into the sam
 remove the .elc files from the package directory:
 
 #+BEGIN_SRC sh :var ORG_DIR=(let* ((org-v (cadr (split-string (org-version nil t) "@"))) (len (length org-v))) (substring org-v 1 (- len 2)))
-rm ${ORG_DIR}/*.elc
+
+  rm ${ORG_DIR}/*.elc
+
 #+END_SRC
 
 ** Better Font Faces
@@ -342,6 +344,7 @@ speed keys in Org mode]].
 #+END_SRC
 
 ** Org Tables .. Extended functionality
+
 This package is useful when you have a lot of data in various org tables in a given document, and you want to drop it into a table that synthesizes various pieces of data from the other tables, with or without additional processing.
 #+begin_src emacs-lisp
   (use-package orgtbl-aggregate
