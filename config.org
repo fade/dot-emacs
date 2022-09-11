@@ -22,8 +22,8 @@
 Obviously, you'll want to change this to match your personal credentials.
 
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Brian O'Reilly"
-      user-mail-address "fade@deepsky.com")
+  (setq user-full-name "Brian O'Reilly"
+        user-mail-address "fade@deepsky.com")
 #+END_SRC
 
 * Which Key
@@ -265,7 +265,7 @@ It goes without saying that I also use it to manage my Emacs config.
 
 Although Org mode ships with Emacs, the latest version can be installed externally. The configuration here follows the [[http://orgmode.org/elpa.html][Org mode ELPA installation instructions]].
 
-Org mode is currently being installed right after use-package is initialised in =init.el=.
+Org mode is currently being installed right after use-package is initialised in =init.el=. It must be configured immediately, particularly if the package is being provided via the =straight= package manager, or you can get peculiar errors tangling this configuration file, and also when you enter an org file of any kind, where the configuration around faces and org functions just doesn't work.
 
 On Org mode version 9 I wasn't able to execute source blocks out of
 the box. [[https://emacs.stackexchange.com/a/28604][Others have run into the same issue too]]. The solution is to
