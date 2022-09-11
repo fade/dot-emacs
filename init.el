@@ -1,6 +1,6 @@
 ;;; init.el --- Base emacs config file -*- lexical-binding: t; -*-
 ;;; Commentary:
-;; Copyright (c) 2018-2021 Brian O'Reilly <fade@deepsky.com>
+;; Copyright (c) 2018-2022 Brian O'Reilly <fade@deepsky.com>
 
 ;;; Code:
 
