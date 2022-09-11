@@ -43,10 +43,11 @@
 
 (eval-when-compile
   (require 'use-package))
+
 (require 'bind-key)
 (setq use-package-verbose t)
 
-;; sue the straight sources for use-pacakge by default
+;; use the straight sources for use-package by default
 ;; (use-package straight
 ;;   :custom (straight-use-package-by-default t))
 
@@ -61,7 +62,6 @@
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
-  ;; :ensure org
   :straight t
   :custom
   (org-ellipsis " ▾")
@@ -81,9 +81,6 @@
 ;; I put 'org-spiffs in a subdir of emacs.d, which needs finding:
 (add-to-list 'load-path (expand-file-name "fade/" user-emacs-directory))
 (require 'org-spiffs nil t) ;; rename org-roam buffers to something sane.
-
-(require 'sraight-spiffs nil t) ;; when I manually update straight
-                                ;; packages, do all the steps at once.
 
 ;;; Themes need finding.
 (add-to-list 'custom-theme-load-path
@@ -162,6 +159,12 @@
       (unless (ignore-errors                   ;some packages may fail to install
                 (package-reinstall package-name))
         (warn "Package %s failed to reinstall" package-name)))))
+
+;; late setup
+(require 'sraight-spiffs nil t) ;; when I manually update straight
+;; packages, do all the steps at once.
+
+
 
 (provide 'init)
 ;;; init.el ends here
