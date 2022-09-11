@@ -692,8 +692,7 @@ This makes sure that everything can be a project.
   (use-package projectile
     :straight t
     :init
-    ;;(projectile-mode 1)
-    )
+    (projectile-mode 1))
 #+END_SRC
 
 ** Let projectile call make
@@ -930,14 +929,24 @@ Because sometimes you have to look at python code that came from a person with u
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
 #+END_SRC
+* Aggressive Indent Mode
+
+#+begin_src emacs-lisp
+  (use-package aggressive-indent
+    :straight t
+    :config
+    (global-aggressive-indent-mode 1)
+    (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+    (add-to-list 'aggressive-indent-excluded-modes 'python-mode))
+#+end_src
 
 * File Management
 ** Dired
 Dired configuration is split between =init.el= and this clause in =config.org=, for reasons related to the way that emacs is initialised in this regime. If dired is not configured early, emacs throws to the debugger with an error when dired is called in regular use. (I don't know if this is still true.)
 #+BEGIN_SRC emacs-lisp
-  (use-package dired-single
-    :ensure t
-    :after dired)
+  ;; (use-package dired-single
+  ;;   :ensure t
+  ;;   :after dired)
 
   (use-package all-the-icons-dired
     :straight t
