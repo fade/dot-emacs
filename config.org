@@ -585,6 +585,12 @@ good column number to do that.
     :after org)
 #+end_src
 
+#+begin_src emacs-lisp :tangle no
+  (use-package ob-js
+    :ensure t
+    :after org)
+#+end_src
+
 #+BEGIN_SRC emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1334,6 +1340,28 @@ Make low friction pastes to 0x0, forex sharing code to IRC
 
 #+END_SRC
 
+** Dictionary (Websters) support
+I was struggling to find an acceptable english dictionary for local
+off-line use, and googling lead me to a salubrious link tree, starting
+with the ever productive Marcin Borkowski: [[http://mbork.pl/2017-01-14_I'm_now_using_the_right_dictionary][Marcin Borkowski on using
+the right dictionary.]]
+
+the =tldr= is:
+1. Download the Webster’s dictionary in StarDict format, as Somers tells you to do. (Apparently it’s not “some strange format”, but a standard format for a digital dictionary.)
+2. Unzip the files and put them in ~/.stardict/dic
+3. Install sdcv, a command-line utility for accessing StarDict
+   dictionaries. (On Arch GNU/Linux with from the AUR with yay, it is =yay -S sdcv=.)
+4. My config is using straight, so I'm accessing the sdcv package with
+   the package manager, as below
+5. With point on a word to look up, say =M-x sdcv-search=, or =M-x
+   sdcv-search= anywhere and type in the word.
+6. You can press =RET= on any word in the definitionto look ~that~ one
+   up. This is an inescapable rabbit hole for people of a certain disposition.
+
+#+begin_src emacs-lisp
+  (use-package sdcv
+    :straight t)
+#+end_src
 
 ** Helpful
 This package gives richer help information, and makes interrogating emacs more fruitful.
@@ -1771,7 +1799,8 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
     :init
     (progn
       (setq sly-lisp-implementations
-            '((sbcl ("/usr/local/bin/sbcl"))
+            '((sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2500"))
+              (ccl ("/usr/bin/ros" "-L" "ccl-bin" "run"))
               (ccl ("/usr/bin/ccl"))
               (abcl ("/usr/local/src/abcl/abcl"))
               (clisp ("/usr/bin/clisp"))
