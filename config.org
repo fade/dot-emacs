@@ -957,6 +957,7 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
   (use-package all-the-icons-dired
     :straight t
     :after dired
+    :diminish all-the-icons-dired-mode
     :hook (dired-mode . all-the-icons-dired-mode))
 #+END_SRC
 
@@ -1150,12 +1151,13 @@ Collection of Ridiculously Useful eXtensions
   (use-package docker-compose-mode
     :straight t)
 
-  (use-package docker-tramp
-    :straight t)
+  ;; (use-package tramp-docker
+  ;;   :straight t)
 
   (use-package dockerfile-mode
     :straight t)
 #+end_src
+
 ** Emmet
 According to [[http://emmet.io/][their website]], "Emmet — the essential toolkit for web-developers."
 
@@ -1879,11 +1881,11 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 #+BEGIN_SRC emacs-lisp
   (use-package hcl-mode
     :defer t
-    :ensure t)
+    :straight t)
 
   (use-package terraform-mode
     :defer t
-    :ensure t
+    :straight t
     :after hcl-mode
     :config
     (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
@@ -1892,7 +1894,7 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
 
   (use-package terraform-doc
     :defer t
-    :ensure t
+    :straight t
     :after terraform-mode
     )
 #+END_SRC
