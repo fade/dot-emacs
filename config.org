@@ -1136,6 +1136,15 @@ Collection of Ridiculously Useful eXtensions
          ("C-c u" . crux-view-url)))
 #+END_SRC
 
+** Vagrant
+#+begin_src emacs-lisp
+  (use-package vagrant
+    :straight t)
+
+  (use-package vagrant-tramp
+    :straight t)
+#+end_src
+
 ** Docker
 #+begin_src emacs-lisp
   (use-package docker
