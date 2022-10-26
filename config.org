@@ -1656,6 +1656,7 @@ and have also modified them and added my own.
 It takes a few seconds to load and I don't need them immediately when
 Emacs starts up, so we can defer loading yasnippet until there's some
 idle time.
+
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :straight t

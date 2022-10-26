@@ -164,7 +164,13 @@
 (require 'sraight-spiffs nil t) ;; when I manually update straight
 ;; packages, do all the steps at once.
 
+(defun show-file-name ()
+  "Show the full path filename of the current buffer in the minibuffer."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name)))
 
+(global-set-key "\C-cz" 'show-file-name)
 
 (provide 'init)
 ;;; init.el ends here
