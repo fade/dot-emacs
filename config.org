@@ -962,39 +962,39 @@ Dired configuration is split between =init.el= and this clause in =config.org=, 
 #+END_SRC
 
 * Mail with mu4e
-#+begin_src emacs-lisp :tangle no
-  ;; (use-package mu4e
-  ;;   :ensure nil
-  ;;   :defer 120
-  ;;   :load-path "/usr/share/emacs/site-lisp/mu4e/"
+#+begin_src emacs-lisp
+  (use-package mu4e
+    :ensure nil
+    :defer 120
+    :load-path "/usr/share/emacs/site-lisp/mu4e/"
 
-  ;;   :config
-  ;;   ;; this setting avoids mbsync problems
-  ;;   (setq mu4e-change-filenames-when-moving t)
+    :config
+    ;; this setting avoids mbsync problems
+    (setq mu4e-change-filenames-when-moving t)
 
-  ;;   ;; update every 10 minutes
-  ;;   (setq mu4e-update-interval (* 10 60))
-  ;;   (setq mu4e-get-mail-command "mbsync -a")
-  ;;   (setq mu4e-maildir "~/Mail/GMail/")
+    ;; update every 10 minutes
+    (setq mu4e-update-interval (* 10 60))
+    (setq mu4e-get-mail-command "mbsync -a")
+    (setq mu4e-maildir "~/Mail/GMail/")
 
-  ;;   (setq mu4e-drafts-folder "/[Gmail].Drafts")
-  ;;   (setq mu4e-sent-folder "/[Gmail].Sent Mail")
-  ;;   (setq mu4e-refile-folder "/[Gmail].All Mail")
-  ;;   (setq mu4e-trash-folder "/[Gmail].Trash")
+    (setq mu4e-drafts-folder "/[Gmail].Drafts")
+    (setq mu4e-sent-folder "/[Gmail].Sent Mail")
+    (setq mu4e-refile-folder "/[Gmail].All Mail")
+    (setq mu4e-trash-folder "/[Gmail].Trash")
 
-  ;;   (setq mu4e-headers-fields
-  ;;    '((:human-date . 25)
-  ;;      (:flags . 6)
-  ;;      (:from . 22)
-  ;;      (:to . 22)
-  ;;      (:thread-subject . nil)))
+    (setq mu4e-headers-fields
+          '((:human-date . 25)
+            (:flags . 6)
+            (:from . 22)
+            (:to . 22)
+            (:thread-subject . nil)))
 
-  ;;   (setq mu4e-maildir-shortcuts
-  ;;    '(("/Inbox"               . ?i)
-  ;;      ("/[Gmail].Sent Mail"   . ?s)
-  ;;      ("/[Gmail].Trash"       . ?t)
-  ;;      ("/[Gmail].Drafts"      . ?d)
-  ;;      ("/[Gmail].All Mail"    . ?a))))
+    (setq mu4e-maildir-shortcuts
+          '(("/Inbox"               . ?i)
+            ("/[Gmail].Sent Mail"   . ?s)
+            ("/[Gmail].Trash"       . ?t)
+            ("/[Gmail].Drafts"      . ?d)
+            ("/[Gmail].All Mail"    . ?a))))
 #+end_src
 
 * Minor conveniences
@@ -1040,9 +1040,6 @@ for your cursor. Unless you know its position, you can not move it
 efficiently. Every time you change buffers, the current position of
 your cursor will be briefly highlighted now.
 
-... it appears at the momeent that beacon confuses the sly repl, which
-we cannot abide. currently no time to chase this down.
-
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
     :straight t
@@ -1063,12 +1060,12 @@ These are the packages that are neither built into Emacs nor required to achieve
     :straight t
     :config 
     (avy-setup-default)
-    (set-face-attribute 'avy-lead-face-0 nil :background "blue" :foreground "yellow")
+    set-face-attribute 'avy-lead-face-0 nil :background "blue" :foreground "yellow"
     (set-face-attribute 'avy-lead-face-1 nil :background "purple4" :foreground "goldenrod")
     (set-face-attribute 'avy-lead-face-1 nil :background "SlateBlue4" :foreground "light goldenrod")
     :bind
     ;; ("M-s-." . avy-goto-word-or-subword-1)
-    ("M-s s" . avy-goto-char))
+    ("s-s s" . avy-goto-char))
 #+end_src
 
 ** Ace Window
@@ -1300,7 +1297,6 @@ Make low friction pastes to 0x0, forex sharing code to IRC
   ;; actions within completion selections
   (use-package embark
     :straight t
-    ;; this bind might clobber the sly mrepl shortcut command.
     :bind ("C-." . embark-act))
 
 #+end_src
@@ -1878,7 +1874,18 @@ I spend almost all of my time in emacs writing common lisp code, and in that end
       ))
 #+END_SRC
 
+** Haskell
+At the moment, we're only really investigating Haskell in conjunction with the "Integrated Haskell Platform", which itself carries a _lot_ of dependency baggage. At any rate, we need to be able to edit haskell with at least the minimum viable editing facilities...
+#+begin_src emacs-lisp
+  (use-package dante
+    :straight t)
 
+  (use-package direnv
+    :straight t)
+
+  (use-package attrap
+    :straight t)
+#+end_src
 ** Shen
 #+begin_src emacs-lisp
   (use-package shen-mode
