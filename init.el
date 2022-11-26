@@ -33,9 +33,6 @@
 ;;; Bootstrap use-package
 
 (unless (package-installed-p 'use-package)
-  ;; (progn
-  ;;   (package-refresh-contents)
-  ;;   (package-install 'use-package))
   (straight-use-package 'use-package))
 
 
