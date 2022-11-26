@@ -1060,12 +1060,10 @@ These are the packages that are neither built into Emacs nor required to achieve
     :straight t
     :config 
     (avy-setup-default)
-    set-face-attribute 'avy-lead-face-0 nil :background "blue" :foreground "yellow"
+    (set-face-attribute 'avy-lead-face-0 nil :background "blue" :foreground "yellow")
     (set-face-attribute 'avy-lead-face-1 nil :background "purple4" :foreground "goldenrod")
     (set-face-attribute 'avy-lead-face-1 nil :background "SlateBlue4" :foreground "light goldenrod")
-    :bind
-    ;; ("M-s-." . avy-goto-word-or-subword-1)
-    ("s-s s" . avy-goto-char))
+    :bind ("s-s c" . avy-goto-char))
 #+end_src
 
 ** Ace Window
@@ -1799,7 +1797,7 @@ Extempore is a scheme defined for live performance programming. Leaving this stu
     
 #+BEGIN_SRC emacs-lisp
   (use-package sly
-    ;; :load-path "~/SourceCode/lisp/sly"
+    :load-path "~/SourceCode/lisp/sly"
     :straight t
     :defer t
     :commands sly
